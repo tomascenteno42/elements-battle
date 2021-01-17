@@ -32,3 +32,8 @@
 *.app
 
 Debug/
+
+.cproject
+.project
+.settings
+.externalToolBuilders/
