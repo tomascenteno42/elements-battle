@@ -8,8 +8,7 @@
 #ifndef GAMECELL_H_
 #define GAMECELL_H_
 
-#include <SFML/Graphics.hpp>
-
+#include "src/main.h"
 class GameCell {
 public:
 	// para mostrar personaje y para el ataque de personaje agua.
@@ -17,9 +16,9 @@ public:
 	sf::Vector2f pos;
 	sf::RectangleShape cell;
 
-	void setCell( float, float, sf::Color);
+	void setCell(float h, float w, sf::Color color);
 
-	GameCell(float, float, float, float, sf::Color);
+	GameCell(float x, float y, float h, float w, sf::Color color);
 	virtual ~GameCell();
 };
 

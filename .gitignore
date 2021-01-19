@@ -31,8 +31,9 @@
 *.out
 *.app
 
-Debug/
+# Eclipse files and folders
 
+sDebug/
 .cproject
 .project
 .settings/
