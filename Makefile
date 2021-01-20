@@ -8,14 +8,16 @@ CXXFLAGS = -g    # -fsanitize=address -Wno-stack-protector -Wall -Wconversion -W
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
-APPNAME = bote
+APPNAME = BattleOfTheElements
 EXT = .cpp
-SRCDIR = 
+BASEDIR = 
+SRCDIR = src
+LIBDIR = lib
 OBJDIR = obj
 
 ############## Do not change anything from here downwards! #############
-SRC = $(wildcard $(SRCDIR)/*$(EXT))
-OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
+SRC = $(wildcard $(BASEDIR)/*$(EXT))
+OBJ = $(SRC:$(BASEDIR)/%$(EXT)=$(OBJDIR)/%.o)
 DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 # UNIX-based OS variables & settings
 RM = rm
@@ -23,7 +25,7 @@ DELOBJ = $(OBJ)
 # Windows OS variables & settings
 DEL = del
 EXE = .exe
-WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
+WDELOBJ = $(SRC:$(BASEDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 
 ########################################################################
 ####################### Targets beginning here #########################
@@ -32,18 +34,25 @@ WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 all: $(APPNAME)
 
 # Builds the app
-$(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) *.dll *.cpp src/utils/*.cpp src/utils/*.h src/*.cpp src/*.h
+ifeq ($(OS),Windows_NT)
+    $(APPNAME): $(OBJ)
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) ${SRCDIR}/*/*.cpp ${SRCDIR}/*/*.h ${SRCDIR}/*.cpp ${SRCDIR}/*.h *.dll *.cpp 
+
+else
+    $(APPNAME): $(OBJ)
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) ${SRCDIR}/*/*.cpp ${SRCDIR}/*/*.h ${SRCDIR}/*.cpp ${SRCDIR}/*.h *.cpp -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system 
+
+endif
 
 # Creates the dependecy rules
-%.d: $(SRCDIR)/%$(EXT)
+%.d: $(BASEDIR)/%$(EXT)
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
 
 # Includes all .h files
 -include $(DEP)
 
 # Building rule for .o files and its .c/.cpp in combination with all .h
-$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
+$(OBJDIR)/%.o: $(BASEDIR)/%$(EXT)
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 
 ################### Cleaning rules for Unix-based OS ###################
