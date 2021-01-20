@@ -7,47 +7,37 @@
 
 #include "src/main.h"
 
+const int HEIGHT = 50, WIDTH = 50;
+
 GameWorld::GameWorld() {
 }
-
-
 
 void GameWorld::setMap() {
 	vector<GameCell*> row;
 
 	fstream file;
 	file.open("mapStats.csv");
-	string line;
 
-	int x, y, h, w;
+	int cellCounter = 0;
+	int x = 0, y = 0;
 	string color;
+
 	while (!file.eof()) {
-		getline(file, line);
-		stringstream mapStats(line);
-		string dato;
-		for (int col = 0; getline(mapStats, dato, ','); col++) {
-			switch (col) {
-			case 0:
-				x = stoi(dato);
-				break;
-			case 1:
-				y = stoi(dato);
-				break;
-			case 2:
-				h = stoi(dato);
-				break;
-			case 3:
-				w = stoi(dato);
-				break;
-			case 4:
-				color = dato;
-				break;
-			}
-		}
-		GameCell *cell = new GameCell(x, y, h, w, parseColorToSf(parseStringToColor(color)));
+		cellCounter++;
+
+		getline(file, color, ',');
+
+		GameCell *cell = new GameCell(x, y, HEIGHT, WIDTH, parseColorToSf(parseStringToColor(color)));
 		tiles.push_back(cell);
+
+		if (cellCounter % 8 == 0){
+			x = 0;
+			y += 50;
+		} else x += 50;
 	}
+	
 	file.close();
 }
+
 GameWorld::~GameWorld() {
 }

@@ -1,15 +1,15 @@
 #include "../main.h"
 
 colors parseStringToColor(std::string colorToParse) {
-	if (colorToParse == "lake") {
+	if (colorToParse == "l") {
 		return lake;
-	} else if (colorToParse == "volcano") {
+	} else if (colorToParse == "v") {
 		return volcano;
-	} else if (colorToParse == "cliff") {
+	} else if (colorToParse == "c") {
 		return cliff;
-	} else if (colorToParse == "mountain") {
+	} else if (colorToParse == "m") {
 		return mountain;
-	} else if (colorToParse == "path") {
+	} else if (colorToParse == "p") {
 		return path;
 	} else {
 		return empty;
