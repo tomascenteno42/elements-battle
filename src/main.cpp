@@ -42,7 +42,10 @@ int main() {
 
 		//limpia todo lo que haya antes
 		mapWindow.clear();
-		for (int i = 0; i < world.tiles.size(); ++i) {
+
+		// Arregle un Werror de comparacion entre int y size_t
+		int size = world.tiles.size();
+		for (int i = 0; i < size; ++i) {
 			mapWindow.draw(world.tiles[i]->cell);
 		}
 		// dibujas lo que tenes dibujar
