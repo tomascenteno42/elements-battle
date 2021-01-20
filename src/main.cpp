@@ -18,6 +18,18 @@ int main() {
 	texto.setFillColor(sf::Color::Blue);
 	sf::String playerInput;
 
+// -----------------PROBANDO FUNCION setInitialMatrixes
+	int distances[64][64] = {0};
+	setInitialMatrixes(world, distances, water);
+	std::cout << "[";
+	for (int i = 0; i < 8; i ++) {
+		std::cout << std::endl << "[";
+		for (int j = 0; j < 16; j ++) {
+			std::cout << distances[i][j] << ",";
+		} std::cout << "]";
+	} std::cout << std::endl << "]";
+// ---------------------------------------------------
+
 	while (mapWindow.isOpen()) {
 		// SOLO PARA CERRAR LA VENTANA
 		sf::Event event;

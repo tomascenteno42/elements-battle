@@ -9,6 +9,7 @@
 #define GAMEWORLD_H_
 
 #include "src/main.h"
+#include "GameCell.h"
 
 class GameWorld {
 public:

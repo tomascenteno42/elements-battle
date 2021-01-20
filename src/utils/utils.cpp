@@ -1,6 +1,6 @@
 #include "../main.h"
 
-colors parseStringToColor(std::string colorToParse) {
+terrains parseStringToTerrain(std::string colorToParse) {
 	if (colorToParse == "l") {
 		return lake;
 	} else if (colorToParse == "v") {
@@ -16,9 +16,9 @@ colors parseStringToColor(std::string colorToParse) {
 	}
 }
 
-sf::Color parseColorToSf(colors color) {
+sf::Color parseTerrainToSf(terrains terrain) {
 
-	switch (color) {
+	switch (terrain) {
 	case lake:
 		return sf::Color::Cyan;
 		break;
@@ -43,3 +43,26 @@ sf::Color parseColorToSf(colors color) {
 	}
 }
 
+bool intersects(GameCell* cell1, GameCell* cell2) {
+	float cell1x = (cell1 -> getPos()).x;
+	float cell1y = (cell1 -> getPos()).y;
+	float cell2x = (cell2 -> getPos()).x;
+	float cell2y = (cell2 -> getPos()).y;
+	return ((abs(cell1x - cell2x) + abs(cell1y - cell2y)) <= 50);
+}
+
+void setInitialMatrixes(GameWorld world, int distances[64][64], elements element) {
+	for (int i = 0; i < 64; i ++) {
+		world.tiles[i] -> setCost(element);
+	}
+	int costo;
+	for (int i = 0; i < 64; i ++) {
+		costo = world.tiles[i] -> getCost();
+		for (int j = 0; j < 64; j ++) {
+			if (i == j) distances[i][j] = 0;
+			else if (intersects(world.tiles[j], world.tiles[i]))
+				distances[i][j] = costo;
+			else distances[i][j] = 100;
+		}
+	}
+}

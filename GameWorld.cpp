@@ -27,7 +27,8 @@ void GameWorld::setMap() {
 
 		getline(file, color, ',');
 
-		GameCell *cell = new GameCell(x, y, HEIGHT, WIDTH, parseColorToSf(parseStringToColor(color)));
+		terrains terrain = parseStringToTerrain(color);
+		GameCell *cell = new GameCell(x, y, HEIGHT, WIDTH, terrain, parseTerrainToSf(terrain));
 		tiles.push_back(cell);
 
 		if (cellCounter % 8 == 0){

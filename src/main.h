@@ -8,7 +8,15 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-enum colors{
+enum elements {
+	water,
+	fire,
+	earth,
+	air
+};
+
+enum terrains {
+	none,
 	lake,
 	volcano,
 	cliff,
@@ -30,7 +38,6 @@ using namespace std;
 #include "utils/utils.h"
 #include "../GameCell.h"
 #include "../GameWorld.h"
-
 
 
 
