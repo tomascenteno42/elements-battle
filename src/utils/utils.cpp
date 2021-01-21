@@ -60,26 +60,66 @@ void setInitialMatrixes(GameWorld world, int distances[64][64], sf::Vector2f pat
 		costo = world.tiles[i] -> getCost();
 		for (int j = 0; j < 64; j ++) {
 			if (i != j) paths[i][j] = world.tiles[j] -> getPos();
-			if (i == j) distances[i][j] = 0;
+			if (i == j) {
+				distances[i][j] = 0;
+				paths[i][j] = sf::Vector2f(-50,-50);
+			}
 			else if (intersects(world.tiles[j], world.tiles[i]))
 				distances[i][j] = costo;
-			else distances[i][j] = 100;
+			else distances[i][j] = 1000;
 		}
 	}
 }
 
+void printDistances(int distances[64][64]) {
+	std::cout << "[" << std::endl;
+	for (int i = 0; i < 16; i ++) {
+		std::cout << "[";
+		for (int j = 0; j < 16; j ++) {
+			std::cout << distances[i][j] << ",";
+		}
+		std::cout << "]" << std::endl;
+	}
+	std::cout << "]" << std::endl;
+}
+
+void printPaths(sf::Vector2f paths[64][64]) {
+	std::cout << "[" << std::endl;
+	for (int i = 0; i < 16; i ++) {
+		std::cout << "[";
+		for (int j = 0; j < 16; j ++) {
+			std::cout << "[" << paths[i][j].x / 50 << "," << paths[i][j].y / 50 << "],";
+		}
+		std::cout << "]" << std::endl;
+	}
+	std::cout << "]" << std::endl;
+}
+
 void shortestPathsFW(GameWorld world, int distances[64][64], sf::Vector2f paths[64][64], elements element) {
 	setInitialMatrixes(world, distances, paths, element);
-	for (int i = 0; i < 64; i ++) {
-		GameCell* node = world.tiles[i];
-		for (int row = 0; row < 64; row ++) {
-			for (int col = 0; col < 64; col ++) {
-				int aux = distances[row][i] + distances[i][col];
-				if (aux < distances[row][col]) {
-					distances[row][col] = aux;
-					paths[row][col] = node -> getPos();
+	for (int k = 0; k < 64; k ++) {
+		GameCell* node = world.tiles[k];
+		for (int i = 0; i < 64; i ++) {
+			for (int j = 0; j < 64; j ++) {
+				int aux = distances[i][k] + distances[k][j];
+				if (distances[i][j] > aux) {
+					distances[i][j] = aux;
+					paths[i][j] = node -> getPos();
 				}
 			}
 		}
 	}
+}
+
+
+void loadMovementsStack(Stack* movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]) {
+	movStack -> push(endingPos);
+	int row = int(startingPos.x + 8 * startingPos.y);
+	int col = int(endingPos.x + 8 * endingPos.y);
+	sf::Vector2f intPos = paths[row][col];
+	intPos.x /= 50;
+	intPos.y /= 50;
+	if (movStack -> peek() == intPos) return;
+	loadMovementsStack(movStack, intPos, endingPos, paths);
+	loadMovementsStack(movStack, startingPos, intPos, paths);
 }

@@ -18,17 +18,21 @@ int main() {
 	texto.setFillColor(sf::Color::Blue);
 	sf::String playerInput;
 
-// -----------------PROBANDO FUNCION shortestPathsFW
+// -----------------SHORTEST PATHS TESTS
 	int distances[64][64] = {0};
 	sf::Vector2f paths[64][64];
 	shortestPathsFW(world, distances, paths, water);
-	std::cout << "[";
-	for (int i = 0; i < 8; i ++) {
-		std::cout << std::endl << "[";
-		for (int j = 0; j < 16; j ++) {
-			std::cout << distances[i][j] << ",";
-		} std::cout << "]";
-	} std::cout << std::endl << "]";
+
+	Stack* movStack = new Stack();
+	sf::Vector2f startingPos = sf::Vector2f(1,1);
+	sf::Vector2f endingPos = sf::Vector2f(4,7);
+	loadMovementsStack(movStack, startingPos, endingPos, paths);
+	while(!movStack -> isEmpty()) {
+		sf::Vector2f pos = movStack -> peek();
+		std::cout << "[" << pos.x << "," << pos.y << "]" << ", ";
+		movStack -> pop();
+	}
+	delete movStack;
 // ---------------------------------------------------
 
 	while (mapWindow.isOpen()) {

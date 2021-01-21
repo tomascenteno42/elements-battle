@@ -10,6 +10,7 @@
 
 #include "../main.h"
 #include "../../GameWorld.h"
+#include "../../Stack.h"
 
 terrains parseStringToTerrain(std::string colorToParse);
 sf::Color parseTerrainToSf(terrains terrain);
@@ -30,6 +31,18 @@ void setInitialMatrixes(GameWorld world, int distances[64][64], sf::Vector2f pat
  */
 bool intersects (sf::RectangleShape cell1, sf::RectangleShape cell2);
 
+/*
+ * Implementación del algoritmo de FloydWarshall
+ */
 void shortestPathsFW(GameWorld world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
+
+void printDistances(int distances[64][64]);
+void printPaths(sf::Vector2f paths[64][64]);
+
+/*
+ * Carga en una pila la serie de celdas adyacentes a las que el personaje se tiene que ir moviendo para llegar
+ * de startingPos a endingPos
+ */
+void loadMovementsStack(Stack* movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
 #endif /* UTILS_UTILS_H_ */
