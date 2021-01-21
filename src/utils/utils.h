@@ -22,12 +22,14 @@ sf::Color parseTerrainToSf(terrains terrain);
  * distancias[i][j] = coste de ir del nodo i al nodo j (en un solo movimiento).
  * Si no se puede llegar en un solo movimiento, se pone distancia "infinita" (100 por ahora para ver nomas).
  */
-void setInitialMatrixes(GameWorld world, int distances[64][64], elements element);
+void setInitialMatrixes(GameWorld world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
 /*
  * Determina si dos celdas rectangulares son adyacentes horizontal o verticalmente
  * (Seguro hay una mejor manera de hacerlo usando la biblioteca, por ahora lo hice asi para ir probando).
  */
 bool intersects (sf::RectangleShape cell1, sf::RectangleShape cell2);
+
+void shortestPathsFW(GameWorld world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
 #endif /* UTILS_UTILS_H_ */

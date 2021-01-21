@@ -18,9 +18,10 @@ int main() {
 	texto.setFillColor(sf::Color::Blue);
 	sf::String playerInput;
 
-// -----------------PROBANDO FUNCION setInitialMatrixes
+// -----------------PROBANDO FUNCION shortestPathsFW
 	int distances[64][64] = {0};
-	setInitialMatrixes(world, distances, water);
+	sf::Vector2f paths[64][64];
+	shortestPathsFW(world, distances, paths, water);
 	std::cout << "[";
 	for (int i = 0; i < 8; i ++) {
 		std::cout << std::endl << "[";
