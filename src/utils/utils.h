@@ -45,4 +45,6 @@ void printPaths(sf::Vector2f paths[64][64]);
  */
 void loadMovementsStack(Stack* movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
+sf::Vector2f askDestination();
+
 #endif /* UTILS_UTILS_H_ */

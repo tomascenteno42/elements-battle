@@ -113,7 +113,8 @@ void shortestPathsFW(GameWorld world, int distances[64][64], sf::Vector2f paths[
 
 
 void loadMovementsStack(Stack* movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]) {
-	movStack -> push(endingPos);
+	if (movStack -> isEmpty() || movStack -> peek() != endingPos)
+		movStack -> push(endingPos);
 	int row = int(startingPos.x + 8 * startingPos.y);
 	int col = int(endingPos.x + 8 * endingPos.y);
 	sf::Vector2f intPos = paths[row][col];
@@ -122,4 +123,13 @@ void loadMovementsStack(Stack* movStack, sf::Vector2f startingPos, sf::Vector2f 
 	if (movStack -> peek() == intPos) return;
 	loadMovementsStack(movStack, intPos, endingPos, paths);
 	loadMovementsStack(movStack, startingPos, intPos, paths);
+}
+
+sf::Vector2f askDestination() {
+	string x ,y;
+	std::cout << "Move to x: ";
+	std::cin >> x;
+	std::cout << "Move to y: ";
+	std::cin >> y;
+	return sf::Vector2f(stof(x),stof(y));
 }

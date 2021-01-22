@@ -41,7 +41,7 @@ using namespace std;
 #include "../Node.h"
 #include "../Stack.h"
 
-
+#include <unistd.h>
 
 
 #endif /* MAIN_H_ */
