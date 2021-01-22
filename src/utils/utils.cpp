@@ -127,9 +127,9 @@ void loadMovementsStack(Stack* movStack, sf::Vector2f startingPos, sf::Vector2f 
 
 sf::Vector2f askDestination() {
 	string x ,y;
-	std::cout << "Move to x: ";
+	std::cout << "Move to x (0-7): ";
 	std::cin >> x;
-	std::cout << "Move to y: ";
+	std::cout << "Move to y (0-7): ";
 	std::cin >> y;
 	return sf::Vector2f(stof(x),stof(y));
 }

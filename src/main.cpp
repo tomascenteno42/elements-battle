@@ -31,7 +31,7 @@ int main() {
 // ---------------------------------------------------------
 
 	while (mapWindow.isOpen()) {
-		//sleep(1);
+		std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
 		// SOLO PARA CERRAR LA VENTANA
 		sf::Event event;

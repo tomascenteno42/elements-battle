@@ -42,6 +42,8 @@ using namespace std;
 #include "../Stack.h"
 
 #include <unistd.h>
+#include <chrono>
+#include <thread>
 
 
 #endif /* MAIN_H_ */
