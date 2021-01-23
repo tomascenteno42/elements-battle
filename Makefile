@@ -4,7 +4,7 @@
 
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -g    # -fsanitize=address -Wno-stack-protector -Wall -Wconversion -Wextra  -std=c++14 -pedantic -Wshadow -Werror -O1 -fno-omit-frame-pointer 
+CXXFLAGS = -g -Werror   # -fsanitize=address -Wno-stack-protector -Wall -Wconversion -Wextra  -std=c++14 -pedantic -Wshadow  -O1 -fno-omit-frame-pointer 
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
@@ -33,7 +33,7 @@ all: $(APPNAME)
 
 # Builds the app
 $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) *.dll *.cpp src/utils/*.cpp src/utils/*.h src/*.cpp src/*.h
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) *.dll lib/*.cpp src/utils/*.cpp src/utils/*.h src/utils/*.h src/*.cpp src/*.h
 
 # Creates the dependecy rules
 %.d: $(SRCDIR)/%$(EXT)

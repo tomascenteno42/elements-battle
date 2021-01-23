@@ -5,7 +5,7 @@
  *      Author: kurepa
  */
 
-#include "src/main.h"
+#include "../src/main.h"
 
 void GameCell::setCell(float h, float w, sf::Color color){
 	cell.setPosition(pos);

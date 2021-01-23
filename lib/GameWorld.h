@@ -8,13 +8,14 @@
 #ifndef GAMEWORLD_H_
 #define GAMEWORLD_H_
 
-#include "src/main.h"
+#include "../src/main.h"
 
 class GameWorld {
 public:
 	int gridLength = 8;
-	void setMap();
 	std::vector<GameCell*> tiles;
+
+	void setMap();
 
 	GameWorld();
 	virtual ~GameWorld();

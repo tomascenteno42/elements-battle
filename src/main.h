@@ -8,6 +8,14 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+#define OPTIONS_FILE "./files/options.txt"
+#define CHARACTERS_FILE "./files/characters.csv"
+#define MAPSTATS_FILE "./files/mapStats.csv"
+
+const int VALOR_ALIMENTO_FUEGO = 15;
+const int VALOR_ALIMENTO_TIERRA = 8;
+const int VALOR_ALIMENTO_AGUA = 10;
+
 enum colors{
 	lake,
 	volcano,
@@ -15,6 +23,14 @@ enum colors{
 	mountain,
 	path,
 	empty
+};
+
+enum Elements
+{
+    EARTH = 1,
+    FIRE = 2,
+    WATER = 3,
+    AIR = 4
 };
 
 using namespace std;
@@ -26,13 +42,24 @@ using namespace std;
 #include <math.h>
 #include <string.h>
 #include <sstream>
+#include <regex>
+#include <vector>
+
+#include "../lib/GameCell.h"
+#include "../lib/GameWorld.h"
+
+#include "../lib/Character.h"
+
+#include "../lib/WaterCharacter.h"
+#include "../lib/EarthCharacter.h"
+#include "../lib/FireCharacter.h"
+#include "../lib/AirCharacter.h"
+
+#include "../lib/Node.h"
+#include "../lib/List.h"
+
+#include "../lib/Menu.h"
 
 #include "utils/utils.h"
-#include "../GameCell.h"
-#include "../GameWorld.h"
-
-
-
-
 
 #endif /* MAIN_H_ */
