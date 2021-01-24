@@ -34,7 +34,6 @@ void GameWorld::setMap()
 
 		cell = new GameCell(x, y, HEIGHT, WIDTH, parseColorToSf(parseStringToColor(color)));
 		tiles.push_back(cell);
-		cout << cellCounter << endl;
 
 		if (cellCounter % gridLength == 0)
 		{
