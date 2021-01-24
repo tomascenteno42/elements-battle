@@ -40,7 +40,7 @@ ifeq ($(OS),Windows_NT)
 
 else
     $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) ${SRCDIR}/*/*.cpp ${SRCDIR}/*/*.h ${SRCDIR}/*.cpp ${SRCDIR}/*.h *.cpp -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system 
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) src/utils/*.cpp src/*.cpp lib/*.cpp -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system 
 
 endif
 

@@ -5,15 +5,17 @@
  *      Author: kurepa
  */
 
-#include "src/main.h"
+#include "../src/main.h"
 
 const int HEIGHT = 50, WIDTH = 50;
 
-GameWorld::GameWorld() {
+GameWorld::GameWorld()
+{
 }
 
-void GameWorld::setMap() {
-	vector<GameCell*> row;
+void GameWorld::setMap()
+{
+	vector<GameCell *> row;
 
 	fstream file;
 	file.open("mapStats.csv");
@@ -22,7 +24,8 @@ void GameWorld::setMap() {
 	int x = 0, y = 0;
 	string color;
 
-	while (!file.eof()) {
+	while (!file.eof())
+	{
 		cellCounter++;
 
 		getline(file, color, ',');
@@ -31,14 +34,18 @@ void GameWorld::setMap() {
 		GameCell *cell = new GameCell(x, y, HEIGHT, WIDTH, terrain, parseTerrainToSf(terrain));
 		tiles.push_back(cell);
 
-		if (cellCounter % 8 == 0){
+		if (cellCounter % 8 == 0)
+		{
 			x = 0;
 			y += 50;
-		} else x += 50;
+		}
+		else
+			x += 50;
 	}
-	
+
 	file.close();
 }
 
-GameWorld::~GameWorld() {
+GameWorld::~GameWorld()
+{
 }

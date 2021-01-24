@@ -8,13 +8,13 @@
 #ifndef STACK_H_
 #define STACK_H_
 
-#include "src/main.h"
-#include "Node.h"
+#include "../src/main.h"
 
-class Stack {
+class Stack
+{
 
 private:
-	Node* last;
+	VectorNode *last;
 
 public:
 	Stack();
@@ -25,7 +25,6 @@ public:
 	bool isEmpty();
 
 	virtual ~Stack();
-
 };
 
 #endif /* STACK_H_ */

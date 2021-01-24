@@ -1,16 +1,7 @@
-/*
- * utils.h
- *
- *  Created on: Jan 18, 2021
- *      Author: kurepa
- */
-
 #ifndef UTILS_UTILS_H_
 #define UTILS_UTILS_H_
 
 #include "../main.h"
-#include "../../GameWorld.h"
-#include "../../Stack.h"
 
 terrains parseStringToTerrain(std::string colorToParse);
 sf::Color parseTerrainToSf(terrains terrain);
@@ -29,7 +20,7 @@ void setInitialMatrixes(GameWorld world, int distances[64][64], sf::Vector2f pat
  * Determina si dos celdas rectangulares son adyacentes horizontal o verticalmente
  * (Seguro hay una mejor manera de hacerlo usando la biblioteca, por ahora lo hice asi para ir probando).
  */
-bool intersects (sf::RectangleShape cell1, sf::RectangleShape cell2);
+bool intersects(sf::RectangleShape cell1, sf::RectangleShape cell2);
 
 /*
  * Implementación del algoritmo de FloydWarshall
@@ -43,7 +34,7 @@ void printPaths(sf::Vector2f paths[64][64]);
  * Carga en una pila la serie de celdas adyacentes a las que el personaje se tiene que ir moviendo para llegar
  * de startingPos a endingPos
  */
-void loadMovementsStack(Stack* movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
+void loadMovementsStack(Stack *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
 sf::Vector2f askDestination();
 

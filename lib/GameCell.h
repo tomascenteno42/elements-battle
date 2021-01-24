@@ -8,9 +8,10 @@
 #ifndef GAMECELL_H_
 #define GAMECELL_H_
 
-#include "src/main.h"
+#include "../src/main.h"
 
-class GameCell {
+class GameCell
+{
 
 private:
 	terrains terrain;
