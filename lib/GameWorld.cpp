@@ -12,29 +12,30 @@ const int HEIGHT = 50, WIDTH = 50;
 GameWorld::GameWorld()
 {
 }
-
 void GameWorld::setMap()
 {
-	vector<GameCell *> row;
-
-	fstream file;
-	file.open("mapStats.csv");
+	GameCell *cell;
+	ifstream file;
+	string color;
 
 	int cellCounter = 0;
 	int x = 0, y = 0;
-	string color;
 
-	while (!file.eof())
+	file.open(MAPSTATS_FILE);
+	if (!file)
+	{
+		cerr << "Unable to open file mapStats.csv";
+		exit(1);
+	}
+
+	while (getline(file, color, ','))
 	{
 		cellCounter++;
-
-		getline(file, color, ',');
-
-		terrains terrain = parseStringToTerrain(color);
-		GameCell *cell = new GameCell(x, y, HEIGHT, WIDTH, terrain, parseTerrainToSf(terrain));
+    terrains terrain = parseStringToTerrain(color);
+		cell = new GameCell(x, y, HEIGHT, WIDTH, parseColorToSf(parseStringToColor(color)));
 		tiles.push_back(cell);
 
-		if (cellCounter % 8 == 0)
+		if (cellCounter % gridLength == 0)
 		{
 			x = 0;
 			y += 50;
@@ -46,6 +47,16 @@ void GameWorld::setMap()
 	file.close();
 }
 
+bool GameWorld::emptyWorld()
+{
+	return tiles.empty();
+}
+
 GameWorld::~GameWorld()
 {
+	while (!emptyWorld())
+	{
+		delete tiles.back();
+		tiles.pop_back();
+	}
 }

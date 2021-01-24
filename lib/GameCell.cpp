@@ -7,6 +7,8 @@
 
 #include "../src/main.h"
 
+void GameCell::setCell(float h, float w, sf::Color color){
+=======
 terrains GameCell::getTerrain()
 {
 	return terrain;

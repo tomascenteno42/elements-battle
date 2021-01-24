@@ -2,13 +2,21 @@
 ####################### Makefile Template ##############################
 ########################################################################
 
-# Compiler settings - Can be customized.
+# Compiler settings
+ifeq ($(OS),Windows_NT)
 CC = g++
-CXXFLAGS = -g    # -fsanitize=address -Wno-stack-protector -Wall -Wconversion -Wextra  -std=c++14 -pedantic -Wshadow -Werror -O1 -fno-omit-frame-pointer 
+CXXFLAGS = -g -Werror
 LDFLAGS = 
+else
+CC = g++
+CXXFLAGS = -g -Werror -fsanitize=address -O1 -fno-omit-frame-pointer
+LDFLAGS = 
+endif
 
-# Makefile settings - Can be customized.
-APPNAME = BattleOfTheElements
+
+
+# Makefile settings
+APPNAME = bote
 EXT = .cpp
 BASEDIR = 
 SRCDIR = src
@@ -33,15 +41,13 @@ WDELOBJ = $(SRC:$(BASEDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 
 all: $(APPNAME)
 
-# Builds the app
+# Builds the app for windows OS and linux.
 ifeq ($(OS),Windows_NT)
-    $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) ${SRCDIR}/*/*.cpp ${SRCDIR}/*/*.h ${SRCDIR}/*.cpp ${SRCDIR}/*.h *.dll *.cpp 
-
+$(APPNAME): $(OBJ)
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/*.cpp  src/utils/*.cpp  src/*.cpp  *.dll
 else
-    $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) src/utils/*.cpp src/*.cpp lib/*.cpp -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system 
-
+$(APPNAME): $(OBJ)
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/*.cpp  src/utils/*.cpp  src/*.cpp  -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system
 endif
 
 # Creates the dependecy rules

@@ -13,14 +13,19 @@
 #define CHARACTERS_FILE "files/characters.csv"
 #define MAPSTATS_FILE "files/mapStats.csv"
 
-enum elements
+const int VALOR_ALIMENTO_FUEGO = 15;
+const int VALOR_ALIMENTO_TIERRA = 8;
+const int VALOR_ALIMENTO_AGUA = 10;
+// merge colors and terrains
+enum colors
 {
-	water,
-	fire,
-	earth,
-	air
-};
-
+	lake,
+	volcano,
+	cliff,
+	mountain,
+	path,
+	empty
+}
 enum terrains
 {
 	none,
@@ -32,6 +37,14 @@ enum terrains
 	empty
 };
 
+enum Elements
+{
+	EARTH = 1,
+	FIRE = 2,
+	WATER = 3,
+	AIR = 4
+};
+
 using namespace std;
 
 #include <SFML/Graphics.hpp>
@@ -41,16 +54,30 @@ using namespace std;
 #include <math.h>
 #include <string.h>
 #include <sstream>
+#include <regex>
+#include <vector>
+#include <unistd.h>
+#include <chrono>
+#include <thread>
+
 
 #include "../lib/GameCell.h"
 #include "../lib/GameWorld.h"
+
+#include "../lib/Character.h"
+
+#include "../lib/WaterCharacter.h"
+#include "../lib/EarthCharacter.h"
+#include "../lib/FireCharacter.h"
+#include "../lib/AirCharacter.h"
+
+#include "../lib/Node.h"
+#include "../lib/List.h"
+
+#include "../lib/Menu.h"
 #include "../lib/VectorNode.h"
 #include "../lib/Stack.h"
 
 #include "utils/utils.h"
-
-#include <unistd.h>
-#include <chrono>
-#include <thread>
 
 #endif /* MAIN_H_ */

@@ -39,3 +39,7 @@ sDebug/
 .settings/
 .externalToolBuilders/
 /Debug/
+
+# Visual Studio Code files and folders
+
+.vscode/

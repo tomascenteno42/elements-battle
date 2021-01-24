@@ -9,10 +9,7 @@
 #define GAMECELL_H_
 
 #include "../src/main.h"
-
-class GameCell
-{
-
+class GameCell {
 private:
 	terrains terrain;
 	int cost = 0;
@@ -20,19 +17,24 @@ private:
 	sf::Vector2f pos;
 
 public:
+	// para mostrar personaje y para el ataque de personaje agua.
+	bool occupied;
+	sf::Vector2f pos;
 	sf::RectangleShape cell;
-
-	terrains getTerrain();
+  terrains getTerrain();
+  
 	int getCost();
 	bool isOccupied();
 	sf::Vector2f getPos();
 
+
 	void setCost(elements element);
 	void setOccupied(bool occupied);
 	void setCell(float h, float w, sf::Color color);
-
+  
 	GameCell(float x, float y, float h, float w, sf::Color color);
-	GameCell(float x, float y, float h, float w, terrains terrain, sf::Color color);
+  GameCell(float x, float y, float h, float w, terrains terrain, sf::Color color);
+
 	virtual ~GameCell();
 };
 

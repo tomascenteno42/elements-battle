@@ -14,11 +14,15 @@ class GameWorld
 {
 public:
 	int gridLength = 8;
+	vector<GameCell *> tiles;
+
 	void setMap();
-	std::vector<GameCell *> tiles;
 
 	GameWorld();
 	virtual ~GameWorld();
+
+private:
+	bool emptyWorld();
 };
 
 #endif /* GAMEWORLD_H_ */
