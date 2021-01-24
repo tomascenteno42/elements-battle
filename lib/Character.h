@@ -7,26 +7,26 @@ class Character
 {
 protected:
     string name;
-    Elements element;
+    elements element;
 
     int life;
     int shield;
     int energy;
 
 public:
-    Character(string n, Elements e, int l, int s);
+    Character(string n, elements e, int l, int s);
 
     string getName();
     int getLife();
     int getShield();
     int getEnergy();
-    Elements getElement();
+    elements getElement();
 
     void setName(string n);
     void setLife(int l);
     void setShield(int s);
     void setEnergy(int e);
-    void setElement(Elements element);
+    void setElement(elements element);
 
     virtual void feed() = 0;
 

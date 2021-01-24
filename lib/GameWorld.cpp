@@ -1,10 +1,3 @@
-/*
- * GameWorld.cpp
- *
- *  Created on: Jan 17, 2021
- *      Author: kurepa
- */
-
 #include "../src/main.h"
 
 const int HEIGHT = 50, WIDTH = 50;
@@ -22,17 +15,13 @@ void GameWorld::setMap()
 	int x = 0, y = 0;
 
 	file.open(MAPSTATS_FILE);
-	if (!file)
-	{
-		cerr << "Unable to open file mapStats.csv";
-		exit(1);
-	}
+	validateFile<ifstream &>(file, MAPSTATS_FILE);
 
 	while (getline(file, color, ','))
 	{
 		cellCounter++;
-    terrains terrain = parseStringToTerrain(color);
-		cell = new GameCell(x, y, HEIGHT, WIDTH, parseColorToSf(parseStringToColor(color)));
+		terrains terrain = parseStringToTerrain(color);
+		cell = new GameCell(x, y, HEIGHT, WIDTH, parseTerrainToSf(parseStringToColor(color)));
 		tiles.push_back(cell);
 
 		if (cellCounter % gridLength == 0)

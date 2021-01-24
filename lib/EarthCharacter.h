@@ -9,7 +9,7 @@ private:
     bool canBeFeeded();
 
 public:
-    EarthCharacter(string n, Elements e, int v, int es)
+    EarthCharacter(string n, elements e, int v, int es)
         : Character(n, e, v, es){};
 
     void feed();

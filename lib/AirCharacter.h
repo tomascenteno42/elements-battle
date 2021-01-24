@@ -9,7 +9,7 @@ private:
     bool canBeFeeded();
 
 public:
-    AirCharacter(string n, Elements e, int v, int es) : Character(n, e, v, es){};
+    AirCharacter(string n, elements e, int v, int es) : Character(n, e, v, es){};
 
     void feed();
 };

@@ -31,8 +31,8 @@ int main()
 
 	////////////////////////////////////////////////////////////////
 
-	GameWorld world;
-	world.setMap();
+	GameWorld *world = new GameWorld();
+	world->setMap();
 
 	sf::RenderWindow mapWindow(sf::VideoMode(800, 800), "Battle of the Elements");
 
@@ -53,7 +53,7 @@ int main()
 
 	int distances[64][64] = {0};
 	sf::Vector2f paths[64][64];
-	shortestPathsFW(world, distances, paths, water);
+	shortestPathsFW(world, distances, paths, WATER);
 
 	Stack *movStack = new Stack();
 	bool stopMove = false;
@@ -61,7 +61,7 @@ int main()
 
 	while (mapWindow.isOpen())
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		this_thread::sleep_for(chrono::milliseconds(250));
 
 		// SOLO PARA CERRAR LA VENTANA
 		sf::Event event;
@@ -88,9 +88,9 @@ int main()
 		//limpia todo lo que haya antes
 		mapWindow.clear();
 		// Arregle un Werror de comparacion entre int y size_t
-		for (size_t i = 0; i < world.tiles.size(); i++)
+		for (size_t i = 0; i < world->tiles.size(); i++)
 		{
-			mapWindow.draw(world.tiles[i]->cell);
+			mapWindow.draw(world->tiles[i]->cell);
 		}
 
 		// dibujas lo que tenes dibujar
@@ -102,36 +102,37 @@ int main()
 		mapWindow.display();
 
 		// -------------------------------------SHORTEST PATHS TESTS
-		if (movStack->isEmpty() && !stopMove)
-		{
-			string r;
-			std::cout << "Move? [Y/N] ";
-			std::cin >> r;
-			if (r == "N")
-				stopMove = true;
-		}
+		// if (movStack->isEmpty() && !stopMove)
+		// {
+		// 	string r;
+		// 	cout << "Move? [Y/N] ";
+		// 	cin >> r;
+		// 	if (r == "N")
+		// 		stopMove = true;
+		// }
 
-		if (!stopMove)
-		{
-			if (movStack->isEmpty())
-			{
-				sf::Vector2f destination = askDestination();
-				loadMovementsStack(movStack, playerPos, destination, paths);
-				movStack->push(playerPos);
-			}
-			else
-			{
-				playerPos = movStack->peek();
-				movStack->pop();
-				player.cell.setPosition(sf::Vector2f(playerPos.x * 50 + 12.5, playerPos.y * 50 + 12.5));
-			}
-		}
+		// if (!stopMove)
+		// {
+		// 	if (movStack->isEmpty())
+		// 	{
+		// 		sf::Vector2f destination = askDestination();
+		// 		loadMovementsStack(movStack, playerPos, destination, paths);
+		// 		movStack->push(playerPos);
+		// 	}
+		// 	else
+		// 	{
+		// 		playerPos = movStack->peek();
+		// 		movStack->pop();
+		// 		player.cell.setPosition(sf::Vector2f(playerPos.x * 50 + 12.5, playerPos.y * 50 + 12.5));
+		// 	}
+		// }
 		// ---------------------------------------------------------
 	}
 
 	delete statsSegment;
 	delete optionsSegment;
 	delete movStack;
+	delete world;
 
 	return 0;
 }

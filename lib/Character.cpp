@@ -1,6 +1,6 @@
 #include "../src/main.h"
 
-Character::Character(std::string n, Elements e, int l, int s)
+Character::Character(string n, elements e, int l, int s)
 {
     energy = rand() % 20;
     name = n;
@@ -11,7 +11,7 @@ Character::Character(std::string n, Elements e, int l, int s)
 
 /* GETTERS */
 
-std::string Character::getName()
+string Character::getName()
 {
     return name;
 }
@@ -31,19 +31,19 @@ int Character::getEnergy()
     return energy;
 }
 
-Elements Character::getElement()
+elements Character::getElement()
 {
     return element;
 }
 
 /* SETTERS */
 
-void Character::setName(std::string n)
+void Character::setName(string n)
 {
     name = n;
 }
 
-void Character::setElement(Elements e)
+void Character::setElement(elements e)
 {
     element = e;
 }

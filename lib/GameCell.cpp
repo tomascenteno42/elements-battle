@@ -1,14 +1,5 @@
-/*
- * GameCell.cpp
- *
- *  Created on: Jan 17, 2021
- *      Author: kurepa
- */
-
 #include "../src/main.h"
 
-void GameCell::setCell(float h, float w, sf::Color color){
-=======
 terrains GameCell::getTerrain()
 {
 	return terrain;
@@ -36,10 +27,10 @@ void GameCell::setCost(elements element)
 	case lake:
 		switch (element)
 		{
-		case water:
+		case WATER:
 			cost = 0;
 			break;
-		case fire:
+		case FIRE:
 			cost = 2;
 			break;
 		default:
@@ -50,10 +41,10 @@ void GameCell::setCost(elements element)
 	case volcano:
 		switch (element)
 		{
-		case fire:
+		case FIRE:
 			cost = 0;
 			break;
-		case water:
+		case WATER:
 			cost = 2;
 			break;
 		default:
@@ -64,10 +55,10 @@ void GameCell::setCost(elements element)
 	case cliff:
 		switch (element)
 		{
-		case air:
+		case AIR:
 			cost = 0;
 			break;
-		case earth:
+		case EARTH:
 			cost = 2;
 			break;
 		default:
@@ -78,10 +69,10 @@ void GameCell::setCost(elements element)
 	case mountain:
 		switch (element)
 		{
-		case air:
+		case AIR:
 			cost = 2;
 			break;
-		case earth:
+		case EARTH:
 			cost = 1;
 			break;
 		default:
@@ -131,5 +122,4 @@ GameCell::GameCell(float x, float y, float h, float w, terrains terrain, sf::Col
 
 GameCell::~GameCell()
 {
-	// TODO Auto-generated destructor stub
 }

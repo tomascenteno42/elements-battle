@@ -1,10 +1,3 @@
-/*
- * stack.cpp
- *
- *  Created on: Jan 21, 2021
- *      Author: a-perez-l
- */
-
 #include "../src/main.h"
 
 Stack::Stack()

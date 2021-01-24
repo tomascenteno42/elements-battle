@@ -10,7 +10,7 @@ private:
     int timesFeeded = 0;
 
 public:
-    WaterCharacter(string n, Elements e, int v, int es) : Character(n, e, v, es){};
+    WaterCharacter(string n, elements e, int v, int es) : Character(n, e, v, es){};
 
     void feed();
 

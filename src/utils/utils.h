@@ -144,16 +144,16 @@ void feedCharacterByIndex(List *l, int index);
 /**
  *  Parser from string to Element(default EARTH).
     @param e character element to parse to integer.
-    @return Elements(integer).
+    @return elements(integer).
 */
-Elements parseStringToElement(string stringToParse);
+elements parseStringToElement(string stringToParse);
 
 /**
  * Parser from Element to string.
  * @param elementToParse element to be parsed to string
- * @return Elements as string.
+ * @return elements as string.
 */
-string parseElementToString(Elements elementToParse);
+string parseElementToString(elements elementToParse);
 
 /**
  * Validates a string to be 'Air, air, Water, water, Earth, earth, Fire or fire'. 
@@ -187,21 +187,20 @@ void renderGameTitle();
 void printBlankLine();
 
 /**
- * Parse given string to colors enum.
+ * Parse given string to terrains enum.
  * @param colorToParse 
- * @return colors
+ * @return terrains
 */
-colors parseStringToColor(string colorToParse);
+terrains parseStringToColor(string colorToParse);
 
 /**
- * Parse from colors enum to SFML Color class.
- * @param color Color from colors enum to parse.
+ * Parse from terrains enum to SFML Color class.
+ * @param terrain terrain from terrains enum to parse.
  * @return sf::Color
 */
-sf::Color parseColorToSf(colors color);
-
-terrains parseStringToTerrain(std::string colorToParse);
 sf::Color parseTerrainToSf(terrains terrain);
+
+terrains parseStringToTerrain(string colorToParse);
 
 /*
  * Setea dos matrices (distances y paths) que van a ser tomadas por el algoritmo de caminos mínimos.
@@ -211,7 +210,7 @@ sf::Color parseTerrainToSf(terrains terrain);
  * distancias[i][j] = coste de ir del nodo i al nodo j (en un solo movimiento).
  * Si no se puede llegar en un solo movimiento, se pone distancia "infinita" (100 por ahora para ver nomas).
  */
-void setInitialMatrixes(GameWorld world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
+void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
 /*
  * Determina si dos celdas rectangulares son adyacentes horizontal o verticalmente
@@ -222,7 +221,7 @@ bool intersects(sf::RectangleShape cell1, sf::RectangleShape cell2);
 /*
  * Implementación del algoritmo de FloydWarshall
  */
-void shortestPathsFW(GameWorld world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
+void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
 void printDistances(int distances[64][64]);
 void printPaths(sf::Vector2f paths[64][64]);
@@ -234,5 +233,16 @@ void printPaths(sf::Vector2f paths[64][64]);
 void loadMovementsStack(Stack *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
 sf::Vector2f askDestination();
-
+/**
+ * Generic function for validating file opening.
+*/
+template <class T>
+void validateFile(const T &file, string fileName)
+{
+    if (!file)
+    {
+        cout << "Error opening " << fileName;
+        exit(1);
+    }
+};
 #endif
