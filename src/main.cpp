@@ -47,19 +47,44 @@ int main()
 	texto.setFillColor(sf::Color::Blue);
 	sf::String playerInput;
 
+	// -------------------------------------SHORTEST PATHS TESTS
+	GameCell player(12.5, 12.5, 25, 25, sf::Color::Green);
+	sf::Vector2f playerPos(0, 0);
+
+	int distances[64][64] = {0};
+	sf::Vector2f paths[64][64];
+	shortestPathsFW(world, distances, paths, water);
+
+	Stack *movStack = new Stack();
+	bool stopMove = false;
+	// ---------------------------------------------------------
+
 	while (mapWindow.isOpen())
 	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+
 		// SOLO PARA CERRAR LA VENTANA
 		sf::Event event;
-
 		while (mapWindow.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{
 				mapWindow.close();
 			}
+			//            if (event.type == sf::Event::TextEntered) {
+			//            	if(event.text.unicode != '\r') {
+			//					if (event.text.unicode == '\b') { // handle backspace explicitly
+			//						if(playerInput.getSize() != 0) {
+			//							playerInput.erase(playerInput.getSize() - 1, 1);
+			//						}
+			//					} else { // all other keypresses
+			//						playerInput += static_cast<char>(event.text.unicode);
+			//					}
+			//            	} else {
+			//            		texto.setString(playerInput);
+			//            	}
+			//            }
 		}
-
 		//limpia todo lo que haya antes
 		mapWindow.clear();
 		// Arregle un Werror de comparacion entre int y size_t
@@ -71,13 +96,42 @@ int main()
 		// dibujas lo que tenes dibujar
 		mapWindow.draw(statsSegment->cell);
 		mapWindow.draw(optionsSegment->cell);
+		mapWindow.draw(player.cell);
 		mapWindow.draw(texto);
 		//MOSTRA LO DIBUJADO
 		mapWindow.display();
+
+		// -------------------------------------SHORTEST PATHS TESTS
+		if (movStack->isEmpty() && !stopMove)
+		{
+			string r;
+			std::cout << "Move? [Y/N] ";
+			std::cin >> r;
+			if (r == "N")
+				stopMove = true;
+		}
+
+		if (!stopMove)
+		{
+			if (movStack->isEmpty())
+			{
+				sf::Vector2f destination = askDestination();
+				loadMovementsStack(movStack, playerPos, destination, paths);
+				movStack->push(playerPos);
+			}
+			else
+			{
+				playerPos = movStack->peek();
+				movStack->pop();
+				player.cell.setPosition(sf::Vector2f(playerPos.x * 50 + 12.5, playerPos.y * 50 + 12.5));
+			}
+		}
+		// ---------------------------------------------------------
 	}
 
 	delete statsSegment;
 	delete optionsSegment;
+	delete movStack;
 
 	return 0;
 }

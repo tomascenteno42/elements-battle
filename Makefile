@@ -14,15 +14,18 @@ LDFLAGS =
 endif
 
 
+
 # Makefile settings
 APPNAME = bote
 EXT = .cpp
-SRCDIR = 
+BASEDIR = 
+SRCDIR = src
+LIBDIR = lib
 OBJDIR = obj
 
 ############## Do not change anything from here downwards! #############
-SRC = $(wildcard $(SRCDIR)/*$(EXT))
-OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
+SRC = $(wildcard $(BASEDIR)/*$(EXT))
+OBJ = $(SRC:$(BASEDIR)/%$(EXT)=$(OBJDIR)/%.o)
 DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 # UNIX-based OS variables & settings
 RM = rm
@@ -30,7 +33,7 @@ DELOBJ = $(OBJ)
 # Windows OS variables & settings
 DEL = del
 EXE = .exe
-WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
+WDELOBJ = $(SRC:$(BASEDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 
 ########################################################################
 ####################### Targets beginning here #########################
@@ -48,14 +51,14 @@ $(APPNAME): $(OBJ)
 endif
 
 # Creates the dependecy rules
-%.d: $(SRCDIR)/%$(EXT)
+%.d: $(BASEDIR)/%$(EXT)
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
 
 # Includes all .h files
 -include $(DEP)
 
 # Building rule for .o files and its .c/.cpp in combination with all .h
-$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
+$(OBJDIR)/%.o: $(BASEDIR)/%$(EXT)
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 
 ################### Cleaning rules for Unix-based OS ###################

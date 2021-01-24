@@ -16,9 +16,19 @@
 const int VALOR_ALIMENTO_FUEGO = 15;
 const int VALOR_ALIMENTO_TIERRA = 8;
 const int VALOR_ALIMENTO_AGUA = 10;
-
+// merge colors and terrains
 enum colors
 {
+	lake,
+	volcano,
+	cliff,
+	mountain,
+	path,
+	empty
+}
+enum terrains
+{
+	none,
 	lake,
 	volcano,
 	cliff,
@@ -46,6 +56,10 @@ using namespace std;
 #include <sstream>
 #include <regex>
 #include <vector>
+#include <unistd.h>
+#include <chrono>
+#include <thread>
+
 
 #include "../lib/GameCell.h"
 #include "../lib/GameWorld.h"
@@ -61,6 +75,8 @@ using namespace std;
 #include "../lib/List.h"
 
 #include "../lib/Menu.h"
+#include "../lib/VectorNode.h"
+#include "../lib/Stack.h"
 
 #include "utils/utils.h"
 

@@ -31,7 +31,7 @@ void GameWorld::setMap()
 	while (getline(file, color, ','))
 	{
 		cellCounter++;
-
+    terrains terrain = parseStringToTerrain(color);
 		cell = new GameCell(x, y, HEIGHT, WIDTH, parseColorToSf(parseStringToColor(color)));
 		tiles.push_back(cell);
 
