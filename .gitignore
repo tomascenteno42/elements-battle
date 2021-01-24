@@ -38,3 +38,7 @@ sDebug/
 .project
 .settings/
 .externalToolBuilders/
+
+# Visual Studio Code files and folders
+
+.vscode/

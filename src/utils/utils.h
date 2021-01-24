@@ -1,5 +1,5 @@
-#ifndef FUNCTIONS_H_
-#define FUNCTIONS_H_
+#ifndef UTILS_H_
+#define UTILS_H_
 
 #include "../main.h"
 
@@ -186,8 +186,18 @@ void renderGameTitle();
 */
 void printBlankLine();
 
-colors parseStringToColor(std::string colorToParse);
+/**
+ * Parse given string to colors enum.
+ * @param colorToParse 
+ * @return colors
+*/
+colors parseStringToColor(string colorToParse);
 
+/**
+ * Parse from colors enum to SFML Color class.
+ * @param color Color from colors enum to parse.
+ * @return sf::Color
+*/
 sf::Color parseColorToSf(colors color);
 
 #endif

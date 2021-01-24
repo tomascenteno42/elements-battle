@@ -10,16 +10,19 @@
 
 #include "../src/main.h"
 
-class GameWorld {
+class GameWorld
+{
 public:
 	int gridLength = 8;
-	std::vector<GameCell*> tiles;
+	vector<GameCell *> tiles;
 
 	void setMap();
 
 	GameWorld();
 	virtual ~GameWorld();
+
+private:
+	bool emptyWorld();
 };
 
 #endif /* GAMEWORLD_H_ */
-

@@ -8,15 +8,17 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#define OPTIONS_FILE "./files/options.txt"
-#define CHARACTERS_FILE "./files/characters.csv"
-#define MAPSTATS_FILE "./files/mapStats.csv"
+#define FONT_FILE "files/arial.ttf"
+#define OPTIONS_FILE "files/options.txt"
+#define CHARACTERS_FILE "files/characters.csv"
+#define MAPSTATS_FILE "files/mapStats.csv"
 
 const int VALOR_ALIMENTO_FUEGO = 15;
 const int VALOR_ALIMENTO_TIERRA = 8;
 const int VALOR_ALIMENTO_AGUA = 10;
 
-enum colors{
+enum colors
+{
 	lake,
 	volcano,
 	cliff,
@@ -27,10 +29,10 @@ enum colors{
 
 enum Elements
 {
-    EARTH = 1,
-    FIRE = 2,
-    WATER = 3,
-    AIR = 4
+	EARTH = 1,
+	FIRE = 2,
+	WATER = 3,
+	AIR = 4
 };
 
 using namespace std;
