@@ -102,22 +102,22 @@ sf::Color parseTerrainToSf(terrains terrain)
     switch (terrain)
     {
     case lake:
-        return sf::Color::Cyan;
+        return sf::Color(102,230,244); //Cyan
         break;
     case volcano:
-        return sf::Color::Red;
+        return sf::Color(231,69,65); //Red
         break;
     case cliff:
-        return sf::Color::White;
+        return sf::Color(219,238,244); //White
         break;
     case mountain:
-        return sf::Color::Black;
+        return sf::Color(74,69,42); //Brown
         break;
     case path:
-        return sf::Color::Yellow;
+        return sf::Color(196,189,151); //Beige
         break;
     case empty:
-        return sf::Color::Magenta;
+        return sf::Color(96,74,123); //Purple
         break;
     default:
         return sf::Color::Blue;
