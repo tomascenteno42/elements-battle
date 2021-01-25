@@ -7,6 +7,8 @@ Character::Character(string n, elements e, int l, int s)
     element = e;
     life = l;
     shield = s;
+    pos = sf::Vector2f(-1,-1);
+    setCell();
 }
 
 /* GETTERS */
@@ -36,6 +38,14 @@ elements Character::getElement()
     return element;
 }
 
+sf::Vector2f Character::getPos() {
+	return pos;
+}
+
+sf::RectangleShape Character::getCell() {
+	return cell;
+}
+
 /* SETTERS */
 
 void Character::setName(string n)
@@ -62,5 +72,20 @@ void Character::setEnergy(int e)
 {
     energy = e;
 }
+
+void Character::setPos(sf::Vector2f pos) {
+	this -> pos = pos;
+	cell.setPosition(pos);
+}
+
+
+void Character::setCell() {
+	cell.setPosition(sf::Vector2f(50 * pos.x + 12.5, 50 * pos.y + 12.5));
+	cell.setSize(sf::Vector2f(25,25));
+	cell.setFillColor(sf::Color::Green); // Make it so it depends on character's element
+	cell.setOutlineThickness(1);
+	cell.setOutlineColor(sf::Color::Black);
+}
+
 
 Character::~Character() = default;

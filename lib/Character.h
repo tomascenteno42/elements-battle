@@ -13,6 +13,9 @@ protected:
     int shield;
     int energy;
 
+    sf::Vector2f pos;	// pos = (4,5) seria personaje en columna 4 y fila 5
+    sf::RectangleShape cell;
+
 public:
     Character(string n, elements e, int l, int s);
 
@@ -21,12 +24,17 @@ public:
     int getShield();
     int getEnergy();
     elements getElement();
+    sf::Vector2f getPos();
+    sf::RectangleShape getCell();
+
 
     void setName(string n);
     void setLife(int l);
     void setShield(int s);
     void setEnergy(int e);
     void setElement(elements element);
+    void setPos(sf::Vector2f pos);
+    void setCell();
 
     virtual void feed() = 0;
 
