@@ -48,15 +48,19 @@ int main()
 	sf::String playerInput;
 
 	// -------------------------------------SHORTEST PATHS TESTS
-	GameCell player(12.5, 12.5, 25, 25, sf::Color::Green);
-	sf::Vector2f playerPos(0, 0);
+	Character* character1 = new WaterCharacter("Juan", WATER, 80, 2);
+	character1 -> setPos(sf::Vector2f(0,0));
+	Character* character2 = new FireCharacter("Jose", FIRE, 50, 1);
+	character2 -> setPos(sf::Vector2f(1,0));
+	vector<Character *> characters;
+	characters.push_back(character1);
+	characters.push_back(character2);
 
-	int distances[64][64] = {0};
-	sf::Vector2f paths[64][64];
-	shortestPathsFW(world, distances, paths, WATER);
+	world -> tiles[character1->getPos().x + 8 * character1->getPos().y] -> setOccupied(true);
+	world -> tiles[character2->getPos().x + 8 * character2->getPos().y] -> setOccupied(true);
 
 	Stack *movStack = new Stack();
-	bool stopMove = false;
+	int turn = 0;
 	// ---------------------------------------------------------
 
 	while (mapWindow.isOpen())
@@ -96,10 +100,35 @@ int main()
 		// dibujas lo que tenes dibujar
 		mapWindow.draw(statsSegment->cell);
 		mapWindow.draw(optionsSegment->cell);
-		mapWindow.draw(player.cell);
+		mapWindow.draw(characters[0]->getCell());
+		mapWindow.draw(characters[1]->getCell());
 		mapWindow.draw(texto);
 		//MOSTRA LO DIBUJADO
 		mapWindow.display();
+
+		if (movStack -> isEmpty())
+		{
+			turn ++;
+			sf::Vector2f playerPos = characters[turn%2] -> getPos();
+			bool canMove;
+			sf::Vector2f destination = askDestination();
+			canMove = validDestination(world, destination);
+			while (!canMove)
+			{
+				std::cout << "You can't move there, the cell is occupied" << std::endl;
+				destination = askDestination();
+				canMove = validDestination(world, destination);
+			}
+			world -> tiles[playerPos.x + 8 * playerPos.y] -> setOccupied(false);
+			world -> tiles[destination.x + 8 * destination.y] -> setOccupied(true);
+			std::cout << "Energy consumed: " << world->distances[static_cast<int>(characters[turn%2] -> getElement()) - 1][int(playerPos.x + 8 * playerPos.y)][int(destination.x + 8 * destination.y)] << std::endl;
+
+			loadMovementsStack(movStack, playerPos, destination, world->paths[static_cast<int>(characters[turn%2] -> getElement()) - 1]);
+			movStack->push(playerPos);
+		}
+
+		moveCharacter(characters[turn%2], movStack);
+
 
 		// -------------------------------------SHORTEST PATHS TESTS
 		// if (movStack->isEmpty() && !stopMove)
@@ -128,6 +157,9 @@ int main()
 		// }
 		// ---------------------------------------------------------
 	}
+
+	delete character1;
+	delete character2;
 
 	delete statsSegment;
 	delete optionsSegment;

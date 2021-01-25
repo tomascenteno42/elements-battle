@@ -209,17 +209,22 @@ terrains parseStringToTerrain(string colorToParse);
  * La matriz de distancias es de dimension cantidadNodos x cantidadNodos.
  * distancias[i][j] = coste de ir del nodo i al nodo j (en un solo movimiento).
  * Si no se puede llegar en un solo movimiento, se pone distancia "infinita" (100 por ahora para ver nomas).
+ *
+ *
+ * Sets the distances and paths matrixes to their initial state according to the FW Shortest Paths algorithm.
  */
 void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
 /*
  * Determina si dos celdas rectangulares son adyacentes horizontal o verticalmente
  * (Seguro hay una mejor manera de hacerlo usando la biblioteca, por ahora lo hice asi para ir probando).
+ *
+ * Determines whether two cells share an edge. (If two cells share only a corner, it returns false)
  */
 bool intersects(sf::RectangleShape cell1, sf::RectangleShape cell2);
 
 /*
- * Implementación del algoritmo de FloydWarshall
+ * Floyd-Warshall shortest paths algorithm implementation
  */
 void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
@@ -229,10 +234,20 @@ void printPaths(sf::Vector2f paths[64][64]);
 /*
  * Carga en una pila la serie de celdas adyacentes a las que el personaje se tiene que ir moviendo para llegar
  * de startingPos a endingPos
+ *
+ * Loads a stack with the series of consecutive moves a character must perform to arrive to endingPos from startingPos
+ * These consecutive moves are unitary i.e. both cells intersect according to the intersects funcion
  */
 void loadMovementsStack(Stack *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
+void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths [4][64][64]);
+
+void moveCharacter(Character* character, Stack* movStack);
+
 sf::Vector2f askDestination();
+
+bool validDestination(GameWorld* world, sf::Vector2f destination);
+
 /**
  * Generic function for validating file opening.
 */

@@ -73,19 +73,40 @@ void Character::setEnergy(int e)
     energy = e;
 }
 
-void Character::setPos(sf::Vector2f pos) {
+void Character::setPos(sf::Vector2f pos)
+{
 	this -> pos = pos;
-	cell.setPosition(pos);
+	setCell();
 }
 
 
-void Character::setCell() {
+void Character::setCell()
+{
 	cell.setPosition(sf::Vector2f(50 * pos.x + 12.5, 50 * pos.y + 12.5));
 	cell.setSize(sf::Vector2f(25,25));
-	cell.setFillColor(sf::Color::Green); // Make it so it depends on character's element
+	switch (element) {
+	case EARTH:
+		cell.setFillColor(sf::Color(133,91,78));
+		break;
+	case FIRE:
+		cell.setFillColor(sf::Color(244,65,4));
+		break;
+	case WATER:
+		cell.setFillColor(sf::Color(20,20,190));
+		break;
+	case AIR:
+		cell.setFillColor(sf::Color(225,255,255));
+		break;
+	}
 	cell.setOutlineThickness(1);
 	cell.setOutlineColor(sf::Color::Black);
 }
 
+/* TP3 */
+
+void Character::move(sf::Vector2f pos)
+{
+	setPos(pos);
+}
 
 Character::~Character() = default;

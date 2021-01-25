@@ -27,7 +27,6 @@ public:
     sf::Vector2f getPos();
     sf::RectangleShape getCell();
 
-
     void setName(string n);
     void setLife(int l);
     void setShield(int s);
@@ -37,6 +36,7 @@ public:
     void setCell();
 
     virtual void feed() = 0;
+    void move(sf::Vector2f pos);
 
     virtual ~Character();
 

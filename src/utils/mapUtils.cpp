@@ -15,10 +15,10 @@ void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f pa
     {
         world->tiles[i]->setCost(element);
     }
-    int costo;
+    int cost;
     for (int i = 0; i < 64; i++)
     {
-        costo = world->tiles[i]->getCost();
+        cost = world->tiles[i]->getCost();
         for (int j = 0; j < 64; j++)
         {
             if (i != j)
@@ -29,13 +29,14 @@ void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f pa
                 paths[i][j] = sf::Vector2f(-50, -50);
             }
             else if (intersects(world->tiles[j], world->tiles[i]))
-                distances[i][j] = costo;
+                distances[i][j] = cost;
             else
                 distances[i][j] = 1000;
         }
     }
 }
 
+// For debugging purposes
 void printDistances(int distances[64][64])
 {
     cout << "[" << endl;
@@ -51,6 +52,7 @@ void printDistances(int distances[64][64])
     cout << "]" << endl;
 }
 
+// For debugging purposes
 void printPaths(sf::Vector2f paths[64][64])
 {
     cout << "[" << endl;
@@ -88,6 +90,24 @@ void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths
     }
 }
 
+void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths [4][64][64]) {
+// EFWA 1234
+	for (int i = 0; i < 4; i ++) {
+		elements element = static_cast<elements>(i+1);
+		int distances_aux[64][64];
+		sf::Vector2f paths_aux[64][64];
+		shortestPathsFW(world, distances_aux, paths_aux, element);
+		for (int j = 0; j < 64; j ++)
+		{
+			for (int k = 0; k < 64; k ++)
+			{
+				distances[i][j][k] = distances_aux[j][k];
+				paths[i][j][k] = paths_aux[j][k];
+			}
+		}
+	}
+}
+
 void loadMovementsStack(Stack *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64])
 {
     if (movStack->isEmpty() || movStack->peek() != endingPos)
@@ -111,4 +131,17 @@ sf::Vector2f askDestination()
     cout << "Move to y (0-7): ";
     cin >> y;
     return sf::Vector2f(stof(x), stof(y));
+}
+
+void moveCharacter(Character* character, Stack* movStack)
+{
+	sf::Vector2f playerPos = character -> getPos();
+	playerPos = movStack->peek();
+	movStack->pop();
+	character -> move(playerPos);
+}
+
+bool validDestination(GameWorld* world, sf::Vector2f destination)
+{
+	return !world -> tiles[destination.x + 8 * destination.y] -> isOccupied();
 }
