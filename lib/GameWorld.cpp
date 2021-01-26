@@ -38,6 +38,13 @@ void GameWorld::setMap()
 	setFWMatrixes();
 }
 
+void GameWorld::addCharacter(Character* character, int player)
+{
+	if (player == 1) player1Characters.push_back(character);
+	if (player == 2) player2Characters.push_back(character);
+	tiles[character->getPos().x + 8 * character->getPos().y] -> setOccupied(true);
+}
+
 void GameWorld::setFWMatrixes() {
 	for (int i = 0; i < 4; i ++) {
 		elements element = static_cast<elements>(i+1);
