@@ -59,18 +59,33 @@ int main()
 	bool stopMove = false;
 	// ---------------------------------------------------------
 
+
+	// ------------------ TextBox ------------------------------
+
+	mapWindow.setKeyRepeatEnabled(true);
+
+	Textbox textbox1(30, sf::Color::White, true);
+
+	textbox1.setFont(font);
+	textbox1.setPosition({170, 400});
+
+	// ---------------------------------------------------------
+
+
+	// Main loop
 	while (mapWindow.isOpen())
 	{
-		this_thread::sleep_for(chrono::milliseconds(250));
+		//this_thread::sleep_for(chrono::milliseconds(250));
 
 		// SOLO PARA CERRAR LA VENTANA
 		sf::Event event;
+		//Events loop
 		while (mapWindow.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			switch (event.type)
 			{
+			case sf::Event::Closed:
 				mapWindow.close();
-			}
 			//            if (event.type == sf::Event::TextEntered) {
 			//            	if(event.text.unicode != '\r') {
 			//					if (event.text.unicode == '\b') { // handle backspace explicitly
@@ -84,20 +99,27 @@ int main()
 			//            		texto.setString(playerInput);
 			//            	}
 			//            }
+
+			case sf::Event::TextEntered:
+				textbox1.typedOn(event);
+			}
 		}
+
 		//limpia todo lo que haya antes
 		mapWindow.clear();
+		
+		// dibujas lo que tenes dibujar
 		// Arregle un Werror de comparacion entre int y size_t
 		for (size_t i = 0; i < world->tiles.size(); i++)
 		{
 			mapWindow.draw(world->tiles[i]->cell);
 		}
-
-		// dibujas lo que tenes dibujar
 		mapWindow.draw(statsSegment->cell);
 		mapWindow.draw(optionsSegment->cell);
 		mapWindow.draw(player.cell);
 		mapWindow.draw(texto);
+		textbox1.drawTo(mapWindow);
+
 		//MOSTRA LO DIBUJADO
 		mapWindow.display();
 

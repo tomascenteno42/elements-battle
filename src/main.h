@@ -61,6 +61,7 @@ using namespace std;
 #include "../lib/List.h"
 
 #include "../lib/Menu.h"
+#include "../lib/textBox.h"
 
 #include "../lib/GameCell.h"
 #include "../lib/GameWorld.h"
