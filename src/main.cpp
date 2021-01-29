@@ -57,7 +57,10 @@ int main()
 	character2 -> setPos(sf::Vector2f(1,0));
 	world -> addCharacter(character2, 2);
 
-	Stack *movStack = new Stack();
+  Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
+	bool stopMove = false;
+
+
 	while (mapWindow.isOpen())
 	{
 		sf::Event event;
@@ -67,24 +70,10 @@ int main()
 			{
 				mapWindow.close();
 			}
-			//            if (event.type == sf::Event::TextEntered) {
-			//            	if(event.text.unicode != '\r') {
-			//					if (event.text.unicode == '\b') { // handle backspace explicitly
-			//						if(playerInput.getSize() != 0) {
-			//							playerInput.erase(playerInput.getSize() - 1, 1);
-			//						}
-			//					} else { // all other keypresses
-			//						playerInput += static_cast<char>(event.text.unicode);
-			//					}
-			//            	} else {
-			//            		texto.setString(playerInput);
-			//            	}
-			//            }
 		}
 		mapWindow.clear();
 		drawScreen(mapWindow, world, statsSegment, optionsSegment, text);
 		mapWindow.display();
-
 		Character* character = world -> player1Characters[0];
 		processMoveChoice(world, movStack, mapWindow, character, statsSegment, optionsSegment, text);
 	}

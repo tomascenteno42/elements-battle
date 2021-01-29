@@ -221,7 +221,7 @@ void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths
  * Loads a stack with the series of consecutive moves a character must perform to arrive to endingPos from startingPos
  * These consecutive moves are unitary i.e. both cells intersect according to the intersects funcion
  */
-void loadMovementsStack(Stack *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
+void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
 /*
  * Loads distances and paths matrixes for each element
