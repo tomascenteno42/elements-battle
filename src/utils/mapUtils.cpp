@@ -15,10 +15,10 @@ void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f pa
     {
         world->tiles[i]->setCost(element);
     }
-    int costo;
+    int cost;
     for (int i = 0; i < 64; i++)
     {
-        costo = world->tiles[i]->getCost();
+        cost = world->tiles[i]->getCost();
         for (int j = 0; j < 64; j++)
         {
             if (i != j)
@@ -29,42 +29,13 @@ void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f pa
                 paths[i][j] = sf::Vector2f(-50, -50);
             }
             else if (intersects(world->tiles[j], world->tiles[i]))
-                distances[i][j] = costo;
+                distances[i][j] = cost;
             else
                 distances[i][j] = 1000;
         }
     }
 }
 
-void printDistances(int distances[64][64])
-{
-    cout << "[" << endl;
-    for (int i = 0; i < 16; i++)
-    {
-        cout << "[";
-        for (int j = 0; j < 16; j++)
-        {
-            cout << distances[i][j] << ",";
-        }
-        cout << "]" << endl;
-    }
-    cout << "]" << endl;
-}
-
-void printPaths(sf::Vector2f paths[64][64])
-{
-    cout << "[" << endl;
-    for (int i = 0; i < 16; i++)
-    {
-        cout << "[";
-        for (int j = 0; j < 16; j++)
-        {
-            cout << "[" << paths[i][j].x / 50 << "," << paths[i][j].y / 50 << "],";
-        }
-        cout << "]" << endl;
-    }
-    cout << "]" << endl;
-}
 
 void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element)
 {
@@ -88,6 +59,24 @@ void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths
     }
 }
 
+void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths [4][64][64])
+{
+	for (int i = 0; i < 4; i ++) {
+		elements element = static_cast<elements>(i+1);
+		int distances_aux[64][64];
+		sf::Vector2f paths_aux[64][64];
+		shortestPathsFW(world, distances_aux, paths_aux, element);
+		for (int j = 0; j < 64; j ++)
+		{
+			for (int k = 0; k < 64; k ++)
+			{
+				distances[i][j][k] = distances_aux[j][k];
+				paths[i][j][k] = paths_aux[j][k];
+			}
+		}
+	}
+}
+
 void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64])
 {
     if (movStack->isEmpty() || movStack->peek() != endingPos)
@@ -108,6 +97,14 @@ void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos,
     loadMovementsStack(movStack, startingPos, intPos, paths);
 }
 
+void moveCharacter(Character* character, Stack* movStack)
+{
+	sf::Vector2f playerPos = character -> getPos();
+	playerPos = movStack->peek();
+	movStack->pop();
+	character -> move(playerPos);
+}
+
 sf::Vector2f askDestination()
 {
     string x, y;
@@ -117,3 +114,63 @@ sf::Vector2f askDestination()
     cin >> y;
     return sf::Vector2f(stof(x), stof(y));
 }
+
+void validateDestination(GameWorld* world, Character* character, sf::Vector2f &destination)
+{
+	int energyRequired = world->distances
+					[static_cast<int>(character->getElement()) - 1]
+					[int(character->getPos().x + 8 * character->getPos().y)]
+					[int(destination.x + 8 * destination.y)];
+
+	if (destination.x < 0 || destination.x > 7 || destination.y < 0 || destination.y > 7)
+		std::cout << "Invalid destination" << std::endl;
+	else if (world -> tiles[destination.x + 8 * destination.y] -> isOccupied())
+		std::cout << "You can't move there, the cell is occupied" << std::endl;
+	else if (energyRequired > character -> getEnergy())
+		std::cout << "You can't move there, you lack energy" << std::endl;
+	else
+		return;
+
+	destination = askDestination();
+	validateDestination(world, character, destination);
+}
+
+void drawScreen(sf::RenderWindow &win, GameWorld* world, GameCell* statsSegment, GameCell* optionsSegment, sf::Text &text)
+{
+	for (size_t i = 0; i < world->tiles.size(); i++)
+	{
+		win.draw(world->tiles[i]->cell);
+	}
+	for (int i = 0; i < 1; i ++)
+	{
+		win.draw(world->player1Characters[i]->getCell());
+		win.draw(world->player2Characters[i]->getCell());
+	}
+
+	win.draw(statsSegment->cell);
+	win.draw(optionsSegment->cell);
+	win.draw(text);
+}
+
+void processMoveChoice(GameWorld* world, Stack* movStack, sf::RenderWindow &win, Character* character, GameCell* statsSegment, GameCell* optionsSegment, sf::Text &text)
+{
+	if (movStack -> isEmpty())
+	{
+		sf::Vector2f characterPos = character -> getPos();
+		sf::Vector2f destination = askDestination();
+		validateDestination(world, character, destination);
+		world -> tiles[characterPos.x + 8 * characterPos.y] -> setOccupied(false);
+		world -> tiles[destination.x + 8 * destination.y] -> setOccupied(true);
+		loadMovementsStack(movStack, characterPos, destination, world->paths[static_cast<int>(character->getElement()) - 1]);
+		movStack->push(characterPos);
+	}
+	while (!movStack->isEmpty())
+	{
+		moveCharacter(character, movStack);
+		this_thread::sleep_for(chrono::milliseconds(250));
+		win.clear();
+		drawScreen(win, world, statsSegment, optionsSegment, text);
+		win.display();
+	}
+}
+

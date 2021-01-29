@@ -2,7 +2,6 @@
 
 int main()
 {
-
 	//////////////////////// MAIN TP2 //////////////////////////////
 
 	/*     srand((unsigned int)time(0));
@@ -42,28 +41,28 @@ int main()
 	sf::Font font;
 	font.loadFromFile(FONT_FILE);
 
-	sf::Text texto("1) OPCION:", font, 26);
-	texto.setPosition(sf::Vector2f(10, 410));
-	texto.setFillColor(sf::Color::Blue);
+	sf::Text text("1) OPCION:", font, 26);
+	text.setPosition(sf::Vector2f(10, 410));
+	text.setFillColor(sf::Color::Blue);
 	sf::String playerInput;
 
-	// -------------------------------------SHORTEST PATHS TESTS
-	GameCell player(12.5, 12.5, 25, 25, sf::Color::Green);
-	sf::Vector2f playerPos(0, 0);
+	// Adding some characters
+	vector<Character *> characters;
 
-	int distances[64][64] = {0};
-	sf::Vector2f paths[64][64];
-	shortestPathsFW(world, distances, paths, WATER);
+	Character* character1 = new WaterCharacter("Juan", WATER, 80, 2);
+	character1 -> setPos(sf::Vector2f(0,0));
+	world -> addCharacter(character1, 1);
 
-	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
+	Character* character2 = new FireCharacter("Jose", FIRE, 50, 1);
+	character2 -> setPos(sf::Vector2f(1,0));
+	world -> addCharacter(character2, 2);
+
+  Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
 	bool stopMove = false;
-	// ---------------------------------------------------------
+
 
 	while (mapWindow.isOpen())
 	{
-		this_thread::sleep_for(chrono::milliseconds(250));
-
-		// SOLO PARA CERRAR LA VENTANA
 		sf::Event event;
 		while (mapWindow.pollEvent(event))
 		{
@@ -72,22 +71,15 @@ int main()
 				mapWindow.close();
 			}
 		}
-		//limpia todo lo que haya antes
 		mapWindow.clear();
-		// Arregle un Werror de comparacion entre int y size_t
-		for (size_t i = 0; i < world->tiles.size(); i++)
-		{
-			mapWindow.draw(world->tiles[i]->cell);
-		}
-
-		// dibujas lo que tenes dibujar
-		mapWindow.draw(statsSegment->cell);
-		mapWindow.draw(optionsSegment->cell);
-		mapWindow.draw(player.cell);
-		mapWindow.draw(texto);
-		//MOSTRA LO DIBUJADO
+		drawScreen(mapWindow, world, statsSegment, optionsSegment, text);
 		mapWindow.display();
+		Character* character = world -> player1Characters[0];
+		processMoveChoice(world, movStack, mapWindow, character, statsSegment, optionsSegment, text);
 	}
+
+	delete character1;
+	delete character2;
 
 	delete statsSegment;
 	delete optionsSegment;

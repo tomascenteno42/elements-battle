@@ -16,7 +16,14 @@ public:
 	int gridLength = 8;
 	vector<GameCell *> tiles;
 
+	int distances [4][64][64];
+	sf::Vector2f paths [4][64][64];
+	vector<Character*> player1Characters;
+	vector<Character*> player2Characters;
+
+	void addCharacter(Character* character, int player);
 	void setMap();
+	void setFWMatrixes();
 
 	GameWorld();
 	virtual ~GameWorld();
