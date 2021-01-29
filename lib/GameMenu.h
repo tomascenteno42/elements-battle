@@ -7,7 +7,11 @@ class GameMenu : public Cell
 {
 
 public:
-    GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color) : Cell(xPos, yPos, ySize, xSize, color){};
+    Textbox *textbox;
+    GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, Textbox *text) : Cell(xPos, yPos, ySize, xSize, color)
+    {
+        textbox = text;
+    };
 };
 
 #endif

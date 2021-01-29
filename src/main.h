@@ -72,7 +72,6 @@ using namespace std;
 #include "../lib/GameCell.h"
 #include "../lib/GameWorld.h"
 
-#include "../lib/VectorNode.h"
 #include "../lib/Stack.h"
 
 #include "../lib/GameWindow.h"

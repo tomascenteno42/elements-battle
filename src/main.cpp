@@ -29,15 +29,26 @@ int main()
     delete l; */
 
 	////////////////////////////////////////////////////////////////
+
+	sf::Font font;
+	font.loadFromFile(FONT_FILE);
+
+	// ------------------ TextBox ------------------------------
+
+	Textbox *textbox1 = new Textbox(30, sf::Color::White, true);
+
+	textbox1->setFont(font);
+	textbox1->setPosition({170, 400});
+
+	// ---------------------------------------------------------
+
 	GameStats *statsSegment = new GameStats(400, 0, 400, 400, sf::Color::White);
-	GameMenu *menuSegment = new GameMenu(0, 400, 400, 800, sf::Color::Red);
+	GameMenu *menuSegment = new GameMenu(0, 400, 400, 800, sf::Color::Red, textbox1);
 	GameWorld *world = new GameWorld();
 	world->setMap();
 
 	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements", world, menuSegment, statsSegment);
-
-	sf::Font font;
-	font.loadFromFile(FONT_FILE);
+	window->gameWindow->setKeyRepeatEnabled(true);
 
 	sf::Text text("1) OPCION:", font, 26);
 	text.setPosition(sf::Vector2f(10, 410));
@@ -58,19 +69,6 @@ int main()
 	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
 	bool stopMove = false;
 
-
-	// ------------------ TextBox ------------------------------
-
-	mapWindow.setKeyRepeatEnabled(true);
-
-	Textbox textbox1(30, sf::Color::White, true);
-
-	textbox1.setFont(font);
-	textbox1.setPosition({170, 400});
-
-	// ---------------------------------------------------------
-
-
 	while (window->gameWindow->isOpen())
 	{
 		sf::Event event;
@@ -80,20 +78,17 @@ int main()
 			{
 			case sf::Event::Closed:
 				window->gameWindow->close();
-          break;
+				break;
 
 			case sf::Event::TextEntered:
-				textbox1.typedOn(event);
-          break;
+				window->menu->textbox->typedOn(event);
+				break;
 			}
 		}
 
-		textbox1.drawTo(mapWindow);
-
-			}
-		}
 		window->gameWindow->clear();
 		drawScreen(window);
+		window->menu->textbox->drawTo(*window->gameWindow);
 		window->gameWindow->display();
 		Character *character = world->player1Characters[0];
 		processMoveChoice(movStack, window, character);
