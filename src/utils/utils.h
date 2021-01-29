@@ -230,7 +230,7 @@ void printPaths(sf::Vector2f paths[64][64]);
  * Carga en una pila la serie de celdas adyacentes a las que el personaje se tiene que ir moviendo para llegar
  * de startingPos a endingPos
  */
-void loadMovementsStack(Stack *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
+void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
 sf::Vector2f askDestination();
 /**

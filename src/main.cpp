@@ -55,7 +55,7 @@ int main()
 	sf::Vector2f paths[64][64];
 	shortestPathsFW(world, distances, paths, WATER);
 
-	Stack *movStack = new Stack();
+	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
 	bool stopMove = false;
 	// ---------------------------------------------------------
 
@@ -71,19 +71,6 @@ int main()
 			{
 				mapWindow.close();
 			}
-			//            if (event.type == sf::Event::TextEntered) {
-			//            	if(event.text.unicode != '\r') {
-			//					if (event.text.unicode == '\b') { // handle backspace explicitly
-			//						if(playerInput.getSize() != 0) {
-			//							playerInput.erase(playerInput.getSize() - 1, 1);
-			//						}
-			//					} else { // all other keypresses
-			//						playerInput += static_cast<char>(event.text.unicode);
-			//					}
-			//            	} else {
-			//            		texto.setString(playerInput);
-			//            	}
-			//            }
 		}
 		//limpia todo lo que haya antes
 		mapWindow.clear();
@@ -100,33 +87,6 @@ int main()
 		mapWindow.draw(texto);
 		//MOSTRA LO DIBUJADO
 		mapWindow.display();
-
-		// -------------------------------------SHORTEST PATHS TESTS
-		// if (movStack->isEmpty() && !stopMove)
-		// {
-		// 	string r;
-		// 	cout << "Move? [Y/N] ";
-		// 	cin >> r;
-		// 	if (r == "N")
-		// 		stopMove = true;
-		// }
-
-		// if (!stopMove)
-		// {
-		// 	if (movStack->isEmpty())
-		// 	{
-		// 		sf::Vector2f destination = askDestination();
-		// 		loadMovementsStack(movStack, playerPos, destination, paths);
-		// 		movStack->push(playerPos);
-		// 	}
-		// 	else
-		// 	{
-		// 		playerPos = movStack->peek();
-		// 		movStack->pop();
-		// 		player.cell.setPosition(sf::Vector2f(playerPos.x * 50 + 12.5, playerPos.y * 50 + 12.5));
-		// 	}
-		// }
-		// ---------------------------------------------------------
 	}
 
 	delete statsSegment;

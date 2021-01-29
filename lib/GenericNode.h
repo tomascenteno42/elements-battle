@@ -7,7 +7,7 @@ template <class T>
 class GenericNode
 {
 private:
-    T *data;
+    T data;
     GenericNode<T> *nextNode = 0;
 
 public:
@@ -45,7 +45,7 @@ void GenericNode<T>::setNextNode(GenericNode<T> *gn)
 template <class T>
 T GenericNode<T>::getData()
 {
-    return data;
+    return this->data;
 }
 
 template <class T>

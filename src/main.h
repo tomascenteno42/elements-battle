@@ -58,7 +58,9 @@ using namespace std;
 #include "../lib/AirCharacter.h"
 
 #include "../lib/Node.h"
+#include "../lib/GenericNode.h"
 #include "../lib/List.h"
+#include "../lib/GenericList.h"
 
 #include "../lib/Menu.h"
 
