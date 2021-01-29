@@ -15,11 +15,6 @@ bool GameCell::isOccupied()
 	return occupied;
 }
 
-sf::Vector2f GameCell::getPos()
-{
-	return pos;
-}
-
 void GameCell::setCost(elements element)
 {
 	switch (terrain)
@@ -97,27 +92,9 @@ void GameCell::setOccupied(bool occupied)
 	this->occupied = occupied;
 }
 
-void GameCell::setCell(float h, float w, sf::Color color)
+void GameCell::setTerrain(terrains t)
 {
-	cell.setPosition(pos);
-	cell.setSize(sf::Vector2f(w, h));
-	cell.setFillColor(color);
-	cell.setOutlineThickness(1);
-	cell.setOutlineColor(sf::Color::Black);
-}
-
-GameCell::GameCell(float x, float y, float h, float w, sf::Color color)
-{
-	pos = sf::Vector2f(x, y);
-	this->terrain = none;
-	setCell(h, w, color);
-}
-
-GameCell::GameCell(float x, float y, float h, float w, terrains terrain, sf::Color color)
-{
-	pos = sf::Vector2f(x, y);
-	this->terrain = terrain;
-	setCell(h, w, color);
+	terrain = t;
 }
 
 GameCell::~GameCell()

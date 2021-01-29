@@ -226,19 +226,19 @@ void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos,
 /*
  * Loads distances and paths matrixes for each element
  */
-void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths [4][64][64]);
+void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths[4][64][64]);
 
 /*
  * Moves the character to the position designated by the top of the movement stack
  */
-void moveCharacter(Character* character, Stack* movStack);
+void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
 
 sf::Vector2f askDestination();
-void validateDestination(GameWorld* world, Character* character, sf::Vector2f &destination);
+void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination);
 
-void drawScreen(sf::RenderWindow &win, GameWorld* world, GameCell* statsSegment, GameCell* optionsSegment, sf::Text &texto);
+void drawScreen(GameWindow *win);
 // Necesito pasarle todas esas cosas porque eventualmente en la funcion se dibuja la ventana
-void processMoveChoice(GameWorld* world, Stack* movStack, sf::RenderWindow &win, Character* character, GameCell* statsSegment, GameCell* optionsSegment, sf::Text &text);
+void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character);
 
 /**
  * Generic function for validating file opening.
