@@ -58,14 +58,38 @@ int main()
 	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
 	bool stopMove = false;
 
+
+	// ------------------ TextBox ------------------------------
+
+	mapWindow.setKeyRepeatEnabled(true);
+
+	Textbox textbox1(30, sf::Color::White, true);
+
+	textbox1.setFont(font);
+	textbox1.setPosition({170, 400});
+
+	// ---------------------------------------------------------
+
+
 	while (window->gameWindow->isOpen())
 	{
 		sf::Event event;
 		while (window->gameWindow->pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			switch (event.type)
 			{
+			case sf::Event::Closed:
 				window->gameWindow->close();
+          break;
+
+			case sf::Event::TextEntered:
+				textbox1.typedOn(event);
+          break;
+			}
+		}
+
+		textbox1.drawTo(mapWindow);
+
 			}
 		}
 		window->gameWindow->clear();

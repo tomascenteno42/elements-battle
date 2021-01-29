@@ -63,6 +63,7 @@ using namespace std;
 #include "../lib/GenericList.h"
 
 #include "../lib/Menu.h"
+#include "../lib/textBox.h"
 #include "../lib/Cell.h"
 
 #include "../lib/GameStats.h"
