@@ -58,10 +58,16 @@ using namespace std;
 #include "../lib/AirCharacter.h"
 
 #include "../lib/Node.h"
+#include "../lib/GenericNode.h"
 #include "../lib/List.h"
+#include "../lib/GenericList.h"
 
 #include "../lib/Menu.h"
 #include "../lib/textBox.h"
+#include "../lib/Cell.h"
+
+#include "../lib/GameStats.h"
+#include "../lib/GameMenu.h"
 
 #include "../lib/GameCell.h"
 #include "../lib/GameWorld.h"
@@ -69,6 +75,7 @@ using namespace std;
 #include "../lib/VectorNode.h"
 #include "../lib/Stack.h"
 
+#include "../lib/GameWindow.h"
 #include "utils/utils.h"
 
 #endif /* MAIN_H_ */

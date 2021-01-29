@@ -40,34 +40,6 @@ string parseElementToString(elements elementToParse)
     }
 }
 
-terrains parseStringToColor(string colorToParse)
-{
-    if (colorToParse == "l")
-    {
-        return lake;
-    }
-    else if (colorToParse == "v")
-    {
-        return volcano;
-    }
-    else if (colorToParse == "c")
-    {
-        return cliff;
-    }
-    else if (colorToParse == "m")
-    {
-        return mountain;
-    }
-    else if (colorToParse == "p")
-    {
-        return path;
-    }
-    else
-    {
-        return empty;
-    }
-}
-
 terrains parseStringToTerrain(string colorToParse)
 {
     if (colorToParse == "l")
