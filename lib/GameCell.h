@@ -16,7 +16,6 @@ public:
 		setTerrain(terrain);
 	};
 
-	// para mostrar personaje y para el ataque de personaje agua.
 	terrains getTerrain();
 
 	int getCost();

@@ -37,13 +37,13 @@ private:
 	std::ostringstream text;
 	bool isSelected = false;
 	bool hasLimit = false;
-	int limit = 0;
+	unsigned int limit = 0;
 
 	// Delete the last character of the text:
 	void deleteLastChar() {
 		std::string t = text.str();
 		std::string newT = "";
-		for (int i = 0; i < t.length() - 1; i++) {
+		for (unsigned int i = 0; i < t.length() - 1; i++) {
 			newT += t[i];
 		}
 		text.str("");

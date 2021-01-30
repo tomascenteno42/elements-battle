@@ -38,7 +38,7 @@ void Textbox::setSelected(bool sel) {
 	if (!sel) {
 		std::string t = text.str();
 		std::string newT = "";
-		for (int i = 0; i < t.length(); i++) {
+		for (unsigned int i = 0; i < t.length(); i++) {
 			newT += t[i];
 		}
 		textbox.setString(newT);
@@ -56,7 +56,7 @@ void Textbox::drawTo(sf::RenderWindow &window) {
 // Function for event loop:
 void Textbox::typedOn(sf::Event input) {
 	if (isSelected) {
-		int charTyped = input.text.unicode;
+		unsigned int charTyped = input.text.unicode;
 
 		// Only allow normal inputs:
 		if (charTyped < 128) {

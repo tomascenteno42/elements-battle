@@ -48,7 +48,7 @@ int main()
 	world->setMap();
 
 	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements", world, menuSegment, statsSegment);
-	window->gameWindow->setKeyRepeatEnabled(true);
+	window->setKeyRepeatEnabled(true);
 
 	sf::Text text("1) OPCION:", font, 26);
 	text.setPosition(sf::Vector2f(10, 410));
@@ -67,31 +67,33 @@ int main()
 	world->addCharacter(character2, 2);
 
 	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
-	bool stopMove = false;
 
-	while (window->gameWindow->isOpen())
+	int turn = 0; // for testing purposes
+	while (window->isOpen())
 	{
 		sf::Event event;
-		while (window->gameWindow->pollEvent(event))
+		while (window->pollEvent(event))
 		{
 			switch (event.type)
 			{
 			case sf::Event::Closed:
-				window->gameWindow->close();
+				window->close();
 				break;
 
 			case sf::Event::TextEntered:
 				window->menu->textbox->typedOn(event);
 				break;
+
+			default:
+				break;
 			}
 		}
 
-		window->gameWindow->clear();
+		window->clear();
 		drawScreen(window);
-		window->menu->textbox->drawTo(*window->gameWindow);
-		window->gameWindow->display();
-		Character *character = world->player1Characters[0];
-		processMoveChoice(movStack, window, character);
+		window->display();
+		processMoveChoice(movStack, window, world->player1Characters[turn%2]);
+		turn ++;
 	}
 
 	delete character1;

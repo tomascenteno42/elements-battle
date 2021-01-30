@@ -139,16 +139,17 @@ void drawScreen(GameWindow *win)
 {
     for (size_t i = 0; i < win->world->tiles.size(); i++)
     {
-        win->gameWindow->draw(win->world->tiles[i]->getCell());
+        win->draw(win->world->tiles[i]->getCell());
     }
     for (int i = 0; i < 1; i++)
     {
-        win->gameWindow->draw(win->world->player1Characters[i]->getCell());
-        win->gameWindow->draw(win->world->player2Characters[i]->getCell());
+        win->draw(win->world->player1Characters[i]->getCell());
+        win->draw(win->world->player2Characters[i]->getCell());
     }
 
-    win->gameWindow->draw(win->stats->getCell());
-    win->gameWindow->draw(win->menu->getCell());
+    win->draw(win->stats->getCell());
+    win->draw(win->menu->getCell());
+    win->menu->textbox->drawTo(*win);
 }
 
 void renderMap(sf::RenderWindow &win)
@@ -171,8 +172,8 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
     {
         moveCharacter(character, movStack);
         this_thread::sleep_for(chrono::milliseconds(250));
-        win->gameWindow->clear();
+        win->clear();
         drawScreen(win);
-        win->gameWindow->display();
+        win->display();
     }
 }

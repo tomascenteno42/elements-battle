@@ -237,7 +237,7 @@ sf::Vector2f askDestination();
 void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination);
 
 void drawScreen(GameWindow *win);
-// Necesito pasarle todas esas cosas porque eventualmente en la funcion se dibuja la ventana
+
 void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character);
 
 /**
