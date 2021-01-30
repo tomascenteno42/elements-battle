@@ -50,25 +50,36 @@ int main()
 	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements", world, menuSegment, statsSegment);
 	window->setKeyRepeatEnabled(true);
 
+	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
+
 	sf::Text text("1) OPCION:", font, 26);
 	text.setPosition(sf::Vector2f(10, 410));
 	text.setFillColor(sf::Color::Blue);
 	sf::String playerInput;
 
 	// Adding some characters
-	vector<Character *> characters;
-
-	Character *character1 = new WaterCharacter("Juan", WATER, 80, 2);
+	Character *character1 = new WaterCharacter("WaterChr", WATER, 80, 2);
 	character1->setPos(sf::Vector2f(0, 0));
 	world->addCharacter(character1, 1);
 
-	Character *character2 = new FireCharacter("Jose", FIRE, 50, 1);
+	Character *character2 = new AirCharacter("AirChr", AIR, 50, 1);
 	character2->setPos(sf::Vector2f(1, 0));
-	world->addCharacter(character2, 2);
+	world->addCharacter(character2, 1);
 
-	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
+	Character *character3 = new FireCharacter("FireChr", FIRE, 50, 1);
+	character3->setPos(sf::Vector2f(7, 0));
+	world->addCharacter(character3, 2);
 
-	int turn = 0; // for testing purposes
+	Character *character4 = new EarthCharacter("EarthChr", EARTH, 80, 2);
+	character4->setPos(sf::Vector2f(6, 2));
+	world->addCharacter(character4, 2);
+
+
+	int turn = 1; // for testing purposes
+
+	bool stop = false; 	// para que sea mas facil cerrar la ventana y
+	string stopStr;		// que no se cuelgue mientras hacemos pruebas
+
 	while (window->isOpen())
 	{
 		sf::Event event;
@@ -92,10 +103,35 @@ int main()
 		window->clear();
 		drawScreen(window);
 		window->display();
+
+		if (!stop)									// para que sea mas facil cerrar la ventana y
+		{											// que no se cuelgue mientras hacemos pruebas
+			std::cout << "Keep playing? [Y/N] ";	//
+			cin >> stopStr;							//
+			if (stopStr == "N") stop = true;		//
+		} 											//
+		if (stop) continue;							//
+
+		printStats(world); // for testing purposes
+
 		if (turn%2)
-			processMoveChoice(movStack, window, world->player1Characters[0]);
+		{
+			for (int i = 0; i < 2; i ++)
+			{
+				world->player1Characters[i]->setEnergy(20);
+				processMoveChoice(movStack, window, world->player1Characters[i]);
+				processAttackChoice(world, world->player1Characters[i], world->player2Characters);
+			}
+		}
 		else
-			processMoveChoice(movStack, window, world->player2Characters[0]);
+		{
+			for (int i = 0; i < 2; i ++)
+			{
+				world->player2Characters[i]->setEnergy(20);
+				processMoveChoice(movStack, window, world->player2Characters[i]);
+				processAttackChoice(world, world->player2Characters[i], world->player1Characters);
+			}
+		}
 		turn ++;
 	}
 

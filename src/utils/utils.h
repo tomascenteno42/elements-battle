@@ -234,11 +234,15 @@ void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f pat
 void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
 
 sf::Vector2f askDestination();
-void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination);
+void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination, int &energyRequired);
 
 void drawScreen(GameWindow *win);
 
 void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character);
+
+void processAttackChoice(GameWorld *world, Character *character, vector<Character*> enemyCharacters);
+
+void printStats(GameWorld* world);
 
 /**
  * Generic function for validating file opening.

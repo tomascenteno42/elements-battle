@@ -38,12 +38,24 @@ elements Character::getElement()
     return element;
 }
 
-sf::Vector2f Character::getPos() {
+sf::Vector2f Character::getPos()
+{
 	return pos;
 }
 
-sf::RectangleShape Character::getCell() {
+sf::RectangleShape Character::getCell()
+{
 	return cell;
+}
+
+bool Character::getDefense()
+{
+	return defense;
+}
+
+bool Character::isDead()
+{
+	return (getLife() == 0);
 }
 
 /* SETTERS */
@@ -71,6 +83,11 @@ void Character::setShield(int s)
 void Character::setEnergy(int e)
 {
     energy = e;
+}
+
+void Character::setDefense(bool def)
+{
+	defense = def;
 }
 
 void Character::setPos(sf::Vector2f pos)

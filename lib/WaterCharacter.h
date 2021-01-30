@@ -12,6 +12,7 @@ private:
 public:
     WaterCharacter(string n, elements e, int v, int es) : Character(n, e, v, es){};
 
+    void attack(Character* enemy);
     void feed();
 
 private:

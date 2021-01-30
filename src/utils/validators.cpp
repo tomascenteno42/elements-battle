@@ -14,7 +14,6 @@ void validateUserChoice(int &option, int menuLength)
 
 void validateElement(string &element)
 {
-    // ESTO ES HORRIBLE PERO NO SE ME OCURRE COMO VALIDARLO SIN ESTO.
     while (element != "Air" && element != "Fire" && element != "Water" && element != "Earth" && element != "air" && element != "fire" && element != "water" && element != "earth")
     {
         cout << "Wrong element, please try again. " << endl;

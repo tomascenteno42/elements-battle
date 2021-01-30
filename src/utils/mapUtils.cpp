@@ -115,12 +115,12 @@ sf::Vector2f askDestination()
     return sf::Vector2f(stof(x), stof(y));
 }
 
-void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination)
+void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination, int &energyRequired)
 {
-    int energyRequired = world->distances
-                             [static_cast<int>(character->getElement()) - 1]
-                             [int(character->getPos().x + 8 * character->getPos().y)]
-                             [int(destination.x + 8 * destination.y)];
+    energyRequired = world->distances
+                            [static_cast<int>(character->getElement()) - 1]
+                            [int(character->getPos().x + 8 * character->getPos().y)]
+                            [int(destination.x + 8 * destination.y)];
 
     if (destination.x < 0 || destination.x > 7 || destination.y < 0 || destination.y > 7)
         std::cout << "Invalid destination" << std::endl;
@@ -132,7 +132,7 @@ void validateDestination(GameWorld *world, Character *character, sf::Vector2f &d
         return;
 
     destination = askDestination();
-    validateDestination(world, character, destination);
+    validateDestination(world, character, destination, energyRequired);
 }
 
 void drawScreen(GameWindow *win)
@@ -141,7 +141,7 @@ void drawScreen(GameWindow *win)
     {
         win->draw(win->world->tiles[i]->getCell());
     }
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 2; i++)
     {
         win->draw(win->world->player1Characters[i]->getCell());
         win->draw(win->world->player2Characters[i]->getCell());
@@ -160,9 +160,12 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
 {
     if (movStack->isEmpty())
     {
+    	int energyRequired = 0;
         sf::Vector2f characterPos = character->getPos();
         sf::Vector2f destination = askDestination();
-        validateDestination(win->world, character, destination);
+        validateDestination(win->world, character, destination, energyRequired);
+        character->setEnergy(character->getEnergy() - energyRequired);
+        std::cout << "Energy Consumed: " << energyRequired << std::endl; // test
         win->world->tiles[characterPos.x + 8 * characterPos.y]->setOccupied(false);
         win->world->tiles[destination.x + 8 * destination.y]->setOccupied(true);
         loadMovementsStack(movStack, characterPos, destination, win->world->paths[static_cast<int>(character->getElement()) - 1]);
@@ -176,4 +179,30 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
         drawScreen(win);
         win->display();
     }
+}
+
+void processAttackChoice(GameWorld* world, Character *character, vector<Character*> enemyCharacters)
+{
+	for (int i = 0; i < 2; i ++)
+	{
+		character -> attack(enemyCharacters[i]);
+	}
+	character->setEnergy(character->getEnergy() - 5);
+}
+
+void printStats(GameWorld* world)
+{
+	Character* character = 0;
+	std::cout << "PLAYER 1:" << std::endl;
+	for (int i = 0; i < 2; i ++)
+	{
+		character = world->player1Characters[i];
+		std::cout << "\t" << character->getName() << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;
+	}
+	std::cout << "PLAYER 2:" << std::endl;
+	for (int i = 0; i < 2; i ++)
+	{
+		character = world->player2Characters[i];
+		std::cout << "\t" << character->getName() << ": " << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;
+	}
 }
