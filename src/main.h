@@ -77,4 +77,11 @@ using namespace std;
 #include "../lib/GameWindow.h"
 #include "utils/utils.h"
 
+#include "../lib/LakeCell.h"
+#include "../lib/VolcanoCell.h"
+#include "../lib/CliffCell.h"
+#include "../lib/MountainCell.h"
+#include "../lib/PathCell.h"
+#include "../lib/EmptyCell.h"
+
 #endif /* MAIN_H_ */

@@ -22,7 +22,29 @@ void GameWorld::setMap()
 	{
 		cellCounter++;
 		terrains terrain = parseStringToTerrain(color);
-		cell = new GameCell(x, y, HEIGHT, WIDTH, parseTerrainToSf(parseStringToTerrain(color)), terrain);
+		switch (terrain)
+		{
+		case lake:
+			cell = new LakeCell(x, y , HEIGHT, WIDTH);
+			break;
+		case volcano:
+			cell = new VolcanoCell(x, y , HEIGHT, WIDTH);
+			break;
+		case mountain:
+			cell = new MountainCell(x, y , HEIGHT, WIDTH);
+			break;
+		case cliff:
+			cell = new CliffCell(x, y , HEIGHT, WIDTH);
+			break;
+		case path:
+			cell = new PathCell(x, y , HEIGHT, WIDTH);
+			break;
+		case empty:
+			cell = new EmptyCell(x, y , HEIGHT, WIDTH);
+			break;
+		default:
+			break;
+		}
 		tiles.push_back(cell);
 
 		if (cellCounter % gridLength == 0)

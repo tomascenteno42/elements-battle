@@ -1,10 +1,3 @@
-/*
- * GameWorld.h
- *
- *  Created on: Jan 17, 2021
- *      Author: kurepa
- */
-
 #ifndef GAMEWORLD_H_
 #define GAMEWORLD_H_
 

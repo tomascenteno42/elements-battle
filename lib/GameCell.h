@@ -5,7 +5,7 @@
 
 class GameCell : public Cell
 {
-private:
+protected:
 	terrains terrain;
 	int cost = 0;
 	bool occupied = false;
@@ -21,7 +21,7 @@ public:
 	int getCost();
 	bool isOccupied();
 
-	void setCost(elements element);
+	virtual void setCost(elements element) = 0;
 	void setOccupied(bool occupied);
 	void setTerrain(terrains t);
 

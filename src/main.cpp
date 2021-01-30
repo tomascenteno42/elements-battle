@@ -92,7 +92,10 @@ int main()
 		window->clear();
 		drawScreen(window);
 		window->display();
-		processMoveChoice(movStack, window, world->player1Characters[turn%2]);
+		if (turn%2)
+			processMoveChoice(movStack, window, world->player1Characters[0]);
+		else
+			processMoveChoice(movStack, window, world->player2Characters[0]);
 		turn ++;
 	}
 

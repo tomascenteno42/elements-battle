@@ -9,6 +9,6 @@ void AirCharacter::feed()
 {
     if (!this->canBeFeeded())
     {
-        cout << "No puedes alimentar a un personaje de aire.";
+        cout << "You can't feed an Air character.";
     }
 }

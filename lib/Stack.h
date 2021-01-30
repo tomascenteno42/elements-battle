@@ -1,10 +1,3 @@
-/*
- * stack.h
- *
- *  Created on: Jan 21, 2021
- *      Author: a-perez-l
- */
-
 #ifndef STACK_H_
 #define STACK_H_
 

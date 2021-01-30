@@ -10,10 +10,10 @@ void FireCharacter::feed()
     if (this->canBeFeeded())
     {
         this->setLife(this->getLife() + VALOR_ALIMENTO_FUEGO);
-        cout << this->getName() << " fue alimentado con madera. Y recibio " << VALOR_ALIMENTO_FUEGO << " de vida." << endl;
+        cout << this->getName() << " was fed with wood. They got " << VALOR_ALIMENTO_FUEGO << " health points." << endl;
     }
     else
     {
-        cout << this->getName() << " no pudo ser alimentado." << endl;
+        cout << this->getName() << " was not fed." << endl;
     }
 }

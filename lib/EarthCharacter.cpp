@@ -10,10 +10,10 @@ void EarthCharacter::feed()
     if (this->canBeFeeded())
     {
         this->setEnergy(this->getEnergy() + VALOR_ALIMENTO_TIERRA);
-        cout << this->getName() << " fue alimentado con hierbas. Y recibio " << VALOR_ALIMENTO_TIERRA << " puntos de energia" << endl;
+        cout << this->getName() << " was fed with herbs. They got " << VALOR_ALIMENTO_TIERRA << " energy points" << endl;
     }
     else
     {
-        cout << this->getName() << " no pudo ser alimentado." << endl;
+        cout << this->getName() << " was not fed." << endl;
     }
 }
