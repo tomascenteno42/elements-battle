@@ -12,6 +12,8 @@ public:
     {
         textbox = text;
     };
+
+    ~GameMenu();
 };
 
 #endif

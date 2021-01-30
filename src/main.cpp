@@ -57,6 +57,7 @@ int main()
 	text.setFillColor(sf::Color::Blue);
 	sf::String playerInput;
 
+
 	// Adding some characters
 	Character *character1 = new WaterCharacter("WaterChr", WATER, 80, 2);
 	character1->setPos(sf::Vector2f(0, 0));
@@ -134,9 +135,6 @@ int main()
 		}
 		turn ++;
 	}
-
-	delete character1;
-	delete character2;
 
 	delete movStack;
 	delete window;

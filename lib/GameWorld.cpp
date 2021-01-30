@@ -100,4 +100,10 @@ GameWorld::~GameWorld()
 		delete tiles.back();
 		tiles.pop_back();
 	}
+
+	for (int i = 0; i < 2; i ++)
+	{
+		delete player1Characters[i];
+		delete player2Characters[i];
+	}
 }
