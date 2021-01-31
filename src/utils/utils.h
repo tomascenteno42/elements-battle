@@ -8,40 +8,52 @@
 /**
    Retrieves options from OPTIONS_FILE and fills the Menu object
    @param m Object menu.
+   @param filename file name.
 */
-void fillMenu(Menu *m);
+void fillMenu(Menu *m, const char* filename);
 
 /**
     Nucleus of menu logic, it renders menu options.
-    @param m Menu object.
     @param l List object.
+    @param win game window.
 */
-void renderMenu(Menu *m, List *l);
+void renderMenu(List *l, GameWindow *win);
 
 /**
    Renders the user options choice.
    @param l List object.
    @param option Option to execute.
+   @param window Game window.
 */
-void renderMenuOption(List *l, int option);
+void renderMenuOption(List *l, int option, GameWindow *window);
+
+/**
+   Renders the user options choice.
+   @param l List object.
+   @param option Option to execute.
+   @param window Game window.
+*/
+void renderMenuOption2(List *l, int option, GameWindow *window);
 
 /**
     Display through terminal the options inside Menu object.
-    @param m Menu object.
+    @param window Game window.
 */
-void showMenuOptions(Menu *m);
+void showMenuOptions(GameWindow* window);
 
 /**
     Calculates amount of lines(options) in OPTIONS_FILE.
     @return Amount of options (int).
+    @param filename optionsfile.txt.
 */
-int getAmountOfOptions();
+int getAmountOfOptions(const char* filename);
 
 /**
    Stores and returns user options choice.
    @return User choice as integer.
+   @param window Game window.
 */
-int getUserChoice();
+int getUserChoice(GameWindow* window);
 
 /**
    Validates user choice to be in between of menu length and 1.  

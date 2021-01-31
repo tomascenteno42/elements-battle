@@ -3,6 +3,7 @@
 
 #include "../src/main.h"
 
+
 class Menu
 {
 private:
@@ -27,7 +28,7 @@ public:
     /**
      * Prints all menu options.
     */
-    void showAllOptions();
+    //void showAllOptions(GameWindow *window);
 
     ~Menu();
 };

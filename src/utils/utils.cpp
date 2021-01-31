@@ -2,10 +2,11 @@
 
 /* UTILS */
 
-int getUserChoice()
+int getUserChoice(GameWindow* window)
 {
     int choice = 0;
-    cin >> choice;
+    
+    choice = stoi(window->menu->textbox->getText());
 
     return choice;
 }

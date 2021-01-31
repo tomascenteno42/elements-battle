@@ -149,6 +149,7 @@ void drawScreen(GameWindow *win)
 
     win->draw(win->stats->getCell());
     win->draw(win->menu->getCell());
+    showMenuOptions(win);
     win->menu->textbox->drawTo(*win);
 }
 
@@ -174,7 +175,7 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
     while (!movStack->isEmpty())
     {
         moveCharacter(character, movStack);
-        this_thread::sleep_for(chrono::milliseconds(250));
+        //this_thread::sleep_for(chrono::milliseconds(250));
         win->clear();
         drawScreen(win);
         win->display();

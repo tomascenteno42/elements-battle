@@ -10,8 +10,13 @@
 
 #define FONT_FILE "files/arial.ttf"
 #define OPTIONS_FILE "files/options.txt"
+#define OPTIONS_FILE_2 "files/options2.txt"
 #define CHARACTERS_FILE "files/characters.csv"
 #define MAPSTATS_FILE "files/mapStats.csv"
+
+#define DELETE_KEY 8
+#define ENTER_KEY 13
+#define ESCAPE_KEY 27
 
 const int VALOR_ALIMENTO_FUEGO = 15;
 const int VALOR_ALIMENTO_TIERRA = 8;

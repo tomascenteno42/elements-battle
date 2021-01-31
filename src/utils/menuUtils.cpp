@@ -2,12 +2,12 @@
 
 // MENU UTILS
 
-void fillMenu(Menu *m)
+void fillMenu(Menu *m, const char* filename)
 {
     ifstream optionsFile;
     string option;
 
-    optionsFile.open(OPTIONS_FILE);
+    optionsFile.open(filename);
     if (optionsFile.is_open())
     {
         while (getline(optionsFile, option, '\n'))
@@ -18,76 +18,100 @@ void fillMenu(Menu *m)
     optionsFile.close();
 }
 
-void renderMenu(Menu *m, List *l)
+void renderMenu(List *l, GameWindow *window)
 {
     int choice = 1;
 
-    while (choice >= 1 && choice < m->getLength())
+    if (choice >= 1 && choice < window->menu->GetChosenMenu()->getLength())
     {
-        renderGameTitle();
-        printBlankLine();
+        choice = getUserChoice(window);
+        cout << "Choice: " << choice << endl;
+        //validateUserChoice(choice, window->menu->GetChosenMenu()->getLength());
 
-        cout << "MENU";
-
-        printBlankLine();
-
-        m->showAllOptions();
-
-        cout << "Option: ";
-        choice = getUserChoice();
-        validateUserChoice(choice, m->getLength());
-
-        if (choice != m->getLength())
+        if (window->menu->GetChosenMenu()->getLength() == 6)
         {
-            renderMenuOption(l, choice);
-            waitForEnter();
-            clearScreen();
+            renderMenuOption(l, choice, window);
+            cout << "First Menu Options rendered" << endl;
+        }
+        else 
+        {
+            renderMenuOption2(l, choice, window);
+            cout << "Second Menu Options rendered" << endl;
         }
     }
 }
 
-void renderMenuOption(List *l, int option)
+void renderMenuOption(List *l, int option, GameWindow* window)
 {
-    clearScreen();
-
     switch (option)
     {
     case 1:
-        addCharacter(l);
+        //addCharacter(l);
         break;
     case 2:
-        showAllCharactersNames(l);
-        eraseCharacter(l);
+        //showAllCharactersNames(l);
+        //eraseCharacter(l);
         break;
     case 3:
-        showAllCharactersNames(l);
+        //showAllCharactersNames(l);
         break;
     case 4:
-        showAllCharactersNames(l);
-        searchCharacterStats(l);
         break;
     case 5:
-        showAllCharactersNames(l);
-        feedCharacter(l);
+        window->menu->ChangeChosen(2);
+        cout << "REASSIGNED CHOSEN" << endl;
+        break;
+    case 6:
+        window->clear();
+        break;
+    default:
         break;
     }
 }
 
-void showMenuOptions(Menu *m)
+void renderMenuOption2(List *l, int option, GameWindow* window)
 {
-    for (int i = 0; i < m->getLength(); i++)
+    switch (option)
     {
-        cout << i + 1 << ") " << m->getOption(i) << endl;
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        window->menu->ChangeChosen(1);
+        cout << "REASSIGNED CHOSEN 2" << endl;
+        break;
+    default:
+        break;
     }
 }
 
-int getAmountOfOptions()
+void showMenuOptions(GameWindow* window)
 {
-    ifstream optionsFile;
+    sf::Font font;
+	font.loadFromFile(FONT_FILE);
+    float pos = 410;
+
+    for (int i = 0; i < window->menu->GetChosenMenu()->getLength(); i++)
+    {
+        sf::Text texto((to_string((i + 1)) + ") " + window->menu->GetChosenMenu()->getOption(i)), font, 20);
+        texto.setFillColor(sf::Color::White);
+	    texto.setPosition(sf::Vector2f(10, pos));
+        pos += 50;
+        window->draw(texto);
+    }
+}
+
+int getAmountOfOptions(const char* filename)
+{
+    fstream optionsFile;
+
+    optionsFile.open(filename);
+
     string option;
     int length = 0;
-
-    optionsFile.open(OPTIONS_FILE);
 
     if (optionsFile.is_open())
     {
@@ -100,8 +124,8 @@ int getAmountOfOptions()
     {
         cout << "FILE ERROR";
     }
-    optionsFile.close();
 
+    optionsFile.close();
     return length;
 }
 
