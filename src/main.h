@@ -55,38 +55,38 @@ using namespace std;
 #include <chrono>
 #include <thread>
 
-#include "../lib/Character.h"
+#include "../lib/Characters/Character.h"
 
-#include "../lib/WaterCharacter.h"
-#include "../lib/EarthCharacter.h"
-#include "../lib/FireCharacter.h"
-#include "../lib/AirCharacter.h"
+#include "../lib/Characters/WaterCharacter.h"
+#include "../lib/Characters/EarthCharacter.h"
+#include "../lib/Characters/FireCharacter.h"
+#include "../lib/Characters/AirCharacter.h"
 
-#include "../lib/Node.h"
-#include "../lib/GenericNode.h"
-#include "../lib/List.h"
-#include "../lib/GenericList.h"
+#include "../lib/DataStructures/Node.h"
+#include "../lib/DataStructures/GenericNode.h"
+#include "../lib/DataStructures/List.h"
+#include "../lib/DataStructures/GenericList.h"
 
-#include "../lib/Menu.h"
-#include "../lib/textBox.h"
-#include "../lib/Cell.h"
+#include "../lib/Window/Menu.h"
+#include "../lib/Window/textBox.h"
+#include "../lib/Window/Cell.h"
 
-#include "../lib/GameStats.h"
-#include "../lib/GameMenu.h"
+#include "../lib/Window/GameStats.h"
+#include "../lib/Window/GameMenu.h"
 
-#include "../lib/GameCell.h"
-#include "../lib/GameWorld.h"
+#include "../lib/GameCells/GameCell.h"
+#include "../lib/Window/GameWorld.h"
 
-#include "../lib/Stack.h"
+#include "../lib/DataStructures/Stack.h"
 
-#include "../lib/GameWindow.h"
+#include "../lib/Window/GameWindow.h"
 #include "utils/utils.h"
 
-#include "../lib/LakeCell.h"
-#include "../lib/VolcanoCell.h"
-#include "../lib/CliffCell.h"
-#include "../lib/MountainCell.h"
-#include "../lib/PathCell.h"
-#include "../lib/EmptyCell.h"
+#include "../lib/GameCells/LakeCell.h"
+#include "../lib/GameCells/VolcanoCell.h"
+#include "../lib/GameCells/CliffCell.h"
+#include "../lib/GameCells/MountainCell.h"
+#include "../lib/GameCells/PathCell.h"
+#include "../lib/GameCells/EmptyCell.h"
 
 #endif /* MAIN_H_ */
