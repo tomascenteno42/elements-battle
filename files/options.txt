@@ -1,6 +1,0 @@
-Agregar un nuevo personaje.
-Eliminar un personaje.
-Mostrar todos los nombres de los personajes.
-Buscar por nombre los detalles de un personaje en particular.
-Comenzar el Juego.
-Salir.

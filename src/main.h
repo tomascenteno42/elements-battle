@@ -9,8 +9,10 @@
 #define MAIN_H_
 
 #define FONT_FILE "files/arial.ttf"
-#define OPTIONS_FILE "files/options.txt"
+#define OPTIONS_FILE_1 "files/options1.txt"
 #define OPTIONS_FILE_2 "files/options2.txt"
+#define OPTIONS_FILE_3 "files/options3.txt"
+#define OPTIONS_FILE_4 "files/options4.txt"
 #define CHARACTERS_FILE "files/characters.csv"
 #define MAPSTATS_FILE "files/mapStats.csv"
 

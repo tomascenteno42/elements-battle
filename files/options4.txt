@@ -1,0 +1,3 @@
+Atacar.
+Defender.
+Pasar.

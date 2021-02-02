@@ -1,0 +1,4 @@
+Guardar.
+Alimentar.
+Mover.
+Pasar.
