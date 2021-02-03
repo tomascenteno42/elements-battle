@@ -1,44 +1,79 @@
 #include "../../src/main.h"
 
-void GameMenu::FillMenuList()
+GameMenu::GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window): 
+    Cell(xPos, yPos, ySize, xSize, color)
+    {   
+        font.loadFromFile(FONT_FILE);
+        setRequest("Ingrese una opción: ");
+        textbox = new Textbox(30, sf::Color::White, true, font);
+        menuList = new GenericList<Menu*>;
+        fillMenuList();
+        this -> window = window;
+    }
+
+void GameMenu::fillMenuList()
 {
-    int menuLength1 = getAmountOfOptions(OPTIONS_FILE_1);
-    int menuLength2 = getAmountOfOptions(OPTIONS_FILE_2);
-    int menuLength3 = getAmountOfOptions(OPTIONS_FILE_3);
-    int menuLength4 = getAmountOfOptions(OPTIONS_FILE_4);
+    const char * optionsFiles[4] = {OPTIONS_FILE_1, OPTIONS_FILE_2, OPTIONS_FILE_3, OPTIONS_FILE_4};
 
-    Menu* m1 = new Menu(menuLength1);
-    Menu* m2 = new Menu(menuLength2);
-    Menu* m3 = new Menu(menuLength3);
-    Menu* m4 = new Menu(menuLength4);
+    const char * optionFile = "";
+    int menuLength = 0;
+    Menu* m = 0;
+    for (int i = 0; i < 4; i ++)
+    {
+        optionFile = optionsFiles[i];
+        menuLength = getAmountOfOptions(optionFile);
+        m = new Menu(menuLength);
+        fillMenu(m, optionFile);
+        menuList->add(m, i+1);
+    }
 
-    fillMenu(m1, OPTIONS_FILE_1);
-    fillMenu(m2, OPTIONS_FILE_2);
-    fillMenu(m3, OPTIONS_FILE_3);
-    fillMenu(m4, OPTIONS_FILE_4);
-
-    MenuList->add(m1, 1);
-    MenuList->add(m2, 2);
-    MenuList->add(m3, 3);
-    MenuList->add(m4, 4);
-
-    ChosenMenu = MenuList->get(1);
+    currentMenu = menuList->get(1);
 }
 
-void GameMenu::ChangeChosen(size_t pos)
+void GameMenu::changeCurrentMenu(size_t pos)
 {
-    ChosenMenu = MenuList->get(pos);
-    cout << ChosenMenu->getLength() << endl;
-    cout << "Chosen changed" << endl;
+    currentMenu = menuList->get(pos);
+    currentMenuIndex = static_cast<menus>(pos);
 }
 
-Menu* GameMenu::GetChosenMenu()
+void GameMenu::setRequest(std::string req)
 {
-    return ChosenMenu;
+    request = sf::Text(req, font, 14);
+}
+
+Menu* GameMenu::getCurrentMenu()
+{
+    return currentMenu;
+}
+
+
+
+
+void GameMenu::drawCurrentMenu()
+{
+    float posY = 410;
+
+    for (int i = 0; i < currentMenu->getLength(); i++)
+    {
+        sf::Text text((to_string((i + 1)) + ") " + currentMenu->getOption(i)), font, 14);
+        text.setFillColor(sf::Color::White);
+	    text.setPosition(sf::Vector2f(10, posY));
+        posY += 25;
+        window->draw(text);
+    }
+}
+
+void GameMenu::processInput()
+{
+    std::string input = textbox -> getText();
+    if (waitingForOptionChoice && !(stringIsNumeric(input) && stoi(input) >= 1 && stoi(input) <= currentMenu->getLength()))
+        request.setString("Enter a valid choice"); 
+    else
+        processOption(currentMenuIndex, stoi(input), waitingForOptionChoice);
 }
 
 GameMenu::~GameMenu()
 {
     delete textbox;    
-    delete MenuList;
+    delete menuList;
 }

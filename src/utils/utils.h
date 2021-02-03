@@ -5,6 +5,8 @@
 
 /* MENU */
 
+bool stringIsNumeric(std::string s);
+
 /**
    Retrieves options from OPTIONS_FILE and fills the Menu object
    @param m Object menu.
@@ -17,29 +19,35 @@ void fillMenu(Menu *m, const char* filename);
     @param l List object.
     @param win game window.
 */
-void renderMenu(List *l, GameWindow *win);
+void renderMenu(List *l, GameMenu *menu);
+
+void processOption(menus menu, int option, bool &waitingForOptionChoice);
+void processMainMenuOption(int option, bool &waitingForOptionChoice);
+void processCharMenuOption(int option, bool &waitingForOptionChoice);
+void processTurn1MenuOption(int option, bool &waitingForOptionChoice);
+void processTurn2MenuOption(int option, bool &waitingForOptionChoice);
 
 /**
    Renders the user options choice.
    @param l List object.
    @param option Option to execute.
-   @param window Game window.
+   @param menu Game menu.
 */
-void renderMenuOption(List *l, int option, GameWindow *window);
+void renderMenuOption(List *l, int option, GameMenu *menu);
 
 /**
    Renders the user options choice.
    @param l List object.
    @param option Option to execute.
-   @param window Game window.
+   @param menu Game menu.
 */
-void renderMenuOption2(List *l, int option, GameWindow *window);
+void renderMenuOption2(List *l, int option, GameMenu *menu);
 
 /**
     Display through terminal the options inside Menu object.
     @param window Game window.
 */
-void showMenuOptions(GameWindow* window);
+//void showMenuOptions(GameWindow* window);
 
 /**
     Calculates amount of lines(options) in OPTIONS_FILE.
@@ -53,7 +61,7 @@ int getAmountOfOptions(const char* filename);
    @return User choice as integer.
    @param window Game window.
 */
-int getUserChoice(GameWindow* window);
+int getUserChoice(GameMenu* menu);
 
 /**
    Validates user choice to be in between of menu length and 1.  
@@ -248,9 +256,9 @@ void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
 sf::Vector2f askDestination();
 void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination, int &energyRequired);
 
-void drawScreen(GameWindow *win);
+void drawScreen(GameWindow *win, GameMenu* menu);
 
-void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character);
+void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character, GameMenu* menu);
 
 void processAttackChoice(GameWorld *world, Character *character, vector<Character*> enemyCharacters);
 

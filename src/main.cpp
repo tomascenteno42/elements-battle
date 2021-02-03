@@ -30,59 +30,42 @@ int main()
 
 	////////////////////////////////////////////////////////////////
 
-	List *l = new List; // Characters List
+	GameWorld *world = new GameWorld();
+	GameStats *stats = new GameStats(400, 0, 400, 400, sf::Color::White);
+	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements", world, stats);
 
-	sf::Font font;
-	font.loadFromFile(FONT_FILE);
-
-	// ---------------------- TextBox ---------------------------
-	Textbox *textbox1 = new Textbox(30, sf::Color::White, true);
-
-	textbox1->setFont(font);
-	textbox1->setPosition({30, 750});
-
-	// ---------------------- GameStats -------------------------
-	GameStats *statsSegment = new GameStats(400, 0, 400, 400, sf::Color::White);
 
 	// ---------------------- GameMenu --------------------------
-	GameMenu *menuSegment = new GameMenu(0, 400, 400, 800, sf::Color::Red, textbox1);
-	menuSegment->FillMenuList();
+	GameMenu *menu = new GameMenu(0, 400, 400, 800, sf::Color::Red, window);
 
-	// ---------------------- GameWorld -------------------------
-	GameWorld *world = new GameWorld();
-	world->setMap();
-
-	// --------------------- GameWindow -------------------------
-	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements", world, menuSegment, statsSegment);
-	window->setKeyRepeatEnabled(true);
-
-	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
-
-	sf::Text text("1) OPCION:", font, 26);
-	text.setPosition(sf::Vector2f(10, 410));
-	text.setFillColor(sf::Color::Blue);
-	sf::String playerInput;
-
-
-	// Adding some characters
-	Character *character1 = new WaterCharacter("WaterChr", WATER, 80, 2);
+	// --------------------------------------------------------------------Adding all characters (manually for now)
+	Character *character1 = new WaterCharacter("WaterChr1", WATER, 100, 2);
 	character1->setPos(sf::Vector2f(0, 0));
 	world->addCharacter(character1, 1);
 
-	Character *character2 = new AirCharacter("AirChr", AIR, 50, 1);
+	Character *character2 = new AirCharacter("AirChr1", AIR, 100, 2);
 	character2->setPos(sf::Vector2f(1, 0));
 	world->addCharacter(character2, 1);
 
-	Character *character3 = new FireCharacter("FireChr", FIRE, 50, 1);
-	character3->setPos(sf::Vector2f(7, 0));
-	world->addCharacter(character3, 2);
+	Character *character3 = new FireCharacter("FireChr1", FIRE, 100, 2);
+	character3->setPos(sf::Vector2f(0, 1));
+	world->addCharacter(character3, 1);
 
-	Character *character4 = new EarthCharacter("EarthChr", EARTH, 80, 2);
-	character4->setPos(sf::Vector2f(6, 2));
+	Character *character4 = new EarthCharacter("EarthChr2", EARTH, 100, 2);
+	character4->setPos(sf::Vector2f(7, 7));
 	world->addCharacter(character4, 2);
 
-	int turn = 1; // for testing purposes
+	Character *character5 = new FireCharacter("AirChr2", AIR, 100, 2);
+	character5->setPos(sf::Vector2f(6, 7));
+	world->addCharacter(character5, 2);
 
+	Character *character6 = new EarthCharacter("WaterChr2", WATER, 100, 2);
+	character6->setPos(sf::Vector2f(7, 6));
+	world->addCharacter(character6, 2);
+	// ------------------------------------------------------------------------------------------------------------
+
+	List *l = new List; // Characters List
+	int turn = 1; // for testing purposes
 	bool stop = false; 	// para que sea mas facil cerrar la ventana y
 	string stopStr;		// que no se cuelgue mientras hacemos pruebas
 
@@ -99,15 +82,21 @@ int main()
 
 			case sf::Event::TextEntered:
 			{
-				window->menu->textbox->typedOn(event);
-				string input = window->menu->textbox->getText();
+				// ¿if (moving) break;?
+				menu->textbox->typedOn(event);
+				string input = menu->textbox->getText();
 				cout << input << endl;
 				if (event.text.unicode == ENTER_KEY)
 				{
+					// Acá es cuando se hace que avance el menu
+					// tendria que hacer algo tipo window->menu->processInput(input)
+					// y que depende en qué menú se esté ese input se trate de una manera u otra
+					// Y luego del procesado, resetear input a la cadena vacia
 					if (input.size() == 1)
 					{
-						renderMenu(l, window);
+						renderMenu(l, menu);
 					}
+					menu->textbox->setText("");
 				}
 				break;
 			}
@@ -117,7 +106,7 @@ int main()
 		}
 
 		window->clear();
-		drawScreen(window);
+		drawScreen(window, menu);
 		window->display();
 
 /* 		if (!stop)									// para que sea mas facil cerrar la ventana y
@@ -132,7 +121,7 @@ int main()
 
 		if (turn%2)
 		{
-			for (int i = 0; i < 2; i ++)
+			for (int i = 0; i < 3; i ++)
 			{
 				world->player1Characters[i]->setEnergy(20);
 				processMoveChoice(movStack, window, world->player1Characters[i]);
@@ -141,7 +130,7 @@ int main()
 		}
 		else
 		{
-			for (int i = 0; i < 2; i ++)
+			for (int i = 0; i < 3; i ++)
 			{
 				world->player2Characters[i]->setEnergy(20);
 				processMoveChoice(movStack, window, world->player2Characters[i]);
@@ -151,8 +140,8 @@ int main()
 		turn ++; */
 	}
 
-	delete movStack;
 	delete window;
+	delete menu;
 	delete l;         // Characters list
 	return 0;
 }

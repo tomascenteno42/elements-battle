@@ -25,6 +25,7 @@ public:
     */
     void addOption(string option);
 
+
     /**
      * Prints all menu options.
     */

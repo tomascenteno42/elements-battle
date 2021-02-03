@@ -6,6 +6,9 @@
         "thread": "cpp",
         "new": "cpp",
         "fstream": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "istream": "cpp",
+        "streambuf": "cpp",
+        "regex": "cpp"
     }
 }

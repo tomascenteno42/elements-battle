@@ -24,6 +24,14 @@ const int VALOR_ALIMENTO_FUEGO = 15;
 const int VALOR_ALIMENTO_TIERRA = 8;
 const int VALOR_ALIMENTO_AGUA = 10;
 
+enum menus
+{
+	mainMenu = 1,
+	charSelectionMenu,
+	turnMenu1,
+	turnMenu2
+};
+
 enum terrains
 {
 	none,
@@ -37,9 +45,9 @@ enum terrains
 enum elements
 {
 	EARTH = 1,
-	FIRE = 2,
-	WATER = 3,
-	AIR = 4
+	FIRE,
+	WATER,
+	AIR
 };
 
 using namespace std;
@@ -58,15 +66,15 @@ using namespace std;
 #include <thread>
 
 #include "../lib/Characters/Character.h"
-
 #include "../lib/Characters/WaterCharacter.h"
 #include "../lib/Characters/EarthCharacter.h"
 #include "../lib/Characters/FireCharacter.h"
 #include "../lib/Characters/AirCharacter.h"
 
+#include "../lib/DataStructures/Stack.h"
 #include "../lib/DataStructures/Node.h"
-#include "../lib/DataStructures/GenericNode.h"
 #include "../lib/DataStructures/List.h"
+#include "../lib/DataStructures/GenericNode.h"
 #include "../lib/DataStructures/GenericList.h"
 
 #include "../lib/Window/Menu.h"
@@ -74,14 +82,11 @@ using namespace std;
 #include "../lib/Window/Cell.h"
 
 #include "../lib/Window/GameStats.h"
-#include "../lib/Window/GameMenu.h"
-
 #include "../lib/GameCells/GameCell.h"
 #include "../lib/Window/GameWorld.h"
 
-#include "../lib/DataStructures/Stack.h"
-
 #include "../lib/Window/GameWindow.h"
+#include "../lib/Window/GameMenu.h"
 #include "utils/utils.h"
 
 #include "../lib/GameCells/LakeCell.h"

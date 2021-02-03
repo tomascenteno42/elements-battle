@@ -2,11 +2,21 @@
 
 /* UTILS */
 
-int getUserChoice(GameWindow* window)
+bool stringIsNumeric(std::string s)
+{
+    for(int i = 0; i < (s.length() - 1); i ++) {
+        if ((int)s[i] >= 10) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int getUserChoice(GameMenu* menu)
 {
     int choice = 0;
     
-    choice = stoi(window->menu->textbox->getText());
+    choice = stoi(menu->textbox->getText());
 
     return choice;
 }

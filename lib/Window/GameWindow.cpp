@@ -3,6 +3,5 @@
 GameWindow::~GameWindow()
 {
     delete world;
-    delete menu;
     delete stats;
 }

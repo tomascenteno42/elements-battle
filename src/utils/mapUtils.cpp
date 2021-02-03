@@ -135,30 +135,32 @@ void validateDestination(GameWorld *world, Character *character, sf::Vector2f &d
     validateDestination(world, character, destination, energyRequired);
 }
 
-void drawScreen(GameWindow *win)
+void drawScreen(GameWindow *win, GameMenu* menu)
 {
     for (size_t i = 0; i < win->world->tiles.size(); i++)
     {
         win->draw(win->world->tiles[i]->getCell());
     }
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3; i++)
     {
         win->draw(win->world->player1Characters[i]->getCell());
         win->draw(win->world->player2Characters[i]->getCell());
     }
 
     win->draw(win->stats->getCell());
-    win->draw(win->menu->getCell());
-    showMenuOptions(win);
-    win->menu->textbox->drawTo(*win);
+    win->draw(menu->getCell());
+    menu->drawCurrentMenu();
+    menu->textbox->drawTo(*win);
 }
 
 void renderMap(sf::RenderWindow &win)
 {
 }
 
-void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character)
+void processMoveChoice(GameWindow *win, Character *character, GameMenu* menu)
 {
+    Stack<sf::Vector2f> * movStack = win->world->movStack;
+
     if (movStack->isEmpty())
     {
     	int energyRequired = 0;
@@ -177,14 +179,14 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
         moveCharacter(character, movStack);
         //this_thread::sleep_for(chrono::milliseconds(250));
         win->clear();
-        drawScreen(win);
+        drawScreen(win, menu);
         win->display();
     }
 }
 
 void processAttackChoice(GameWorld* world, Character *character, vector<Character*> enemyCharacters)
 {
-	for (int i = 0; i < 2; i ++)
+	for (int i = 0; i < 3; i ++)
 	{
 		character -> attack(enemyCharacters[i]);
 	}
@@ -195,13 +197,13 @@ void printStats(GameWorld* world)
 {
 	Character* character = 0;
 	std::cout << "PLAYER 1:" << std::endl;
-	for (int i = 0; i < 2; i ++)
+	for (int i = 0; i < 3; i ++)
 	{
 		character = world->player1Characters[i];
 		std::cout << "\t" << character->getName() << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;
 	}
 	std::cout << "PLAYER 2:" << std::endl;
-	for (int i = 0; i < 2; i ++)
+	for (int i = 0; i < 3; i ++)
 	{
 		character = world->player2Characters[i];
 		std::cout << "\t" << character->getName() << ": " << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;

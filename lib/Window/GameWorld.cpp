@@ -4,6 +4,8 @@ const int HEIGHT = 50, WIDTH = 50;
 
 GameWorld::GameWorld()
 {
+	movStack = new Stack<sf::Vector2f>();
+	setMap();
 }
 
 void GameWorld::setMap()
@@ -101,9 +103,11 @@ GameWorld::~GameWorld()
 		tiles.pop_back();
 	}
 
-	for (int i = 0; i < 2; i ++)
+	for (int i = 0; i < 3; i ++)
 	{
 		delete player1Characters[i];
 		delete player2Characters[i];
 	}
+
+	delete movStack;
 }
