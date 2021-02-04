@@ -1,11 +1,12 @@
 #include "../../src/main.h"
 
-GameMenu::GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color)
+GameMenu::GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window)
     :Cell(xPos, yPos, ySize, xSize, color)
     {
         font.loadFromFile(FONT_FILE);
         textbox = new Textbox(14, sf::Color::White, true, font);
         menuList = new GenericList<Menu*>;
+        this -> window = window;
         setRequest("Choose an option: ");
         fillMenuList();
     };
@@ -49,6 +50,21 @@ void GameMenu::processInput()
         request.setString("Enter a valid choice: ");
     //else
         //processOption(currentMenuIndex, stoi(input), waitingForOptionChoice);
+}
+
+void GameMenu::showCurrentMenu()
+{
+    float pos = 410;
+
+    for (int i = 0; i < currentMenu->getLength(); i++)
+    {
+        sf::Text text((to_string((i + 1)) + ") " + currentMenu->getOption(i)), font, 14);
+        text.setFillColor(sf::Color::White);
+	    text.setPosition(sf::Vector2f(10, pos));
+        pos += 25;
+        window->draw(text);
+    }
+    window->draw(request);
 }
 
 GameMenu::~GameMenu()
