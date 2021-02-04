@@ -85,10 +85,8 @@ int main()
 				cout << input << endl;
 				if (event.text.unicode == ENTER_KEY)
 				{
-					if (input.size() == 1)
-					{
-						renderMenu(l, window);
-					}
+					//window->menu->processInput();
+					renderMenu(l, window->menu);
 					window->menu->textbox->setText("");
 				}
 				break;

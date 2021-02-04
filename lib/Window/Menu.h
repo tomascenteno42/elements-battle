@@ -12,7 +12,7 @@ private:
     int length = 0;
 
 public:
-    Menu(int cantidad);
+    Menu(int length);
     Menu(const Menu &L);            // copy constructor
     Menu &operator=(const Menu &L); // assignment
 

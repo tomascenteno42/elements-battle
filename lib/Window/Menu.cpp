@@ -1,14 +1,14 @@
 #include "../../src/main.h"
 
-Menu::Menu(int quantity)
+Menu::Menu(int length)
 {
-    length = quantity;
+    this -> length = length;
     options = new string[length];
 }
 
-void Menu::addOption(string opcion)
+void Menu::addOption(string option)
 {
-    options[index] = opcion;
+    options[index] = option;
     index++;
 }
 

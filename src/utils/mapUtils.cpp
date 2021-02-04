@@ -149,7 +149,7 @@ void drawScreen(GameWindow *win)
 
     win->draw(win->stats->getCell());
     win->draw(win->menu->getCell());
-    win->menu->showCurrentMenu();
+    win->menu->drawCurrentMenu();
     win->menu->textbox->drawTo(*win);
 }
 

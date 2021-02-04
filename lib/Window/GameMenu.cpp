@@ -16,14 +16,14 @@ void GameMenu::fillMenuList()
     const char *optionsFiles[4] = {OPTIONS_FILE_1, OPTIONS_FILE_2, OPTIONS_FILE_3, OPTIONS_FILE_4};
     int menuLength = 0;
     Menu* m = 0;
-    for (int i = 0; i < 3; i ++)
+    for (int i = 0; i < 4; i ++)
     {
         menuLength = getAmountOfOptions(optionsFiles[i]);
         m = new Menu(menuLength);
         fillMenu(m, optionsFiles[i]);
         menuList->add(m, i+1);
     }
-    currentMenu = menuList->get(1);
+    changeCurrentMenu(mainMenu);
 }
 
 void GameMenu::changeCurrentMenu(menus menu)
@@ -43,16 +43,28 @@ Menu* GameMenu::getCurrentMenu()
     return currentMenu;
 }
 
+menus GameMenu::getCurrentMenuIndex()
+{
+    return currentMenuIndex;
+}
+/*
 void GameMenu::processInput()
 {
     std::string input = textbox -> getText();
-    if (waitingForOptionChoice && !(stringIsNumeric(input) && stoi(input) >= 1 && stoi(input) <= currentMenu->getLength()))
-        request.setString("Enter a valid choice: ");
-    //else
-        //processOption(currentMenuIndex, stoi(input), waitingForOptionChoice);
-}
+    if (waitingForOptionChoice)
+    {
+        if (!(stringIsNumeric(input) && stoi(input) >= 1 && stoi(input) <= currentMenu->getLength()))
+            request.setString("Enter a valid choice: ");
+        else
+            processOption(currentMenuIndex, stoi(input), waitingForOptionChoice);
+    }
+    else
+    {
 
-void GameMenu::showCurrentMenu()
+    }
+}*/
+
+void GameMenu::drawCurrentMenu()
 {
     float pos = 410;
 

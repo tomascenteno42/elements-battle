@@ -19,29 +19,21 @@ void fillMenu(Menu *m, const char* filename);
     @param l List object.
     @param win game window.
 */
-void renderMenu(List *l, GameWindow *win);
+void renderMenu(List *l, GameMenu *menu);
 
-/**
-   Renders the user options choice.
-   @param l List object.
-   @param option Option to execute.
-   @param window Game window.
-*/
-void renderMenuOption(List *l, int option, GameWindow *window);
+void processOptionChoice(GameMenu *menu, int option);
+void processUserInput(GameMenu *menu, std::string input);
 
-/**
-   Renders the user options choice.
-   @param l List object.
-   @param option Option to execute.
-   @param window Game window.
-*/
-void renderMenuOption2(List *l, int option, GameWindow *window);
+void preprocessMainMenuOption(GameMenu *menu, int option);
+void preprocessCharMenuOption(GameMenu *menu, int option);
+void preprocessGameMenu1Option(GameMenu *menu, int option);
+void preprocessGameMenu2Option(GameMenu *menu, int option);
 
-/**
-    Display through terminal the options inside Menu object.
-    @param window Game window.
-*/
-void showMenuOptions(GameWindow* window);
+void processMainMenuInput(GameMenu *menu, std::string input);
+void processCharMenuInput(GameMenu *menu, std::string input);
+void processGameMenu1Input(GameMenu *menu, std::string input);
+void processGameMenu2Input(GameMenu *menu, std::string input);
+
 
 /**
     Calculates amount of lines(options) in OPTIONS_FILE.
@@ -49,21 +41,6 @@ void showMenuOptions(GameWindow* window);
     @param filename optionsfile.txt.
 */
 int getAmountOfOptions(const char* filename);
-
-/**
-   Stores and returns user options choice.
-   @return User choice as integer.
-   @param window Game window.
-*/
-int getUserChoice(GameWindow* window);
-
-/**
-   Validates user choice to be in between of menu length and 1.  
-   It shows ui incorrect untils it is correct. 
-   @param option Options passed by reference.
-   @param menuLength Amount of options that Menu object contain.
-*/
-void validateUserChoice(int &option, int menuLength);
 
 /* LIST */
 
@@ -153,7 +130,7 @@ void showCharacterStatsByIndex(List *l, int index);
 */
 void feedCharacterByIndex(List *l, int index);
 
-/* UTILS */
+// ---------------------------------------------------- PARSERS & VALIDATORS
 
 /**
  *  Parser from string to Element(default EARTH).
@@ -176,31 +153,6 @@ string parseElementToString(elements elementToParse);
 void validateElement(string &element);
 
 /**
-   Throws an error message in screen when a character with a specific name was not found.
-*/
-void notFoundCharacterNameError();
-
-/**
- * Makes terminal stop and wait for user to enter a character, displaying this information.
-*/
-void waitForEnter();
-
-/**
- * Cleans the terminal.
-*/
-void clearScreen();
-
-/**
- * Renders "WELCOME TO BATTLE OF THE ELEMENTS".
-*/
-void renderGameTitle();
-
-/**
- * Prints a blank linea in terminal
-*/
-void printBlankLine();
-
-/**
  * Parse given string to terrains enum.
  * @param colorToParse 
  * @return terrains
@@ -215,6 +167,11 @@ terrains parseStringToColor(string colorToParse);
 sf::Color parseTerrainToSf(terrains terrain);
 
 terrains parseStringToTerrain(string colorToParse);
+
+
+
+// ---------------------------------------------------------------- MAP UTILS (& some others)
+
 
 /*
  * Sets the distances and paths matrixes to their initial state according to the FW Shortest Paths algorithm.
@@ -257,6 +214,8 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
 void processAttackChoice(GameWorld *world, Character *character, vector<Character*> enemyCharacters);
 
 void printStats(GameWorld* world);
+
+// -------------------------------------------------------------------------
 
 /**
  * Generic function for validating file opening.
