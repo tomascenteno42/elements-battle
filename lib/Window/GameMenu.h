@@ -6,22 +6,27 @@
 class GameMenu : public Cell
 {
 private:
-    GenericList<Menu*>* MenuList;
-    Menu* ChosenMenu;
+    GenericList<Menu*>* menuList;
+    Menu* currentMenu;
+    menus currentMenuIndex;
+    int currentOption = 0;
+
+    sf::Font font;
 
 public:
     Textbox *textbox;
+    sf::Text request;
+    bool waitingForOptionChoice = true;
 
-    GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, Textbox *text) : 
-    Cell(xPos, yPos, ySize, xSize, color)
-    {
-        textbox = text;
-        MenuList = new GenericList<Menu*>;
-    };
+    GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color);
 
-    void FillMenuList();
-    void ChangeChosen(size_t pos);
-    Menu* GetChosenMenu();
+    void fillMenuList();
+    void changeCurrentMenu(menus menu);
+    void setRequest(std::string req);
+
+    Menu* getCurrentMenu();
+
+    void processInput();
 
     ~GameMenu();
 };

@@ -5,6 +5,8 @@
 
 /* MENU */
 
+bool stringIsNumeric(std::string s);
+
 /**
    Retrieves options from OPTIONS_FILE and fills the Menu object
    @param m Object menu.

@@ -24,6 +24,14 @@ const int VALOR_ALIMENTO_FUEGO = 15;
 const int VALOR_ALIMENTO_TIERRA = 8;
 const int VALOR_ALIMENTO_AGUA = 10;
 
+enum menus
+{
+	mainMenu = 1,
+	charSelectionMenu,
+	gameMenu1,
+	gameMenu2
+};
+
 enum terrains
 {
 	none,

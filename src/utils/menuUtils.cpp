@@ -22,13 +22,13 @@ void renderMenu(List *l, GameWindow *window)
 {
     int choice = 1;
 
-    if (choice >= 1 && choice < window->menu->GetChosenMenu()->getLength())
+    if (choice >= 1 && choice < window->menu->getCurrentMenu()->getLength())
     {
         choice = getUserChoice(window);
         cout << "Choice: " << choice << endl;
-        //validateUserChoice(choice, window->menu->GetChosenMenu()->getLength());
+        //validateUserChoice(choice, window->menu->getCurrentMenu()->getLength());
 
-        if (window->menu->GetChosenMenu()->getLength() == 6)
+        if (window->menu->getCurrentMenu()->getLength() == 6)
         {
             renderMenuOption(l, choice, window);
             cout << "First Menu Options rendered" << endl;
@@ -58,8 +58,8 @@ void renderMenuOption(List *l, int option, GameWindow* window)
     case 4:
         break;
     case 5:
-        window->menu->ChangeChosen(2);
-        cout << "REASSIGNED CHOSEN" << endl;
+        window->menu->changeCurrentMenu(charSelectionMenu);
+        cout << "REASSIGNED CURRENT" << endl;
         break;
     case 6:
         window->clear();
@@ -80,8 +80,8 @@ void renderMenuOption2(List *l, int option, GameWindow* window)
     case 3:
         break;
     case 4:
-        window->menu->ChangeChosen(1);
-        cout << "REASSIGNED CHOSEN 2" << endl;
+        window->menu->changeCurrentMenu(mainMenu);
+        cout << "REASSIGNED CURRENT 2" << endl;
         break;
     default:
         break;
@@ -94,14 +94,15 @@ void showMenuOptions(GameWindow* window)
 	font.loadFromFile(FONT_FILE);
     float pos = 410;
 
-    for (int i = 0; i < window->menu->GetChosenMenu()->getLength(); i++)
+    for (int i = 0; i < window->menu->getCurrentMenu()->getLength(); i++)
     {
-        sf::Text texto((to_string((i + 1)) + ") " + window->menu->GetChosenMenu()->getOption(i)), font, 20);
+        sf::Text texto((to_string((i + 1)) + ") " + window->menu->getCurrentMenu()->getOption(i)), font, 14);
         texto.setFillColor(sf::Color::White);
 	    texto.setPosition(sf::Vector2f(10, pos));
-        pos += 50;
+        pos += 25;
         window->draw(texto);
     }
+    window->draw(window->menu->request);
 }
 
 int getAmountOfOptions(const char* filename)

@@ -141,7 +141,7 @@ void drawScreen(GameWindow *win)
     {
         win->draw(win->world->tiles[i]->getCell());
     }
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3; i++)
     {
         win->draw(win->world->player1Characters[i]->getCell());
         win->draw(win->world->player2Characters[i]->getCell());
@@ -184,7 +184,7 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
 
 void processAttackChoice(GameWorld* world, Character *character, vector<Character*> enemyCharacters)
 {
-	for (int i = 0; i < 2; i ++)
+	for (int i = 0; i < 3; i ++)
 	{
 		character -> attack(enemyCharacters[i]);
 	}
@@ -195,13 +195,13 @@ void printStats(GameWorld* world)
 {
 	Character* character = 0;
 	std::cout << "PLAYER 1:" << std::endl;
-	for (int i = 0; i < 2; i ++)
+	for (int i = 0; i < 3; i ++)
 	{
 		character = world->player1Characters[i];
 		std::cout << "\t" << character->getName() << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;
 	}
 	std::cout << "PLAYER 2:" << std::endl;
-	for (int i = 0; i < 2; i ++)
+	for (int i = 0; i < 3; i ++)
 	{
 		character = world->player2Characters[i];
 		std::cout << "\t" << character->getName() << ": " << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;
