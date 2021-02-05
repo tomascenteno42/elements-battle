@@ -96,3 +96,12 @@ sf::Color parseTerrainToSf(terrains terrain)
         break;
     }
 }
+
+sf::Vector2f parseStringToVector2f(std::string input)
+{
+    int pos = input.find(",");
+    std::string s1 = input.substr(0, pos);
+    std::string s2 = input.substr(pos+1, input.length());
+    return sf::Vector2f(stof(s1), stof(s2));
+}
+

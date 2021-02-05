@@ -26,6 +26,7 @@ public:
                                         // en ambos casos se ingresa un numero. Si se elige una opcion que no despliega
                                         // un menu nuevo, este atributo cambia a false. Luego de que se termine de procesar
                                         // esa opcion, vuelve a true
+    bool waitingForValidInput = false;
 
     GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window);
 

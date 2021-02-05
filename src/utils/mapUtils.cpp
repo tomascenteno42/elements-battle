@@ -105,36 +105,6 @@ void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack)
     character->move(playerPos);
 }
 
-sf::Vector2f askDestination()
-{
-    string x, y;
-    cout << "Move to x (0-7): ";
-    cin >> x;
-    cout << "Move to y (0-7): ";
-    cin >> y;
-    return sf::Vector2f(stof(x), stof(y));
-}
-
-void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination, int &energyRequired)
-{
-    energyRequired = world->distances
-                            [static_cast<int>(character->getElement()) - 1]
-                            [int(character->getPos().x + 8 * character->getPos().y)]
-                            [int(destination.x + 8 * destination.y)];
-
-    if (destination.x < 0 || destination.x > 7 || destination.y < 0 || destination.y > 7)
-        std::cout << "Invalid destination" << std::endl;
-    else if (world->tiles[destination.x + 8 * destination.y]->isOccupied())
-        std::cout << "You can't move there, the cell is occupied" << std::endl;
-    else if (energyRequired > character->getEnergy())
-        std::cout << "You can't move there, you lack energy" << std::endl;
-    else
-        return;
-
-    destination = askDestination();
-    validateDestination(world, character, destination, energyRequired);
-}
-
 void drawScreen(GameWindow *win)
 {
     for (size_t i = 0; i < win->world->tiles.size(); i++)
@@ -157,7 +127,7 @@ void renderMap(sf::RenderWindow &win)
 {
 }
 
-void processMoveChoice(GameWindow *win, Character *character)
+void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination)
 {
     Stack<sf::Vector2f> *movStack = win->world->movStack;
 
@@ -165,8 +135,8 @@ void processMoveChoice(GameWindow *win, Character *character)
     {
     	int energyRequired = 0;
         sf::Vector2f characterPos = character->getPos();
-        sf::Vector2f destination = askDestination();
-        validateDestination(win->world, character, destination, energyRequired);
+        //sf::Vector2f destination = askDestination();
+        //validateDestination(win->world, character, destination, energyRequired);
         character->setEnergy(character->getEnergy() - energyRequired);
         std::cout << "Energy Consumed: " << energyRequired << std::endl; // test
         win->world->tiles[characterPos.x + 8 * characterPos.y]->setOccupied(false);

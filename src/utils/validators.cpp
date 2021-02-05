@@ -10,3 +10,12 @@ void validateElement(string &element)
         cout << element;
     }
 }
+
+bool validDestinationFormat(std::string input)
+{
+    int pos = input.find(",");
+    if (pos == -1) return false;
+    std::string s1 = input.substr(0, pos);
+    std::string s2 = input.substr(pos+1, input.length());
+    return (stringIsNumeric(s1) && stringIsNumeric(s2));
+}
