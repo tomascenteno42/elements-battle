@@ -1,5 +1,4 @@
 #include "main.h"
-//#include "../lib/Window/GameWindow.h"
 
 int main()
 {
@@ -31,11 +30,7 @@ int main()
 
 	////////////////////////////////////////////////////////////////
 
-	List *l = new List; // Characters List
-
 	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
-
-	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
 
 	// Adding all characters
 	Character *character1 = new WaterCharacter("WaterChr1", WATER, 100, 2);
@@ -86,7 +81,7 @@ int main()
 				if (event.text.unicode == ENTER_KEY)
 				{
 					//window->menu->processInput();
-					renderMenu(l, window->menu);
+					renderMenu(window->menu);
 					window->menu->textbox->setText("");
 				}
 				break;
@@ -131,8 +126,6 @@ int main()
 		turn ++; */
 	}
 
-	delete movStack;
 	delete window;
-	delete l;         // Characters list
 	return 0;
 }

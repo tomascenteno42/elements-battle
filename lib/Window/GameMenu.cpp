@@ -47,6 +47,7 @@ menus GameMenu::getCurrentMenuIndex()
 {
     return currentMenuIndex;
 }
+
 /*
 void GameMenu::processInput()
 {
@@ -76,6 +77,8 @@ void GameMenu::drawCurrentMenu()
         pos += 25;
         window->draw(text);
     }
+    if (waitingForOptionChoice)
+        setRequest("Choose an option: ");
     window->draw(request);
 }
 

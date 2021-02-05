@@ -5,6 +5,7 @@ const int HEIGHT = 50, WIDTH = 50;
 GameWorld::GameWorld()
 {
 	setMap();
+	movStack = new Stack<sf::Vector2f>();
 }
 
 void GameWorld::setMap()
@@ -107,4 +108,6 @@ GameWorld::~GameWorld()
 		delete player1Characters[i];
 		delete player2Characters[i];
 	}
+
+	delete movStack;
 }

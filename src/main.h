@@ -84,10 +84,11 @@ using namespace std;
 #include "../lib/Window/GameStats.h"
 #include "../lib/Window/GameMenu.h"
 
+#include "../lib/DataStructures/Stack.h"
+
 #include "../lib/GameCells/GameCell.h"
 #include "../lib/Window/GameWorld.h"
 
-#include "../lib/DataStructures/Stack.h"
 
 #include "../lib/Window/GameWindow.h"
 #include "utils/utils.h"

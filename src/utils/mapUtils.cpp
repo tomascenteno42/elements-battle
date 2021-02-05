@@ -157,8 +157,10 @@ void renderMap(sf::RenderWindow &win)
 {
 }
 
-void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character)
+void processMoveChoice(GameWindow *win, Character *character)
 {
+    Stack<sf::Vector2f> *movStack = win->world->movStack;
+
     if (movStack->isEmpty())
     {
     	int energyRequired = 0;
@@ -175,7 +177,7 @@ void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character
     while (!movStack->isEmpty())
     {
         moveCharacter(character, movStack);
-        //this_thread::sleep_for(chrono::milliseconds(250));
+        this_thread::sleep_for(chrono::milliseconds(250));
         win->clear();
         drawScreen(win);
         win->display();

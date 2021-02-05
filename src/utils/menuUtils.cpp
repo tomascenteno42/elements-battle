@@ -18,19 +18,22 @@ void fillMenu(Menu *m, const char* filename)
     optionsFile.close();
 }
 
-void renderMenu(List *l, GameMenu *menu)
+void renderMenu(GameMenu *menu)
 {
     std::string input = menu->textbox->getText();
     
     if (!menu->waitingForOptionChoice)
-        processUserInput(menu, input);  // En este caso no se elige opcion del menu, ya se está en una opción y se está ingresando lo pedido
+        processUserInput(menu, input);
+        // En este caso no se elige opcion del menu, ya se está en una opción y se está ingresando lo pedido
     else
     {
         if (!(stringIsNumeric(input) && stoi(input) >= 1 && stoi(input) <= menu->getCurrentMenu()->getLength()))
             menu->request.setString("Enter a valid choice: ");
         else
-            processOptionChoice(menu, stoi(input)); // Se actualiza el mensaje de request según la opción del menú que se elija
-                                                    // Y la instancia de menu se prepara para el siguiente ingreso
+            processOptionChoice(menu, stoi(input));
+            // Se actualiza el mensaje de request según la opción del menú que se elija
+            // Y la instancia de menu se prepara para el siguiente ingreso
+            
 // El proceso es: "Menu: ..., ..., 4 - Mover personaje, ..."
 //                *El usuario ingresa 4
 //                Ahora se preprocesa esa entrada y el menú sabe que lo siguiente que se va a ingresar es para mover
@@ -85,8 +88,7 @@ void preprocessMainMenuOption(GameMenu *menu, int option)
             menu->changeCurrentMenu(charSelectionMenu);
             break;
         case 6:
-            menu->setRequest("Bye");
-            menu->waitingForOptionChoice = true;
+            menu->window->close();
             break;
         default:
             break;
@@ -106,8 +108,12 @@ void preprocessCharMenuOption(GameMenu *menu, int option)
             menu->waitingForOptionChoice = false;
             break;
         case 3:
-            menu->setRequest("Pick a character: ");
-            menu->waitingForOptionChoice = false;
+            //menu->setRequest("Pick a character: ");
+            //menu->waitingForOptionChoice = false;
+            //orden: P1, P2, P1, P2, P1, P2
+            //luego de que se eligen los 6 personajes tienen que posicionarlos
+            menu->waitingForOptionChoice = true;
+            menu->changeCurrentMenu(gameMenu1);
             break;
         case 4:
             menu->setRequest("Choose an option: ");
@@ -119,8 +125,61 @@ void preprocessCharMenuOption(GameMenu *menu, int option)
     }
 }
 
-void preprocessGameMenu1Option(GameMenu *menu, int option) {}
-void preprocessGameMenu2Option(GameMenu *menu, int option) {}
+void preprocessGameMenu1Option(GameMenu *menu, int option)
+{
+    bool allCharactersPlayed = false;
+    if (allCharactersPlayed) option = 4;
+
+    switch (option)
+    {
+        case 1:
+            menu->setRequest("The game was saved succesfully");
+            // Aca se llamaria a la funcion que guarda la partida
+            menu->waitingForOptionChoice = true;
+            break;
+        case 2:
+            menu->setRequest("Choose a character to feed: ");
+            menu->waitingForOptionChoice = false;
+            break;
+        case 3:
+            menu->setRequest("Choose a character to move: ");
+            menu->waitingForOptionChoice = false;
+            break;
+        case 4:
+            // Pasar opcion
+            menu->waitingForOptionChoice = true;
+            menu->changeCurrentMenu(gameMenu2);
+            break;
+        default:
+            break;
+    }
+}
+
+void preprocessGameMenu2Option(GameMenu *menu, int option)
+{
+    bool allCharactersPlayed = false;
+    if (allCharactersPlayed) option = 3;
+
+    switch (option)
+    {
+        case 1:
+            menu->setRequest("Choose a character to attack with: ");
+            menu->waitingForOptionChoice = false;
+            break;
+        case 2:
+            menu->setRequest("Choose a character to defend: ");
+            menu->waitingForOptionChoice = false;
+            break;
+        case 3:
+            // Pasar opcion
+            // cambiar de quien es el turno de jugar
+            menu->waitingForOptionChoice = true;
+            menu->changeCurrentMenu(gameMenu1);
+            break;
+        default:
+            break;
+    }   
+}
 
 void processUserInput(GameMenu *menu, std::string input)
 {
@@ -162,6 +221,7 @@ void processMainMenuInput(GameMenu *menu, std::string input)
         default:
             break;
     }
+    menu->waitingForOptionChoice = true;
 }
 
 void processCharMenuInput(GameMenu *menu, std::string input)
@@ -182,10 +242,41 @@ void processCharMenuInput(GameMenu *menu, std::string input)
         default:
             break;
     }
+    //if (charactersSelected == 6) currentMenu = characterPositioningMenu;
+    menu->waitingForOptionChoice = true;
 }
 
-void processGameMenu1Input(GameMenu *menu, std::string input) {}
-void processGameMenu2Input(GameMenu *menu, std::string input) {}
+void processGameMenu1Input(GameMenu *menu, std::string input)
+{
+    switch (menu->currentOption)
+    {
+        case 2:
+            std::cout << "Alimentar personaje" << std::endl;
+            break;
+        case 3:
+            processMoveChoice(menu->window, menu->window->world->player1Characters[0]);
+            break;
+        default:
+            break;
+    }
+    menu->waitingForOptionChoice = true;  
+}
+
+void processGameMenu2Input(GameMenu *menu, std::string input)
+{
+    switch (menu->currentOption)
+    {
+        case 1:
+            std::cout << "Atacar personaje" << std::endl;
+            break;
+        case 2:
+            std::cout << "Defender personaje" << std::endl;
+            break;
+        default:
+            break;
+    }
+    menu->waitingForOptionChoice = true;  
+}
 
 
 int getAmountOfOptions(const char* filename)
@@ -213,94 +304,3 @@ int getAmountOfOptions(const char* filename)
     return length;
 }
 
-/* MENU OPTIONS FUNCTIONALITY */
-
-// option 1
-void addCharacter(List *l)
-{
-    string line[3];
-    string name;
-    string element;
-
-    cout << "Name of the character: ";
-    cin >> line[0];
-
-    cout << "Element of the character(Fire, Water, Earth, Air): ";
-    cin >> element;
-
-    validateElement(element);
-    addCharacterToList(l, l->getQuantity() + 1, line, element);
-
-    //clearScreen();
-    cout << line[0] << " was added to the game!" << endl;
-}
-
-// option 2
-void eraseCharacter(List *l)
-{
-    string name;
-    int index = 0;
-
-    cout << "Name of the character to erase: ";
-    cin >> name;
-
-    index = getIndexByCharacterName(l, name);
-
-    if (index != 0)
-    {
-        l->drop(index);
-        //clearScreen();
-        cout << name << " has been erased from the game." << endl;
-    }
-    //else
-        //notFoundCharacterNameError();
-}
-
-// option 3
-void showAllCharactersNames(List *l)
-{
-    cout << "Characters: ";
-
-    //printBlankLine();
-
-    for (int i = 1; i <= l->getQuantity(); i++)
-    {
-        cout << "Character " << i << ": ";
-        cout << l->get(i)->getName() << endl;
-    }
-    //printBlankLine();
-}
-
-//option 4
-void searchCharacterStats(List *l)
-{
-    string name;
-    int index = 0;
-    cout << "Name of character you will like to see stats of: ";
-    cin >> name;
-    index = getIndexByCharacterName(l, name);
-    if (index != 0)
-    {
-        //clearScreen();
-        showCharacterStatsByIndex(l, index);
-    }
-    //else
-        //notFoundCharacterNameError();
-}
-
-//option 5
-void feedCharacter(List *l)
-{
-    string name;
-    int index = 0;
-    cout << "Name of character you will like to feed: ";
-    cin >> name;
-    index = getIndexByCharacterName(l, name);
-    if (index != 0)
-    {
-        //clearScreen();
-        feedCharacterByIndex(l, index);
-    }
-    //else
-        //notFoundCharacterNameError();
-}
