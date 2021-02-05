@@ -21,13 +21,14 @@ void fillMenu(Menu *m, const char* filename)
 void renderMenu(GameMenu *menu)
 {
     std::string input = menu->textbox->getText();
+    menu->textbox->setText("");
     
     if (!menu->waitingForOptionChoice)
         processUserInput(menu, input);
         // En este caso no se elige opcion del menu, ya se está en una opción y se está ingresando lo pedido
     else
     {
-        if (!(stringIsNumeric(input) && stoi(input) >= 1 && stoi(input) <= menu->getCurrentMenu()->getLength()))
+        if (input == "" || !stringIsNumeric(input) || stoi(input) < 1 || stoi(input) > menu->getCurrentMenu()->getLength())
             menu->request.setString("Enter a valid choice: ");
         else
             processOptionChoice(menu, stoi(input));
@@ -112,6 +113,7 @@ void preprocessCharMenuOption(GameMenu *menu, int option)
             //menu->waitingForOptionChoice = false;
             //orden: P1, P2, P1, P2, P1, P2
             //luego de que se eligen los 6 personajes tienen que posicionarlos
+            menu->setRequest("Choose an option: ");
             menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(gameMenu1);
             break;
@@ -127,9 +129,6 @@ void preprocessCharMenuOption(GameMenu *menu, int option)
 
 void preprocessGameMenu1Option(GameMenu *menu, int option)
 {
-    bool allCharactersPlayed = false;
-    if (allCharactersPlayed) option = 4;
-
     switch (option)
     {
         case 1:
@@ -149,6 +148,7 @@ void preprocessGameMenu1Option(GameMenu *menu, int option)
             break;
         case 4:
             // Pasar opcion
+            menu->setRequest("Choose an option: ");
             menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(gameMenu2);
             break;
@@ -159,28 +159,41 @@ void preprocessGameMenu1Option(GameMenu *menu, int option)
 
 void preprocessGameMenu2Option(GameMenu *menu, int option)
 {
-    bool allCharactersPlayed = false;
-    if (allCharactersPlayed) option = 3;
+    Character* character = menu->window->world->currentCharacter;
 
     switch (option)
     {
         case 1:
-            menu->setRequest("Choose a character to attack with: ");
-            menu->waitingForOptionChoice = false;
+            if (character->getElement() == WATER)
+            {
+                menu->setRequest("Attack at position (example: 2,5): ");
+                menu->waitingForOptionChoice = false;
+                menu->waitingForValidInput = true;
+                break;
+            }
+            std::cout << (character->getElement() == WATER) << std::endl;
+
+            if (menu->window->world->currentPlayer == 1)
+                character->attack(menu->window->world->player2Characters, {-1,-1});
+            else
+                character->attack(menu->window->world->player1Characters, {-1,-1});
+
+            menu->setRequest("Choose an option: ");
+            menu->waitingForOptionChoice = true;
             break;
         case 2:
             menu->setRequest("Choose a character to defend: ");
             menu->waitingForOptionChoice = false;
             break;
         case 3:
-            // Pasar opcion
-            // cambiar de quien es el turno de jugar
+            menu->setRequest("Choose an option: ");
             menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(gameMenu1);
+            advanceState(menu->window->world);
             break;
         default:
             break;
-    }   
+    }
 }
 
 void processUserInput(GameMenu *menu, std::string input)
@@ -250,17 +263,18 @@ void processCharMenuInput(GameMenu *menu, std::string input)
 
 void processGameMenu1Input(GameMenu *menu, std::string input)
 {
-    Character* character = menu->window->world->player1Characters[0];
+    Character* character = menu->window->world->currentCharacter;
     sf::Vector2f destination;
     switch (menu->currentOption)
     {
         case 2:
             std::cout << "Alimentar personaje" << std::endl;
             menu->waitingForOptionChoice = true;
+            menu->changeCurrentMenu(gameMenu2);
             break;
         case 3:
-            if (!validDestinationFormat(input))
-                menu->setRequest("Incorrect format, if you wanted to move to position X=0 Y=1, enter 0,1");
+            if (!validPosition(input))
+                menu->setRequest("Invalid position. Enter X,Y with X and Y between 0 and 7");
             else
             {
                 destination = parseStringToVector2f(input);
@@ -271,7 +285,8 @@ void processGameMenu1Input(GameMenu *menu, std::string input)
             {
                 processMoveChoice(menu->window, character, destination);
                 menu->waitingForOptionChoice = true;
-                menu->waitingForValidInput = false;
+                menu->changeCurrentMenu(gameMenu2);
+                menu->setRequest("Choose an option: ");
             }
             break;
         default:
@@ -281,18 +296,44 @@ void processGameMenu1Input(GameMenu *menu, std::string input)
 
 void processGameMenu2Input(GameMenu *menu, std::string input)
 {
+    Character* character = menu->window->world->currentCharacter;
+    sf::Vector2f position;
     switch (menu->currentOption)
     {
         case 1:
-            std::cout << "Atacar personaje" << std::endl;
+            if (!validPosition(input))
+                menu->setRequest("Invalid position. Enter X,Y with X and Y between 0 and 7");
+            else
+            {
+                menu->waitingForValidInput = false;
+                position = parseStringToVector2f(input);
+            }
+
+            std::cout << input << std::endl;
+            std::cout << menu->waitingForValidInput << std::endl;
+
+            if (!menu->waitingForValidInput)
+            {
+                if (menu->window->world->currentPlayer == 1)
+                    character->attack(menu->window->world->player2Characters, position);
+                else
+                    character->attack(menu->window->world->player1Characters, position);
+                menu->waitingForOptionChoice = true;
+                menu->setRequest("Choose an option: ");
+                menu->changeCurrentMenu(gameMenu1);
+            }
+
             break;
         case 2:
             std::cout << "Defender personaje" << std::endl;
+            menu->waitingForOptionChoice = true;
+            menu->setRequest("Choose an option: ");
+            menu->changeCurrentMenu(gameMenu1);
             break;
         default:
             break;
     }
-    menu->waitingForOptionChoice = true;  
+    advanceState(menu->window->world);
 }
 
 
@@ -308,35 +349,14 @@ int getAmountOfOptions(const char* filename)
     if (optionsFile.is_open())
     {
         while (getline(optionsFile, option, '\n'))
-        {
             length++;
-        }
     }
     else
-    {
         cout << "FILE ERROR";
-    }
 
     optionsFile.close();
     return length;
 }
 
-// ------------------------------------ MENU FUNCTIONALITY
 
-void validateDestination(GameMenu *menu, Character *character, sf::Vector2f destination)
-{
-    GameWorld* world = menu->window->world;
-    int energyRequired = world->distances
-                            [static_cast<int>(character->getElement()) - 1]
-                            [int(character->getPos().x + 8 * character->getPos().y)]
-                            [int(destination.x + 8 * destination.y)];
 
-    if (destination.x < 0 || destination.x > 7 || destination.y < 0 || destination.y > 7)
-        menu->setRequest("Invalid destination. Try a different one");
-    else if (world->tiles[destination.x + 8 * destination.y]->isOccupied())
-        menu->setRequest("You can't move there, the cell is occupied. Try a different one");
-    else if (energyRequired > character->getEnergy())
-        menu->setRequest("You can't move there, you lack energy. Try a different one");
-    else
-        menu->waitingForValidInput = false;
-}

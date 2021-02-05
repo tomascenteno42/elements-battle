@@ -119,7 +119,6 @@ terrains parseStringToColor(string colorToParse);
 
 sf::Vector2f parseStringToVector2f(std::string input);
 
-bool validDestinationFormat(std::string input);
 
 /**
  * Validates a string to be 'Air, air, Water, water, Earth, earth, Fire or fire'. 
@@ -127,6 +126,9 @@ bool validDestinationFormat(std::string input);
 */
 void validateElement(string &element);
 
+bool validPosition(std::string input);
+
+void validateDestination(GameMenu* menu, Character *character, sf::Vector2f destination);
 
 /**
  * Parse from terrains enum to SFML Color class.
@@ -140,6 +142,8 @@ terrains parseStringToTerrain(string colorToParse);
 
 // ---------------------------------------------------------------- MAP UTILS (& some others)
 
+
+void advanceState(GameWorld* world);
 
 /*
  * Sets the distances and paths matrixes to their initial state according to the FW Shortest Paths algorithm.
@@ -172,8 +176,6 @@ void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f pat
  */
 void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
 
-sf::Vector2f askDestination(GameMenu* menu);
-void validateDestination(GameMenu* menu, Character *character, sf::Vector2f destination);
 
 void drawScreen(GameWindow *win);
 

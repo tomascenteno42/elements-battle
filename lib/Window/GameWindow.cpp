@@ -4,7 +4,7 @@ GameWindow::GameWindow(sf::VideoMode window, string title)
     :sf::RenderWindow(window, title)
 {
     world = new GameWorld();
-    menu = new GameMenu(0, 400, 400, 800, sf::Color::Red, this);
+    menu = new GameMenu(0, 400, 400, 800, sf::Color(31,34,45), this);
     stats = new GameStats(400, 0, 400, 400, sf::Color::White);
     setKeyRepeatEnabled(true);
 }

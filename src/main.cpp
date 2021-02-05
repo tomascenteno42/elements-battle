@@ -57,10 +57,7 @@ int main()
 	character6->setPos(sf::Vector2f(7, 7));
 	window->world->addCharacter(character6, 2);
 
-	int turn = 1; // for testing purposes
-
-	bool stop = false; 	// para que sea mas facil cerrar la ventana y
-	string stopStr;		// que no se cuelgue mientras hacemos pruebas
+	window->world->currentCharacter = character1;
 
 	while (window->isOpen())
 	{
@@ -74,18 +71,11 @@ int main()
 				break;
 
 			case sf::Event::TextEntered:
-			{
 				window->menu->textbox->typedOn(event);
-				string input = window->menu->textbox->getText();
-				cout << input << endl;
 				if (event.text.unicode == ENTER_KEY)
-				{
-					//window->menu->processInput();
 					renderMenu(window->menu);
-					window->menu->textbox->setText("");
-				}
 				break;
-			}
+
 			default:
 				break;
 			}
@@ -94,36 +84,6 @@ int main()
 		window->clear();
 		drawScreen(window);
 		window->display();
-
-/* 		if (!stop)									// para que sea mas facil cerrar la ventana y
-		{											// que no se cuelgue mientras hacemos pruebas
-			std::cout << "Keep playing? [Y/N] ";	//
-			cin >> stopStr;							//
-			if (stopStr == "N") stop = true;		//
-		} 											//
-		if (stop) continue;							//
-
-		printStats(world); // for testing purposes
-
-		if (turn%2)
-		{
-			for (int i = 0; i < 3; i ++)
-			{
-				world->player1Characters[i]->setEnergy(20);
-				processMoveChoice(movStack, window, world->player1Characters[i]);
-				processAttackChoice(world, world->player1Characters[i], world->player2Characters);
-			}
-		}
-		else
-		{
-			for (int i = 0; i < 3; i ++)
-			{
-				world->player2Characters[i]->setEnergy(20);
-				processMoveChoice(movStack, window, world->player2Characters[i]);
-				processAttackChoice(world, world->player2Characters[i], world->player1Characters);
-			}
-		} 
-		turn ++; */
 	}
 
 	delete window;

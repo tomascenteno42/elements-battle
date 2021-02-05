@@ -76,21 +76,18 @@ using namespace std;
 #include "../lib/DataStructures/GenericNode.h"
 #include "../lib/DataStructures/List.h"
 #include "../lib/DataStructures/GenericList.h"
+#include "../lib/DataStructures/Stack.h"
 
 #include "../lib/Window/Menu.h"
 #include "../lib/Window/textBox.h"
 #include "../lib/Window/Cell.h"
 
-#include "../lib/Window/GameStats.h"
-#include "../lib/Window/GameMenu.h"
-
-#include "../lib/DataStructures/Stack.h"
-
 #include "../lib/GameCells/GameCell.h"
 #include "../lib/Window/GameWorld.h"
-
-
+#include "../lib/Window/GameStats.h"
+#include "../lib/Window/GameMenu.h"
 #include "../lib/Window/GameWindow.h"
+
 #include "utils/utils.h"
 
 #include "../lib/GameCells/LakeCell.h"

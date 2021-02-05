@@ -1,5 +1,21 @@
 #include "../main.h"
 
+void advanceState(GameWorld* world)
+{
+    world->charactersPlayed ++; 
+
+    if (world->charactersPlayed == 3)
+    {
+        world->charactersPlayed = 0;
+        world->currentPlayer = world->currentPlayer % 2 + 1;
+    }
+
+    if (world->currentPlayer == 1)
+        world->currentCharacter = world->player1Characters[world->charactersPlayed];
+    else
+        world->currentCharacter = world->player2Characters[world->charactersPlayed];
+}
+
 bool intersects(GameCell *cell1, GameCell *cell2)
 {
     float cell1x = (cell1->getPos()).x;
@@ -135,8 +151,6 @@ void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f desti
     {
     	int energyRequired = 0;
         sf::Vector2f characterPos = character->getPos();
-        //sf::Vector2f destination = askDestination();
-        //validateDestination(win->world, character, destination, energyRequired);
         character->setEnergy(character->getEnergy() - energyRequired);
         std::cout << "Energy Consumed: " << energyRequired << std::endl; // test
         win->world->tiles[characterPos.x + 8 * characterPos.y]->setOccupied(false);
@@ -156,11 +170,7 @@ void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f desti
 
 void processAttackChoice(GameWorld* world, Character *character, vector<Character*> enemyCharacters)
 {
-	for (int i = 0; i < 3; i ++)
-	{
-		character -> attack(enemyCharacters[i]);
-	}
-	character->setEnergy(character->getEnergy() - 5);
+	character -> attack(enemyCharacters, {-1,-1});
 }
 
 void printStats(GameWorld* world)
