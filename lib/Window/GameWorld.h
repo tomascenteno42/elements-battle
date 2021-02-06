@@ -23,6 +23,8 @@ public:
 	void addCharacter(Character* character, int player);
 	void setMap();
 	void setFWMatrixes();
+	void advanceState();
+	void updateCharacters();
 
 	GameWorld();
 	virtual ~GameWorld();

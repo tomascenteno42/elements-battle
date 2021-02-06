@@ -49,11 +49,6 @@ sf::RectangleShape Character::getCell()
 	return cell;
 }
 
-bool Character::getDefense()
-{
-	return defense;
-}
-
 bool Character::isDead()
 {
 	return (getLife() == 0);
@@ -84,11 +79,6 @@ void Character::setShield(int s)
 void Character::setEnergy(int e)
 {
     energy = e;
-}
-
-void Character::setDefense(bool def)
-{
-	defense = def;
 }
 
 void Character::setPos(sf::Vector2f pos)

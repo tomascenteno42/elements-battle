@@ -142,9 +142,6 @@ terrains parseStringToTerrain(string colorToParse);
 
 // ---------------------------------------------------------------- MAP UTILS (& some others)
 
-
-void advanceState(GameWorld* world);
-
 /*
  * Sets the distances and paths matrixes to their initial state according to the FW Shortest Paths algorithm.
  */
@@ -181,8 +178,6 @@ void drawScreen(GameWindow *win);
 
 void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination);
 
-void processAttackChoice(GameWorld *world, Character *character, vector<Character*> enemyCharacters);
 
-void printStats(GameWorld* world);
 
 #endif

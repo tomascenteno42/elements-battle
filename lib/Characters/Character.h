@@ -12,13 +12,14 @@ protected:
     int life;
     int shield;
     int energy;
-    bool defense;
 
     sf::Vector2f pos;	// pos = (4,5) seria personaje en columna 4 y fila 5
     sf::RectangleShape cell;
 
 public:
     Character(string n, elements e, int l, int s);
+
+    bool isDefending = false;
 
     string getName();
     int getLife();
@@ -27,7 +28,6 @@ public:
     elements getElement();
     sf::Vector2f getPos();
     sf::RectangleShape getCell();
-    bool getDefense();
 
     bool isDead();
 
@@ -38,12 +38,12 @@ public:
     void setElement(elements element);
     void setPos(sf::Vector2f pos);
     void setCell();
-    void setDefense(bool def);
 
     virtual void feed() = 0;
     void move(sf::Vector2f pos);
 
-    virtual void attack(vector<Character*> enemyCharacters, sf::Vector2f attackPos) = 0;
+    virtual void attack(vector<Character*> enemies, sf::Vector2f attackPos) = 0;
+    virtual void defend(vector<Character*> allies, sf::Vector2f movePos) = 0;
 
     virtual ~Character();
 

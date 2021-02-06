@@ -24,6 +24,11 @@ void AirCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 	}
 }
 
+void AirCharacter::defend(vector<Character*> allies, sf::Vector2f movePos)
+{
+	return;
+}
+
 void AirCharacter::feed()
 {
     if (!this->canBeFeeded())

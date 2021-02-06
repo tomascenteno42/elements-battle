@@ -20,7 +20,7 @@
 #define ENTER_KEY 13
 #define ESCAPE_KEY 27
 
-const int VALOR_ALIMENTO_FUEGO = 15;
+const int VALOR_ALIMENTO_FUEGO = 5;
 const int VALOR_ALIMENTO_TIERRA = 8;
 const int VALOR_ALIMENTO_AGUA = 10;
 

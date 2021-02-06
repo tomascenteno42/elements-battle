@@ -28,12 +28,21 @@ void FireCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 	}
 }
 
+void FireCharacter::defend(vector<Character*> allies, sf::Vector2f movePos)
+{
+	return;
+}
+
 void FireCharacter::feed()
 {
     if (this->canBeFeeded())
     {
-        this->setLife(this->getLife() + VALOR_ALIMENTO_FUEGO);
-        cout << this->getName() << " was fed with wood. They got " << VALOR_ALIMENTO_FUEGO << " health points." << endl;
+        life = min(100, life + VALOR_ALIMENTO_FUEGO);
+		energy = min(20, energy + 10);
+
+        cout << this->getName() <<
+		" was fed with wood. They got " << VALOR_ALIMENTO_FUEGO << " health points and 10 energy points"
+		<< endl;
     }
     else
     {

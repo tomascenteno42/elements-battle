@@ -48,23 +48,6 @@ menus GameMenu::getCurrentMenuIndex()
     return currentMenuIndex;
 }
 
-/*
-void GameMenu::processInput()
-{
-    std::string input = textbox -> getText();
-    if (waitingForOptionChoice)
-    {
-        if (!(stringIsNumeric(input) && stoi(input) >= 1 && stoi(input) <= currentMenu->getLength()))
-            request.setString("Enter a valid choice: ");
-        else
-            processOption(currentMenuIndex, stoi(input), waitingForOptionChoice);
-    }
-    else
-    {
-
-    }
-}*/
-
 void GameMenu::drawCurrentMenu()
 {
     float pos = 410;
@@ -77,6 +60,8 @@ void GameMenu::drawCurrentMenu()
         pos += 25;
         window->draw(text);
     }
+
+    if (waitingForOptionChoice) setRequest("Choose an option: ");
 
     window->draw(request);
 }

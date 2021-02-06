@@ -28,12 +28,21 @@ void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 	}
 }
 
+void WaterCharacter::defend(vector<Character*> allies, sf::Vector2f movePos)
+{
+	return;
+}
+
 void WaterCharacter::feed()
 {
     if (this->canBeFeeded())
     {
-        this->setEnergy(this->getEnergy() + VALOR_ALIMENTO_AGUA);
-        cout << this->getName() << " was fed with plancton. They got " << VALOR_ALIMENTO_AGUA << " energy points." << endl;
+        energy = min(20, energy + VALOR_ALIMENTO_AGUA);
+
+        cout << this->getName() <<
+		" was fed with plancton. They got " << VALOR_ALIMENTO_AGUA << " energy points."
+		<< endl;
+
         this->timesFeeded += 1;
     }
     else

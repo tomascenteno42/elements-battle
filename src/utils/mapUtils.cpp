@@ -1,21 +1,5 @@
 #include "../main.h"
 
-void advanceState(GameWorld* world)
-{
-    world->charactersPlayed ++; 
-
-    if (world->charactersPlayed == 3)
-    {
-        world->charactersPlayed = 0;
-        world->currentPlayer = world->currentPlayer % 2 + 1;
-    }
-
-    if (world->currentPlayer == 1)
-        world->currentCharacter = world->player1Characters[world->charactersPlayed];
-    else
-        world->currentCharacter = world->player2Characters[world->charactersPlayed];
-}
-
 bool intersects(GameCell *cell1, GameCell *cell2)
 {
     float cell1x = (cell1->getPos()).x;
@@ -155,17 +139,15 @@ void drawScreen(GameWindow *win)
     // Game stats & info
     win->draw(win->stats->getCell());
     if (win->menu->getCurrentMenuIndex() == gameMenu1 || win->menu->getCurrentMenuIndex() == gameMenu2)
+    {
         win->stats->updateStats(win->world);
-    drawStats(win);
+        drawStats(win);
+    }
 
     // Game menu & user interaction
     win->draw(win->menu->getCell());
     win->menu->drawCurrentMenu();
     win->menu->textbox->drawTo(*win);
-}
-
-void renderMap(sf::RenderWindow &win)
-{
 }
 
 void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination)
@@ -191,26 +173,4 @@ void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f desti
         drawScreen(win);
         win->display();
     }
-}
-
-void processAttackChoice(GameWorld* world, Character *character, vector<Character*> enemyCharacters)
-{
-	character -> attack(enemyCharacters, {-1,-1});
-}
-
-void printStats(GameWorld* world)
-{
-	Character* character = 0;
-	std::cout << "PLAYER 1:" << std::endl;
-	for (int i = 0; i < 3; i ++)
-	{
-		character = world->player1Characters[i];
-		std::cout << "\t" << character->getName() << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;
-	}
-	std::cout << "PLAYER 2:" << std::endl;
-	for (int i = 0; i < 3; i ++)
-	{
-		character = world->player2Characters[i];
-		std::cout << "\t" << character->getName() << ": " << character->getLife() << "Health points, " << character->getEnergy() << "Energy points." << std::endl;
-	}
 }

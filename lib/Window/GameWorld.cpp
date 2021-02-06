@@ -95,6 +95,46 @@ bool GameWorld::emptyWorld()
 	return tiles.empty();
 }
 
+void GameWorld::advanceState()
+{
+    charactersPlayed ++; 
+
+    if (charactersPlayed == 3)
+    {
+        charactersPlayed = 0;
+        currentPlayer = currentPlayer % 2 + 1;
+		if (currentPlayer == 1)
+			updateCharacters();
+    }
+
+    if (currentPlayer == 1)
+        currentCharacter = player1Characters[charactersPlayed];
+    else
+        currentCharacter = player2Characters[charactersPlayed];
+}
+
+void GameWorld::updateCharacters()
+{
+	Character* character = 0;
+	for (int i = 0; i < player1Characters.size(); i ++)
+	{
+		character = player1Characters[i];
+		if (character->getElement() == AIR)
+			character->setEnergy(min(20, 5 + character->getEnergy()));
+		if (character->getElement() == EARTH && character->isDefending)
+			character->setShield(character->getShield() - 2);
+	}
+
+	for (int i = 0; i < player2Characters.size(); i ++)
+	{
+		character = player2Characters[i];
+		if (character->getElement() == AIR)
+			character->setEnergy(min(20, 5 + character->getEnergy()));
+		if (character->getElement() == EARTH && character->isDefending)
+			character->setShield(character->getShield() - 2);
+	}
+}
+
 GameWorld::~GameWorld()
 {
 	while (!emptyWorld())
