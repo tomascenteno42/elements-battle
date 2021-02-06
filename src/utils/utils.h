@@ -3,6 +3,9 @@
 
 #include "../main.h"
 
+std::string getUserInput(GameWindow* window);
+sf::Vector2f getPositionFromUser(GameMenu* menu);
+
 // ------------------------------------------------------------- MISC
 
 bool stringIsNumeric(std::string s);
@@ -37,17 +40,13 @@ void fillMenu(Menu *m, const char* filename);
 void renderMenu(GameMenu *menu);
 
 void processOptionChoice(GameMenu *menu, int option);
-void processUserInput(GameMenu *menu, std::string input);
 
-void preprocessMainMenuOption(GameMenu *menu, int option);
-void preprocessCharMenuOption(GameMenu *menu, int option);
-void preprocessGameMenu1Option(GameMenu *menu, int option);
-void preprocessGameMenu2Option(GameMenu *menu, int option);
+void processMainMenuOption(GameMenu *menu, int option);
+void processCharMenuOption(GameMenu *menu, int option);
+void processGameMenu1Option(GameMenu *menu, int option);
+void processGameMenu2Option(GameMenu *menu, int option);
 
-void processMainMenuInput(GameMenu *menu, std::string input);
-void processCharMenuInput(GameMenu *menu, std::string input);
-void processGameMenu1Input(GameMenu *menu, std::string input);
-void processGameMenu2Input(GameMenu *menu, std::string input);
+
 
 
 /**
@@ -127,8 +126,10 @@ sf::Vector2f parseStringToVector2f(std::string input);
 void validateElement(string &element);
 
 bool validPosition(std::string input);
+bool validDestinationEnergy(GameMenu* menu, Character *character, sf::Vector2f destination);
+bool positionIsEmpty(GameMenu *menu, sf::Vector2f destination);
 
-void validateDestination(GameMenu* menu, Character *character, sf::Vector2f destination);
+bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination);
 
 /**
  * Parse from terrains enum to SFML Color class.

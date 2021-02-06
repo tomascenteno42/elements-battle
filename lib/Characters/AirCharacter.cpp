@@ -6,8 +6,14 @@ bool AirCharacter::canBeFeeded()
 }
 
 
-void AirCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
+void AirCharacter::attack(GameWindow* window)
 {
+	vector<Character*> enemies;
+	if (window->world->currentPlayer == 1)
+		enemies = window->world->player2Characters;
+	else
+		enemies = window->world->player1Characters;
+
 	if (energy < 8)
 	{
 		std::cout << "Not enough energy" << std::endl;
@@ -24,8 +30,11 @@ void AirCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 	}
 }
 
-void AirCharacter::defend(vector<Character*> allies, sf::Vector2f movePos)
+void AirCharacter::defend(GameWindow* window)
 {
+	window->menu->setRequest("Move to position (example: 2,5): ");
+	sf::Vector2f destination = getPositionFromUser(window->menu);
+
 	return;
 }
 

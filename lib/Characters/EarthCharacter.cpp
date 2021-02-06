@@ -5,8 +5,14 @@ bool EarthCharacter::canBeFeeded()
     return this->getEnergy() <= 12;
 }
 
-void EarthCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
+void EarthCharacter::attack(GameWindow* window)
 {
+	vector<Character*> enemies;
+	if (window->world->currentPlayer == 1)
+		enemies = window->world->player2Characters;
+	else
+		enemies = window->world->player1Characters;
+
 	if (energy < 6)
 	{
 		std::cout << "Not enough energy" << std::endl;
@@ -32,7 +38,7 @@ void EarthCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 	}
 }
 
-void EarthCharacter::defend(vector<Character*> allies, sf::Vector2f movePos)
+void EarthCharacter::defend(GameWindow* window)
 {
 	return;
 }

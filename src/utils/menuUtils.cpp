@@ -23,67 +23,56 @@ void renderMenu(GameMenu *menu)
     std::string input = menu->textbox->getText();
     menu->textbox->setText("");
     
-    if (!menu->waitingForOptionChoice)
-        processUserInput(menu, input);
-        // En este caso no se elige opcion del menu, ya se está en una opción y se está ingresando lo pedido
+    if (input == "" || !stringIsNumeric(input) || stoi(input) < 1 || stoi(input) > menu->getCurrentMenu()->getLength())
+        menu->setRequest("Enter a valid choice: ");
     else
-    {
-        if (input == "" || !stringIsNumeric(input) || stoi(input) < 1 || stoi(input) > menu->getCurrentMenu()->getLength())
-            menu->setRequest("Enter a valid choice: ");
-        else
-            processOptionChoice(menu, stoi(input));
-            // Se actualiza el mensaje de request según la opción del menú que se elija
-            // Y la instancia de menu se prepara para el siguiente ingreso
-
-// El proceso es: "Menu: ..., ..., 4 - Mover personaje, ..."
-//                *El usuario ingresa 4
-//                Ahora se preprocesa esa entrada y el menú sabe que lo siguiente que se va a ingresar es para mover
-//                Pero aun no se llama a la funcion que procesa el movimiento porque necesitaria esperar input de nuevo
-//                asi que necesito volver al ciclo de while window is  open
-    }
+        processOptionChoice(menu, stoi(input));
 }
 
 void processOptionChoice(GameMenu *menu, int option)
 {
-    menu->currentOption = option;
     switch (menu->getCurrentMenuIndex())
     {
         case mainMenu:
-            preprocessMainMenuOption(menu, option);
+            processMainMenuOption(menu, option);
             break;
         case charSelectionMenu:
-            preprocessCharMenuOption(menu, option);
+            processCharMenuOption(menu, option);
             break;
         case gameMenu1:
-            preprocessGameMenu1Option(menu, option);
+            processGameMenu1Option(menu, option);
             break;
         case gameMenu2:
-            preprocessGameMenu2Option(menu, option);
+            processGameMenu2Option(menu, option);
             break;
     }
+    menu->setRequest("Choose an option");
 }
 
-void preprocessMainMenuOption(GameMenu *menu, int option)
+void processMainMenuOption(GameMenu *menu, int option)
 {
+    std::string input;
     switch (option)
     {
         case 1:     // Agregar pj
             menu->setRequest("Add a character: ");
-            menu->waitingForOptionChoice = false;
+            input = getUserInput(menu->window);
+            std::cout << "Added character " << input << std::endl;
             break;
         case 2:     // Eliminar pj
             menu->setRequest("Delete a character: ");
-            menu->waitingForOptionChoice = false;
+            input = getUserInput(menu->window);
+            std::cout << "Deleted character " << input << std::endl;            
             break;
         case 3:     // Mostrar pjs
-            menu->waitingForOptionChoice = true;
+            std::cout << "Showing all characters" << std::endl;
             break;
         case 4:     // Buscar pj
             menu->setRequest("Search character by name: ");
-            menu->waitingForOptionChoice = false;
+            input = getUserInput(menu->window);
+            std::cout << "Searched character " << input << std::endl;            
             break;
         case 5:     // Empezar juego
-            menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(charSelectionMenu);
             break;
         case 6:     // Cerrar
@@ -94,27 +83,27 @@ void preprocessMainMenuOption(GameMenu *menu, int option)
     }
 }
 
-void preprocessCharMenuOption(GameMenu *menu, int option)
+void processCharMenuOption(GameMenu *menu, int option)
 {
+    std::string input;
     switch (option)
     {
         case 1:     // Buscar pj
             menu->setRequest("Search character by name: ");
-            menu->waitingForOptionChoice = false;
+            input = getUserInput(menu->window);
+            std::cout << "Searching character " << input << std::endl;            
             break;
         case 2:     // Mostrar pjs
-            menu->waitingForOptionChoice = true;
+            std::cout << "Showing all characters" << std::endl;
             break;
         case 3:     // Seleccionar pj
             //menu->setRequest("Pick a character: ");
             //menu->waitingForOptionChoice = false;
             //orden: P1, P2, P1, P2, P1, P2
             //luego de que se eligen los 6 personajes tienen que posicionarlos
-            menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(gameMenu1);
             break;
         case 4:     // Salir
-            menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(mainMenu);
             break;
         default:
@@ -122,30 +111,36 @@ void preprocessCharMenuOption(GameMenu *menu, int option)
     }
 }
 
-void preprocessGameMenu1Option(GameMenu *menu, int option)
+void processGameMenu1Option(GameMenu *menu, int option)
 {
     Character* character = menu->window->world->currentCharacter;
+    std::string input;
     
     switch (option)
     {
         case 1:     // Guardar
             // Aca se llamaria a la funcion que guarda la partida
             menu->changeCurrentMenu(mainMenu);
-            menu->waitingForOptionChoice = true;
             break;
         case 2:     // Alimentar
             character->feed();
             if (character->getElement() != AIR)
                 menu->changeCurrentMenu(gameMenu2);
-            menu->waitingForOptionChoice = true;
             break;
-        case 3:     // Mover
+        case 3: {     // Mover
             menu->setRequest("Enter where you would like to move: (ex: 2,5)");
-            menu->waitingForOptionChoice = false;
-            menu->waitingForValidInput = true;
+            sf::Vector2f destination;
+            bool validDest = false;
+            while (!validDest)
+            {
+                destination = getPositionFromUser(menu);
+                validDest = validMoveDestination(menu, character, destination);
+            }
+            processMoveChoice(menu->window, character, destination);
+            menu->changeCurrentMenu(gameMenu2);
             break;
+        }
         case 4:     // Pasar
-            menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(gameMenu2);
             break;
         default:
@@ -153,199 +148,32 @@ void preprocessGameMenu1Option(GameMenu *menu, int option)
     }
 }
 
-void preprocessGameMenu2Option(GameMenu *menu, int option)
+void processGameMenu2Option(GameMenu *menu, int option)
 {
     Character* character = menu->window->world->currentCharacter;
+    std::string input;
 
     switch (option)
     {
-        case 1:     // Attack (further input is required only if the element is water)
-            if (character->getElement() == WATER)
-            {
-                menu->setRequest("Attack at position (example: 2,5): ");
-                menu->waitingForOptionChoice = false;
-                menu->waitingForValidInput = true;
-                break;
-            }
-
-            if (menu->window->world->currentPlayer == 1)
-                character->attack(menu->window->world->player2Characters, {-1,-1});
-            else
-                character->attack(menu->window->world->player1Characters, {-1,-1});
-
-            menu->waitingForOptionChoice = true;
+        case 1:     // Attack
+            character->attack(menu->window);
             menu->changeCurrentMenu(gameMenu1);
             break;
 
-        case 2:     // Defend (further input is required only if the element is air)
-            if (character->getElement() == AIR)
-            {
-                menu->setRequest("Move to position (example: 2,5): ");
-                menu->waitingForOptionChoice = false;
-                menu->waitingForValidInput = true;
-                break;
-            }
-
-            if (menu->window->world->currentPlayer == 1)
-                character->defend(menu->window->world->player1Characters, {-1,-1});
-            else
-                character->defend(menu->window->world->player2Characters, {-1,-1});
-
-            menu->waitingForOptionChoice = true;
+        case 2:     // Defend
+            character->defend(menu->window);
             menu->changeCurrentMenu(gameMenu1);
             break;
 
         case 3:     // Pasar
-            menu->waitingForOptionChoice = true;
             menu->changeCurrentMenu(gameMenu1);
             break;
 
         default:
             break;
     }
-    if (menu->waitingForOptionChoice)
-        menu->window->world->advanceState(); // terminó el turno del jugador actual
-}
 
-void processUserInput(GameMenu *menu, std::string input)
-{
-    switch (menu->getCurrentMenuIndex())
-    {
-        case mainMenu:
-            processMainMenuInput(menu, input);
-            break;
-        case charSelectionMenu:
-            processCharMenuInput(menu, input);
-            break;
-        case gameMenu1:
-            processGameMenu1Input(menu, input);
-            break;
-        case gameMenu2:
-            processGameMenu2Input(menu, input);
-            break;
-    }
-}
-
-void processMainMenuInput(GameMenu *menu, std::string input)
-{
-    // Aca van las opciones del mainMenu que requieren input del usuario
-    switch (menu->currentOption)
-    {
-        case 1:     // Agregar pj
-            std::cout << "Agregar personaje" << std::endl;
-            break;
-        case 2:     // Eliminar pj
-            std::cout << "Eliminar personaje" << std::endl;
-            break;
-        case 4:     // Buscar pj
-            std::cout << "Buscar personaje" << std::endl;
-            break;
-
-        default:
-            break;
-    }
-    menu->waitingForOptionChoice = true;
-}
-
-void processCharMenuInput(GameMenu *menu, std::string input)
-{
-    // Aca van las opciones del charMenu que requieren input del usuario
-    switch (menu->currentOption)
-    {
-        case 1:     // Buscar pj
-            std::cout << "Buscar personaje" << std::endl;
-            break;
-        case 3:     // Seleccionar pj
-            std::cout << "Seleccionar personaje" << std::endl;
-            break;
-
-        default:
-            break;
-    }
-    //if (charactersSelected == 6) currentMenu = characterPositioningMenu;
-    menu->waitingForOptionChoice = true;
-}
-
-void processGameMenu1Input(GameMenu *menu, std::string input)
-{
-    // Aca van las opciones del gameMenu1 que requieren input del usuario
-    Character* character = menu->window->world->currentCharacter;
-    sf::Vector2f destination;
-    switch (menu->currentOption)
-    {
-        case 3:     // Mover
-            if (!validPosition(input))
-                menu->setRequest("Invalid position. Enter X,Y with X and Y between 0 and 7");
-            else
-            {
-                destination = parseStringToVector2f(input);
-                validateDestination(menu, character, destination); // cambia el estado de waitingForValidInput
-            }
-
-            if (!menu->waitingForValidInput)
-            {
-                processMoveChoice(menu->window, character, destination);
-                menu->waitingForOptionChoice = true;
-                menu->changeCurrentMenu(gameMenu2);
-            }
-            break;
-        default:
-            break;
-    }  
-}
-
-void processGameMenu2Input(GameMenu *menu, std::string input)
-{
-    // Aca van las opciones del gameMenu2 que requieren input del usuario
-    Character* character = menu->window->world->currentCharacter;
-    sf::Vector2f position;
-    switch (menu->currentOption)
-    {
-        case 1:     // Atacar (solo el personaje de agua necesita esto)
-            if (!validPosition(input))
-                menu->setRequest("Invalid position. Enter X,Y with X and Y between 0 and 7");
-            else
-            {
-                menu->waitingForValidInput = false;
-                position = parseStringToVector2f(input);
-            }
-
-            if (!menu->waitingForValidInput)
-            {
-                if (menu->window->world->currentPlayer == 1)
-                    character->attack(menu->window->world->player2Characters, position);
-                else
-                    character->attack(menu->window->world->player1Characters, position);
-                menu->waitingForOptionChoice = true;
-                menu->changeCurrentMenu(gameMenu1);
-            }
-
-            break;
-
-        case 2:     // Defender (solo el personaje de aire necesita esto)
-            if (!validPosition(input))
-                menu->setRequest("Invalid position. Enter X,Y with X and Y between 0 and 7");
-            else
-            {
-                menu->waitingForValidInput = false;
-                position = parseStringToVector2f(input);
-            }
-
-            if (!menu->waitingForValidInput)
-            {
-                if (menu->window->world->currentPlayer == 1)
-                    character->defend(menu->window->world->player2Characters, position);
-                else
-                    character->defend(menu->window->world->player1Characters, position);
-                menu->waitingForOptionChoice = true;
-                menu->changeCurrentMenu(gameMenu1);
-            }
-
-            break;
-        default:
-            break;
-    }
-    menu->window->world->advanceState();
+    menu->window->world->advanceState(); // terminó el turno del personaje actual
 }
 
 
@@ -370,5 +198,57 @@ int getAmountOfOptions(const char* filename)
     return length;
 }
 
+std::string getUserInput(GameWindow* window)
+{   
+    std::string input;
+    sf::Event event;
+    bool stop = false;
+    while (!stop)
+    {
+        while (window->pollEvent(event))
+        {
+            switch (event.type)
+            {
+            case sf::Event::Closed:
+                window->close();
+                break;
 
+            case sf::Event::TextEntered:
+                window->menu->textbox->typedOn(event);
+                if (event.text.unicode == ENTER_KEY)
+                {
+                    stop = true;
+                    input = window->menu->textbox->getText();
+                    window->menu->textbox->setText("");
+                }
+                break;
 
+            default:
+                break;
+            }
+        }
+        window->clear();
+        drawScreen(window);
+        window->display();
+    }
+    return input;
+}
+
+sf::Vector2f getPositionFromUser(GameMenu* menu)
+{
+    std::string input;
+    sf::Vector2f position;
+    bool validPos = false;
+    while (!validPos)
+    {
+        input = getUserInput(menu->window);
+        if (!validPosition(input))        
+            menu->setRequest("Invalid position. Enter X,Y with X and Y between 0 and 7");
+        else
+        {
+            position = parseStringToVector2f(input);
+            validPos = true;
+        }
+    }
+    return position;
+}

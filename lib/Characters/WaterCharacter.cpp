@@ -6,8 +6,17 @@ bool WaterCharacter::canBeFeeded()
 }
 
 
-void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
+void WaterCharacter::attack(GameWindow* window)
 {
+	window->menu->setRequest("Attack at position (ex: 2,5): ");
+	sf::Vector2f attackPos = getPositionFromUser(window->menu);
+
+	vector<Character*> enemies;
+	if (window->world->currentPlayer == 1)
+		enemies = window->world->player2Characters;
+	else
+		enemies = window->world->player1Characters;
+
 	if (energy < 5)
 	{
 		std::cout << "Not enough energy" << std::endl;
@@ -28,7 +37,7 @@ void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 	}
 }
 
-void WaterCharacter::defend(vector<Character*> allies, sf::Vector2f movePos)
+void WaterCharacter::defend(GameWindow* window)
 {
 	return;
 }

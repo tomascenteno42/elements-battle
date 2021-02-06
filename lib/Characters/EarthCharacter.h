@@ -12,8 +12,8 @@ public:
     EarthCharacter(string n, elements e, int v, int es)
         : Character(n, e, v, es){};
 
-    void attack(vector<Character*> enemies, sf::Vector2f attackPos);
-    void defend(vector<Character*> allies, sf::Vector2f movePos);
+    void attack(GameWindow* window);
+    void defend(GameWindow* window);
 
     void feed();
 };

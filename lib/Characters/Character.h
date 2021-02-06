@@ -3,6 +3,8 @@
 
 #include "../../src/main.h"
 
+class GameWindow;
+
 class Character
 {
 protected:
@@ -42,8 +44,8 @@ public:
     virtual void feed() = 0;
     void move(sf::Vector2f pos);
 
-    virtual void attack(vector<Character*> enemies, sf::Vector2f attackPos) = 0;
-    virtual void defend(vector<Character*> allies, sf::Vector2f movePos) = 0;
+    virtual void attack(GameWindow* window) = 0;
+    virtual void defend(GameWindow* window) = 0;
 
     virtual ~Character();
 

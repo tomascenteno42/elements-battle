@@ -7,8 +7,8 @@ GameMenu::GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color c
         textbox = new Textbox(14, sf::Color::White, true, font);
         menuList = new GenericList<Menu*>;
         this -> window = window;
-        setRequest("Choose an option: ");
         fillMenuList();
+        menu->setRequest("Choose an option");
     };
 
 void GameMenu::fillMenuList()
@@ -60,8 +60,6 @@ void GameMenu::drawCurrentMenu()
         pos += 25;
         window->draw(text);
     }
-
-    if (waitingForOptionChoice) setRequest("Choose an option: ");
 
     window->draw(request);
 }
