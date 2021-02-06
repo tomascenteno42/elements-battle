@@ -5,19 +5,26 @@ bool WaterCharacter::canBeFeeded()
     return this->timesFeeded < 3 && this->getEnergy() <= 10;
 }
 
-void WaterCharacter::attack(Character* enemy)
+
+void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
 {
 	if (energy < 5)
 	{
 		std::cout << "Not enough energy" << std::endl;
 		return;
 	}
-	sf::Vector2f enemyPos = enemy->getPos();
-	sf::Vector2f attackPos(enemyPos);	// esto se pide al usuario, el problema es que si lo paso por parametro a attack, deja de tener los mismos parametros que el resto de attacks
-	if (attackPos == enemyPos)
+
+	energy -= 5;
+	Character* enemy = 0;
+	for (int i = 0; i < 3; i ++)
 	{
-		enemy->setLife(max(0,enemy->getLife() - 20));
-		std::cout << getName() << " attacked " << enemy->getName() << " and inflicted 20 points of damage!" << std::endl;
+		enemy = enemies[i];
+		sf::Vector2f enemyPos = enemy->getPos();
+		if (pos == enemyPos)
+		{
+			enemy->setLife(max(0,enemy->getLife() - 20));
+			std::cout << getName() << " attacked " << enemy->getName() << " and inflicted 20 points of damage!" << std::endl;
+		}
 	}
 }
 

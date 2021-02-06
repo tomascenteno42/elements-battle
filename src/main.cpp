@@ -30,56 +30,34 @@ int main()
 
 	////////////////////////////////////////////////////////////////
 
-	sf::Font font;
-	font.loadFromFile(FONT_FILE);
+	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
 
-	// ------------------ TextBox ------------------------------
-
-	Textbox *textbox1 = new Textbox(30, sf::Color::White, true);
-
-	textbox1->setFont(font);
-	textbox1->setPosition({170, 400});
-
-	// ---------------------------------------------------------
-
-	GameStats *statsSegment = new GameStats(400, 0, 400, 400, sf::Color::White);
-	GameMenu *menuSegment = new GameMenu(0, 400, 400, 800, sf::Color::Red, textbox1);
-	GameWorld *world = new GameWorld();
-	world->setMap();
-
-	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements", world, menuSegment, statsSegment);
-	window->setKeyRepeatEnabled(true);
-
-	Stack<sf::Vector2f> *movStack = new Stack<sf::Vector2f>();
-
-	sf::Text text("1) OPCION:", font, 26);
-	text.setPosition(sf::Vector2f(10, 410));
-	text.setFillColor(sf::Color::Blue);
-	sf::String playerInput;
-
-
-	// Adding some characters
-	Character *character1 = new WaterCharacter("WaterChr", WATER, 80, 2);
+	// Adding all characters
+	Character *character1 = new WaterCharacter("WaterChr1", WATER, 100, 2);
 	character1->setPos(sf::Vector2f(0, 0));
-	world->addCharacter(character1, 1);
+	window->world->addCharacter(character1, 1);
 
-	Character *character2 = new AirCharacter("AirChr", AIR, 50, 1);
+	Character *character2 = new AirCharacter("AirChr1", AIR, 100, 2);
 	character2->setPos(sf::Vector2f(1, 0));
-	world->addCharacter(character2, 1);
+	window->world->addCharacter(character2, 1);
 
-	Character *character3 = new FireCharacter("FireChr", FIRE, 50, 1);
-	character3->setPos(sf::Vector2f(7, 0));
-	world->addCharacter(character3, 2);
+	Character *character3 = new FireCharacter("FireChr1", FIRE, 100, 2);
+	character3->setPos(sf::Vector2f(0, 1));
+	window->world->addCharacter(character3, 1);
 
-	Character *character4 = new EarthCharacter("EarthChr", EARTH, 80, 2);
-	character4->setPos(sf::Vector2f(6, 2));
-	world->addCharacter(character4, 2);
+	Character *character4 = new WaterCharacter("WaterChr2", WATER, 100, 2);
+	character4->setPos(sf::Vector2f(6, 7));
+	window->world->addCharacter(character4, 2);
 
+	Character *character5 = new FireCharacter("FireChr2", FIRE, 100, 2);
+	character5->setPos(sf::Vector2f(7, 6));
+	window->world->addCharacter(character5, 2);
 
-	int turn = 1; // for testing purposes
+	Character *character6 = new EarthCharacter("EarthChr2", EARTH, 100, 2);
+	character6->setPos(sf::Vector2f(7, 7));
+	window->world->addCharacter(character6, 2);
 
-	bool stop = false; 	// para que sea mas facil cerrar la ventana y
-	string stopStr;		// que no se cuelgue mientras hacemos pruebas
+	window->world->currentCharacter = character1;
 
 	while (window->isOpen())
 	{
@@ -94,6 +72,8 @@ int main()
 
 			case sf::Event::TextEntered:
 				window->menu->textbox->typedOn(event);
+				if (event.text.unicode == ENTER_KEY)
+					renderMenu(window->menu);
 				break;
 
 			default:
@@ -104,39 +84,8 @@ int main()
 		window->clear();
 		drawScreen(window);
 		window->display();
-
-		if (!stop)									// para que sea mas facil cerrar la ventana y
-		{											// que no se cuelgue mientras hacemos pruebas
-			std::cout << "Keep playing? [Y/N] ";	//
-			cin >> stopStr;							//
-			if (stopStr == "N") stop = true;		//
-		} 											//
-		if (stop) continue;							//
-
-		printStats(world); // for testing purposes
-
-		if (turn%2)
-		{
-			for (int i = 0; i < 2; i ++)
-			{
-				world->player1Characters[i]->setEnergy(20);
-				processMoveChoice(movStack, window, world->player1Characters[i]);
-				processAttackChoice(world, world->player1Characters[i], world->player2Characters);
-			}
-		}
-		else
-		{
-			for (int i = 0; i < 2; i ++)
-			{
-				world->player2Characters[i]->setEnergy(20);
-				processMoveChoice(movStack, window, world->player2Characters[i]);
-				processAttackChoice(world, world->player2Characters[i], world->player1Characters);
-			}
-		}
-		turn ++;
 	}
 
-	delete movStack;
 	delete window;
 	return 0;
 }

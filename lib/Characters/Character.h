@@ -42,7 +42,8 @@ public:
 
     virtual void feed() = 0;
     void move(sf::Vector2f pos);
-    virtual void attack(Character* character) = 0;
+
+    virtual void attack(vector<Character*> enemyCharacters, sf::Vector2f pos) = 0;
 
     virtual ~Character();
 

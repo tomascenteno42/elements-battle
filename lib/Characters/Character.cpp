@@ -2,7 +2,8 @@
 
 Character::Character(string n, elements e, int l, int s)
 {
-    energy = rand() % 20;
+    energy = 20; //rand() % 20;
+
     name = n;
     element = e;
     life = l;

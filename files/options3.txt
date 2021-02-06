@@ -1,0 +1,4 @@
+Save and quit to main menu
+Feed character
+Move character
+Pass

@@ -44,10 +44,12 @@ all: $(APPNAME)
 # Builds the app for windows OS and linux.
 ifeq ($(OS),Windows_NT)
 $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/GameCells/*.cpp  lib/Characters/*.cpp  lib/DataStructures/*.cpp  lib/Window/*.cpp  src/utils/*.cpp  src/*.cpp  *.dll
+
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/Characters/*.cpp  lib/DataStructures/*.cpp  lib/GameCells/*.cpp  lib/Window/*.cpp  src/utils/*.cpp  src/*.cpp  *.dll
 else
 $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/GameCells/*.cpp  lib/Characters/*.cpp  lib/DataStructures/*.cpp  lib/Window/*.cpp  src/utils/*.cpp  src/*.cpp  -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/Characters/*.cpp  lib/DataStructures/*.cpp  lib/GameCells/*.cpp  lib/Window/*.cpp  src/utils/*.cpp  src/*.cpp  -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system
+
 endif
 
 # Creates the dependecy rules

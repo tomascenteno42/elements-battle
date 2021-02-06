@@ -1,0 +1,4 @@
+Search character details by name
+Show all characters' names
+Select character
+Quit to main menu

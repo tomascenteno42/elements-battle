@@ -91,7 +91,8 @@ GenericList<T>::GenericList()
 {
     firstNode = 0;
     currentNode = 0;
-    int quantity = 0;
+    quantity = 0;
+
 }
 template <class T>
 bool GenericList<T>::isEmpty()
@@ -101,19 +102,19 @@ bool GenericList<T>::isEmpty()
 template <class T>
 void GenericList<T>::add(T d, int index)
 {
-    GenericNode<T> *nuevo = new GenericNode<T>(d);
+    GenericNode<T> *newNode = new GenericNode<T>(d);
     if (index == 1)
     {
-        nuevo->setNextNode(firstNode);
-        firstNode = nuevo;
+        newNode->setNextNode(firstNode);
+        firstNode = newNode;
         reset();
     }
     else
     {
         GenericNode<T> *anterior = getNode(index - 1);
         GenericNode<T> *siguiente = anterior->getNextNode();
-        nuevo->setNextNode(siguiente);
-        anterior->setNextNode(nuevo);
+        newNode->setNextNode(siguiente);
+        anterior->setNextNode(newNode);
     }
     quantity++;
 }
@@ -137,28 +138,27 @@ T GenericList<T>::get(int index)
 template <class T>
 void GenericList<T>::drop(int index)
 {
-
-    GenericNode<T> *borrar;
+    GenericNode<T> *aux;
 
     if (index == 1)
     {
-        borrar = firstNode;
+        aux = firstNode;
 
         delete get(index);
-        firstNode = borrar->getNextNode();
+        firstNode = aux->getNextNode();
     }
     else
     {
         GenericNode<T> *anterior = getNode(index - 1);
-        borrar = anterior->getNextNode();
+        aux = anterior->getNextNode();
 
         delete get(index);
 
-        GenericNode<T> *siguiente = borrar->getNextNode();
+        GenericNode<T> *siguiente = aux->getNextNode();
         anterior->setNextNode(siguiente);
     }
     reset();
-    delete borrar;
+    delete aux;
     quantity--;
 }
 template <class T>

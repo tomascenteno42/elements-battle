@@ -103,32 +103,3 @@ void getCharacterDataFromFile(int position, string line[])
     getline(archivo, line[1], ',');
     getline(archivo, line[2], '\n');
 }
-
-/* LIST UTILITY FUNCTIONS */
-void feedCharacterByIndex(List *l, int index)
-{
-    l->get(index);
-    l->get(index)->feed();
-}
-
-void showCharacterStatsByIndex(List *l, int index)
-{
-    Character *c = l->get(index);
-    cout << "Name: " << c->getName() << endl;
-    cout << "Element: " << parseElementToString(c->getElement()) << endl;
-    cout << "Vida: " << c->getLife() << endl;
-    cout << "Escudo: " << c->getShield() << endl;
-    cout << "Energia: " << c->getEnergy() << endl;
-}
-
-int getIndexByCharacterName(List *l, string name)
-{
-    for (int i = 1; i <= l->getQuantity(); i++)
-    {
-        if (l->get(i)->getName() == name)
-        {
-            return i;
-        }
-    }
-    return 0;
-}

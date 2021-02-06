@@ -1,0 +1,6 @@
+Add a character
+Delete a character
+Show all characters' names
+Search character details by name
+Start the game
+Close

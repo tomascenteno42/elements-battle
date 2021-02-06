@@ -3,55 +3,63 @@
 
 #include "../main.h"
 
-/* MENU */
+// ------------------------------------------------------------- MISC
+
+bool stringIsNumeric(std::string s);
+
+/**
+ * Generic function for validating file opening.
+*/
+template <class T>
+void validateFile(const T &file, string fileName)
+{
+    if (!file)
+    {
+        cout << "Error opening " << fileName;
+        exit(1);
+    }
+};
+
+// ------------------------------------------------------------- MENU UTILS
 
 /**
    Retrieves options from OPTIONS_FILE and fills the Menu object
    @param m Object menu.
+   @param filename file name.
 */
-void fillMenu(Menu *m);
+void fillMenu(Menu *m, const char* filename);
 
 /**
     Nucleus of menu logic, it renders menu options.
-    @param m Menu object.
     @param l List object.
+    @param win game window.
 */
-void renderMenu(Menu *m, List *l);
+void renderMenu(GameMenu *menu);
 
-/**
-   Renders the user options choice.
-   @param l List object.
-   @param option Option to execute.
-*/
-void renderMenuOption(List *l, int option);
+void processOptionChoice(GameMenu *menu, int option);
+void processUserInput(GameMenu *menu, std::string input);
 
-/**
-    Display through terminal the options inside Menu object.
-    @param m Menu object.
-*/
-void showMenuOptions(Menu *m);
+void preprocessMainMenuOption(GameMenu *menu, int option);
+void preprocessCharMenuOption(GameMenu *menu, int option);
+void preprocessGameMenu1Option(GameMenu *menu, int option);
+void preprocessGameMenu2Option(GameMenu *menu, int option);
+
+void processMainMenuInput(GameMenu *menu, std::string input);
+void processCharMenuInput(GameMenu *menu, std::string input);
+void processGameMenu1Input(GameMenu *menu, std::string input);
+void processGameMenu2Input(GameMenu *menu, std::string input);
+
 
 /**
     Calculates amount of lines(options) in OPTIONS_FILE.
     @return Amount of options (int).
+    @param filename optionsfile.txt.
 */
-int getAmountOfOptions();
+int getAmountOfOptions(const char* filename);
 
-/**
-   Stores and returns user options choice.
-   @return User choice as integer.
-*/
-int getUserChoice();
 
-/**
-   Validates user choice to be in between of menu length and 1.  
-   It shows ui incorrect untils it is correct. 
-   @param option Options passed by reference.
-   @param menuLength Amount of options that Menu object contain.
-*/
-void validateUserChoice(int &option, int menuLength);
 
-/* LIST */
+// ------------------------------------------------------------- LIST UTILS
 
 /**
     Main logic for retrieving data from CHARACTERS_FILE and makes use of utility functions.
@@ -83,63 +91,10 @@ string getCharacterElementFromFile(int position);
 */
 void getCharacterDataFromFile(int position, string data[]);
 
-/* MENU OPTIONS FUNCTIONALITY */
 
-/**
- * Interacts with user to specify the data for the character that will be added to the list passed by params.
- * @param l List object where an specific character will be added.
-*/
-void addCharacter(List *l);
 
-/**
- * Interacts with user to specify which user will be removed from the List object and erase it.
- * @param l List object where and specific chracter will be erased.
-*/
-void eraseCharacter(List *l);
 
-/**
- * Displays all the names of the characters in list passed by params.
- * @param l List object.
-*/
-void showAllCharactersNames(List *l);
-
-/**
- * Interacts with user to specify which characters the function must show stats of.
- * @param l List object. 
-*/
-void searchCharacterStats(List *l);
-
-/**
- * Interacts with user to specify which character the user wants to feed. And executes feed functionality according to the implementation of each Character.
- * @param l List object. 
-*/
-void feedCharacter(List *l);
-
-/* LIST UTILITY FUNCTIONS */
-
-/**
- * Looks for a List index according to a specific name.
- * @param l List object.
- * @param name Name to be looked in list.
- * @return List index. 0 if not found.
-*/
-int getIndexByCharacterName(List *l, string name);
-
-/**
- * Display characters stats.
- * @param l List object.
- * @param index List object index.
-*/
-void showCharacterStatsByIndex(List *l, int index);
-
-/**
- * Executes Character feed functionality
- * @param l List object.
- * @param index List object index.
-*/
-void feedCharacterByIndex(List *l, int index);
-
-/* UTILS */
+// ---------------------------------------------------- PARSERS & VALIDATORS
 
 /**
  *  Parser from string to Element(default EARTH).
@@ -156,42 +111,24 @@ elements parseStringToElement(string stringToParse);
 string parseElementToString(elements elementToParse);
 
 /**
- * Validates a string to be 'Air, air, Water, water, Earth, earth, Fire or fire'. 
- * @param element string to be validated.
-*/
-void validateElement(string &element);
-
-/**
-   Throws an error message in screen when a character with a specific name was not found.
-*/
-void notFoundCharacterNameError();
-
-/**
- * Makes terminal stop and wait for user to enter a character, displaying this information.
-*/
-void waitForEnter();
-
-/**
- * Cleans the terminal.
-*/
-void clearScreen();
-
-/**
- * Renders "WELCOME TO BATTLE OF THE ELEMENTS".
-*/
-void renderGameTitle();
-
-/**
- * Prints a blank linea in terminal
-*/
-void printBlankLine();
-
-/**
  * Parse given string to terrains enum.
  * @param colorToParse 
  * @return terrains
 */
 terrains parseStringToColor(string colorToParse);
+
+sf::Vector2f parseStringToVector2f(std::string input);
+
+
+/**
+ * Validates a string to be 'Air, air, Water, water, Earth, earth, Fire or fire'. 
+ * @param element string to be validated.
+*/
+void validateElement(string &element);
+
+bool validPosition(std::string input);
+
+void validateDestination(GameMenu* menu, Character *character, sf::Vector2f destination);
 
 /**
  * Parse from terrains enum to SFML Color class.
@@ -201,6 +138,12 @@ terrains parseStringToColor(string colorToParse);
 sf::Color parseTerrainToSf(terrains terrain);
 
 terrains parseStringToTerrain(string colorToParse);
+
+
+// ---------------------------------------------------------------- MAP UTILS (& some others)
+
+
+void advanceState(GameWorld* world);
 
 /*
  * Sets the distances and paths matrixes to their initial state according to the FW Shortest Paths algorithm.
@@ -233,27 +176,13 @@ void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f pat
  */
 void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
 
-sf::Vector2f askDestination();
-void validateDestination(GameWorld *world, Character *character, sf::Vector2f &destination, int &energyRequired);
 
 void drawScreen(GameWindow *win);
 
-void processMoveChoice(Stack<sf::Vector2f> *movStack, GameWindow *win, Character *character);
+void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination);
 
 void processAttackChoice(GameWorld *world, Character *character, vector<Character*> enemyCharacters);
 
 void printStats(GameWorld* world);
 
-/**
- * Generic function for validating file opening.
-*/
-template <class T>
-void validateFile(const T &file, string fileName)
-{
-    if (!file)
-    {
-        cout << "Error opening " << fileName;
-        exit(1);
-    }
-};
 #endif

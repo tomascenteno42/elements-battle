@@ -1,14 +1,14 @@
 #include "../../src/main.h"
 
-Menu::Menu(int quantiy)
+Menu::Menu(int length)
 {
-    length = quantiy;
+    this -> length = length;
     options = new string[length];
 }
 
-void Menu::addOption(string opcion)
+void Menu::addOption(string option)
 {
-    options[index] = opcion;
+    options[index] = option;
     index++;
 }
 
@@ -22,13 +22,21 @@ int Menu::getLength()
     return length;
 }
 
-void Menu::showAllOptions()
+/* void Menu::showAllOptions(GameWindow *window)
 {
-    for (int i = 0; i < length; i++)
+    sf::Font font;
+	font.loadFromFile(FONT_FILE);
+    float pos = 410;
+
+    for (int i = 0; i < window->menu->GetChosenMenu()->getLength(); i++)
     {
-        cout << i + 1 << ") " << getOption(i) << endl;
+        sf::Text texto((to_string((i + 1)) + ") " + window->menu->GetChosenMenu()->getOption(i)), font, 20);
+        texto.setFillColor(sf::Color::White);
+	    texto.setPosition(sf::Vector2f(10, pos));
+        pos += 50;
+        window->draw(texto);
     }
-}
+} */
 
 Menu::~Menu()
 {

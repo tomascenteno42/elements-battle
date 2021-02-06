@@ -2,40 +2,12 @@
 
 /* UTILS */
 
-int getUserChoice()
+bool stringIsNumeric(std::string s)
 {
-    int choice = 0;
-    cin >> choice;
-
-    return choice;
-}
-
-void notFoundCharacterNameError()
-{
-    cout << "A character with that name couldn't be found" << endl;
-}
-
-void waitForEnter()
-{
-    cout << endl
-         << endl
-         << "Press ENTER to continue..." << endl;
-    cin.get();
-    cin.get();
-}
-
-void clearScreen()
-{
-    cout << string(25, '\n');
-}
-
-void renderGameTitle()
-{
-    cout << "WELCOME TO BATTLE OF THE ELEMENTS";
-}
-
-void printBlankLine()
-{
-    cout << endl
-         << endl;
+    for (int i = 0; i < s.length(); i ++)
+    {
+        if ((int)s[i] < 48 || (int)s[i] > 57)
+            return false;
+    }
+    return true;
 }
