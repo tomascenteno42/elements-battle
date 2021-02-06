@@ -8,7 +8,7 @@ GameMenu::GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color c
         menuList = new GenericList<Menu*>;
         this -> window = window;
         fillMenuList();
-        menu->setRequest("Choose an option");
+        setRequest("Choose an option");
     };
 
 void GameMenu::fillMenuList()
