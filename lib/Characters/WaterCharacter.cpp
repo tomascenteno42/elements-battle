@@ -5,6 +5,7 @@ bool WaterCharacter::canBeFeeded()
     return this->timesFeeded < 3 && this->getEnergy() <= 10;
 }
 
+
 void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
 {
 	if (energy < 5)
@@ -12,6 +13,7 @@ void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
 		std::cout << "Not enough energy" << std::endl;
 		return;
 	}
+
 	energy -= 5;
 	Character* enemy = 0;
 	for (int i = 0; i < 3; i ++)

@@ -3,7 +3,6 @@
 
 #include "../../src/main.h"
 
-
 class Menu
 {
 private:
@@ -13,6 +12,7 @@ private:
 
 public:
     Menu(int length);
+
     Menu(const Menu &L);            // copy constructor
     Menu &operator=(const Menu &L); // assignment
 
@@ -28,6 +28,7 @@ public:
     /**
      * Prints all menu options.
     */
+
     //void showAllOptions(GameWindow *window);
 
     ~Menu();

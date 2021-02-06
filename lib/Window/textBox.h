@@ -18,6 +18,7 @@ public:
 
 	// Set char limits:
 	void setLimit(bool ToF);
+
 	void setLimit(bool ToF, int lim);
 
 	// Change selected state:
@@ -32,38 +33,44 @@ public:
 	// Function for event loop:
 	void typedOn(sf::Event input);
 private:
+
 	sf::Text text;
 
 	std::ostringstream textStream;
+
 	bool isSelected = false;
 	bool hasLimit = false;
 	unsigned int limit = 0;
 
 	// Delete the last character of the text:
-	void deleteLastChar() {
+	void deleteLastChar()
+  {
 		std::string t = textStream.str();
+
 		std::string newT = "";
-		for (unsigned int i = 0; i < t.length() - 1; i++) {
+		for (unsigned int i = 0; i < t.length() - 1; i++)
 			newT += t[i];
-		}
+
 		textStream.str("");
 		textStream << newT;
 		text.setString(textStream.str() + "_");
 	}
 
 	// Get user input:
-	void inputLogic(int charTyped) {
+	void inputLogic(int charTyped)
+  {
 		// If the key pressed isn't delete, or the two selection keys, then append the text with the char:
-		if (charTyped != DELETE_KEY && charTyped != ENTER_KEY && charTyped != ESCAPE_KEY) {
+		if (charTyped != DELETE_KEY && charTyped != ENTER_KEY && charTyped != ESCAPE_KEY)
 			textStream << static_cast<char>(charTyped);
-		}
+
 		// If the key is delete, then delete the char:
-		else if (charTyped == DELETE_KEY) {
-			if (textStream.str().length() > 0) {
+		else if (charTyped == DELETE_KEY)
+    {
+			if (textStream.str().length() > 0)
 				deleteLastChar();
-			}
 		}
 		// Set the textbox text:
+
 		text.setString(textStream.str() + "_");
 	}
 };

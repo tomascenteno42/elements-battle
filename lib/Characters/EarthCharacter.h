@@ -13,6 +13,7 @@ public:
         : Character(n, e, v, es){};
 
     void attack(vector<Character*> enemies, sf::Vector2f pos);
+
     void feed();
 };
 

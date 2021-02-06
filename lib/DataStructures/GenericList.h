@@ -92,6 +92,7 @@ GenericList<T>::GenericList()
     firstNode = 0;
     currentNode = 0;
     quantity = 0;
+
 }
 template <class T>
 bool GenericList<T>::isEmpty()
@@ -137,7 +138,6 @@ T GenericList<T>::get(int index)
 template <class T>
 void GenericList<T>::drop(int index)
 {
-
     GenericNode<T> *aux;
 
     if (index == 1)
@@ -164,7 +164,6 @@ void GenericList<T>::drop(int index)
 template <class T>
 GenericList<T>::~GenericList<T>()
 {
-    
     while (!isEmpty())
     {
         drop(1);

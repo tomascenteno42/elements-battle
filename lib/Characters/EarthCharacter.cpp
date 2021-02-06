@@ -12,6 +12,7 @@ void EarthCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
 		std::cout << "Not enough energy" << std::endl;
 		return;
 	}
+
 	energy -= 6;
 	Character* enemy = 0;
 	for (int i = 0; i < 3; i ++)

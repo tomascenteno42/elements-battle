@@ -5,6 +5,7 @@ bool FireCharacter::canBeFeeded()
     return this->getLife() <= 85;
 }
 
+
 void FireCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
 {
 	if (energy < 5)
@@ -12,6 +13,7 @@ void FireCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
 		std::cout << "Not enough energy" << std::endl;
 		return;
 	}
+
 	energy -= 5;
 	Character* enemy = 0;
 	for (int i = 0; i < 3; i ++)

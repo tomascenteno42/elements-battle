@@ -10,6 +10,7 @@ public:
 	vector<GameCell *> tiles;
 
 	Stack<sf::Vector2f> *movStack;
+
 	int distances [4][64][64];
 	sf::Vector2f paths [4][64][64];
 	vector<Character*> player1Characters;

@@ -104,6 +104,7 @@ GameWorld::~GameWorld()
 	}
 
 	for (int i = 0; i < 3; i ++)
+
 	{
 		delete player1Characters[i];
 		delete player2Characters[i];
