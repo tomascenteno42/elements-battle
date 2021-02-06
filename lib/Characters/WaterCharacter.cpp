@@ -6,7 +6,7 @@ bool WaterCharacter::canBeFeeded()
 }
 
 
-void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
+void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 {
 	if (energy < 5)
 	{
@@ -20,7 +20,7 @@ void WaterCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
 	{
 		enemy = enemies[i];
 		sf::Vector2f enemyPos = enemy->getPos();
-		if (pos == enemyPos)
+		if (attackPos == enemyPos)
 		{
 			enemy->setLife(max(0,enemy->getLife() - 20));
 			std::cout << getName() << " attacked " << enemy->getName() << " and inflicted 20 points of damage!" << std::endl;

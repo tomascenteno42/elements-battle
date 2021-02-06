@@ -57,6 +57,7 @@ int main()
 	character6->setPos(sf::Vector2f(7, 7));
 	window->world->addCharacter(character6, 2);
 
+
 	window->world->currentCharacter = character1;
 
 	while (window->isOpen())

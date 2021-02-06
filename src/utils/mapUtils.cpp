@@ -121,8 +121,27 @@ void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack)
     character->move(playerPos);
 }
 
+void drawStats(GameWindow *win)
+{
+    win->draw(win->stats->getCell());
+
+    for (int i = 0; i < 3; i ++)
+    {
+        for (int j = 0; j < 4; j ++)
+        {
+            win->draw(win->stats->player1Stats[i][j]);
+            win->draw(win->stats->player2Stats[i][j]);
+        }
+    }
+
+    win->draw(win->stats->player1Text);
+    win->draw(win->stats->player2Text);
+    win->draw(win->stats->infoText);
+}
+
 void drawScreen(GameWindow *win)
 {
+    // Game board
     for (size_t i = 0; i < win->world->tiles.size(); i++)
     {
         win->draw(win->world->tiles[i]->getCell());
@@ -133,7 +152,13 @@ void drawScreen(GameWindow *win)
         win->draw(win->world->player2Characters[i]->getCell());
     }
 
+    // Game stats & info
     win->draw(win->stats->getCell());
+    if (win->menu->getCurrentMenuIndex() == gameMenu1 || win->menu->getCurrentMenuIndex() == gameMenu2)
+        win->stats->updateStats(win->world);
+    drawStats(win);
+
+    // Game menu & user interaction
     win->draw(win->menu->getCell());
     win->menu->drawCurrentMenu();
     win->menu->textbox->drawTo(*win);

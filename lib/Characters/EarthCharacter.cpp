@@ -5,7 +5,7 @@ bool EarthCharacter::canBeFeeded()
     return this->getEnergy() <= 12;
 }
 
-void EarthCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
+void EarthCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 {
 	if (energy < 6)
 	{

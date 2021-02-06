@@ -180,6 +180,8 @@ void preprocessGameMenu2Option(GameMenu *menu, int option)
 
             menu->setRequest("Choose an option: ");
             menu->waitingForOptionChoice = true;
+            menu->changeCurrentMenu(gameMenu1);
+            advanceState(menu->window->world);
             break;
         case 2:
             menu->setRequest("Choose a character to defend: ");
@@ -308,9 +310,6 @@ void processGameMenu2Input(GameMenu *menu, std::string input)
                 menu->waitingForValidInput = false;
                 position = parseStringToVector2f(input);
             }
-
-            std::cout << input << std::endl;
-            std::cout << menu->waitingForValidInput << std::endl;
 
             if (!menu->waitingForValidInput)
             {

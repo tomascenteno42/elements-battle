@@ -18,8 +18,6 @@ bool validPosition(std::string input)
     if (pos == -1) return false;
     std::string s1 = input.substr(0, pos);
     std::string s2 = input.substr(pos+1, input.length());
-    std::cout << s1 << "\t" << s2 << std::endl;
-    std::cout << stringIsNumeric(s1) << "\t" << stringIsNumeric(s2) << std::endl;
     if (!stringIsNumeric(s1) || !stringIsNumeric(s2)) return false;
 
     return (stof(s1) >= 0 && stof(s1) <= 7 && stof(s2) >= 0 && stof(s2) <= 7);

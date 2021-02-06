@@ -6,7 +6,7 @@ bool AirCharacter::canBeFeeded()
 }
 
 
-void AirCharacter::attack(vector<Character*> enemies, sf::Vector2f pos)
+void AirCharacter::attack(vector<Character*> enemies, sf::Vector2f attackPos)
 {
 	if (energy < 8)
 	{

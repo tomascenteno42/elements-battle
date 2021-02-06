@@ -176,7 +176,7 @@ void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f pat
  */
 void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
 
-
+void drawStats(GameWindow *win);
 void drawScreen(GameWindow *win);
 
 void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination);

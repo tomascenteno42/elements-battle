@@ -11,7 +11,7 @@ private:
 public:
     AirCharacter(string n, elements e, int v, int es) : Character(n, e, v, es){};
 
-    void attack(vector<Character*> enemies, sf::Vector2f pos);
+    void attack(vector<Character*> enemies, sf::Vector2f attackPos);
 
     void feed();
 };
