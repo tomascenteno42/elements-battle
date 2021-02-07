@@ -10,8 +10,10 @@ public:
 
     void updateStats(GameWorld* world);
     void updateCharacterStats(Character* character, int player, int characterIndex);
+    void clearCharacterStats(Character* character, int player, int characterIndex);
 
     void setInfoText(std::string info);
+    void setCurrentCharacterMark(int player, int character);
 
     sf::Font font;
 
@@ -22,6 +24,7 @@ public:
     sf::Text player2Stats [3][4];
 
     sf::Text infoText; // Para escribir cosas como "Tal jugador ataco a tal otro"
+    sf::Text currentCharacterMark;
 
     ~GameStats();
 };

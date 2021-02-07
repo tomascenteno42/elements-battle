@@ -81,7 +81,7 @@ using namespace std;
 #include "../lib/Window/Menu.h"
 #include "../lib/Window/textBox.h"
 #include "../lib/Window/Cell.h"
-
+#include "../lib/Window/Player.h"
 #include "../lib/GameCells/GameCell.h"
 #include "../lib/Window/GameWorld.h"
 #include "../lib/Window/GameStats.h"

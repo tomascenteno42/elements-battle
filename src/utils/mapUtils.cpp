@@ -121,6 +121,7 @@ void drawStats(GameWindow *win)
     win->draw(win->stats->player1Text);
     win->draw(win->stats->player2Text);
     win->draw(win->stats->infoText);
+    win->draw(win->stats->currentCharacterMark);
 }
 
 void drawScreen(GameWindow *win)
@@ -130,11 +131,14 @@ void drawScreen(GameWindow *win)
     {
         win->draw(win->world->tiles[i]->getCell());
     }
-    for (int i = 0; i < 3; i++)
+
+    // Characters
+    for (int p = 0; p < 2; p ++)
     {
-        win->draw(win->world->player1Characters[i]->getCell());
-        win->draw(win->world->player2Characters[i]->getCell());
+        for (int i = 0; i < win->world->players[p]->charactersAlive; i++)
+            win->draw(win->world->players[p]->characters[i]->getCell());
     }
+
 
     // Game stats & info
     win->draw(win->stats->getCell());

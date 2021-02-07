@@ -4,6 +4,11 @@ const int HEIGHT = 50, WIDTH = 50;
 
 GameWorld::GameWorld()
 {
+	Player* player1 = new Player();
+	Player* player2 = new Player();
+	players[0] = player1;
+	players[1] = player2;
+
 	setMap();
 	movStack = new Stack<sf::Vector2f>();
 }
@@ -64,10 +69,7 @@ void GameWorld::setMap()
 
 void GameWorld::addCharacter(Character *character, int player)
 {
-	if (player == 1)
-		player1Characters.push_back(character);
-	if (player == 2)
-		player2Characters.push_back(character);
+	players[player - 1] -> addCharacter(character);
 	tiles[character->getPos().x + 8 * character->getPos().y]->setOccupied(true);
 }
 
@@ -97,57 +99,29 @@ bool GameWorld::emptyWorld()
 
 void GameWorld::advanceState()
 {
-    charactersPlayed ++; 
+    charactersPlayed ++;
 
-    if (charactersPlayed == 3)
+    if (charactersPlayed == players[currentPlayer]->charactersAlive)	// Ya jugaron todos los personajes en el turno
     {
         charactersPlayed = 0;
-        currentPlayer = currentPlayer % 2 + 1;
-		if (currentPlayer == 1)
-			updateCharacters();
+        currentPlayer = (currentPlayer + 1) % 2;
+		players[currentPlayer]->updateCharacters();
     }
 
-    if (currentPlayer == 1)
-        currentCharacter = player1Characters[charactersPlayed];
-    else
-        currentCharacter = player2Characters[charactersPlayed];
+    currentCharacter = players[currentPlayer]->characters[charactersPlayed];
 }
 
-void GameWorld::updateCharacters()
-{
-	Character* character = 0;
-	for (int i = 0; i < player1Characters.size(); i ++)
-	{
-		character = player1Characters[i];
-		if (character->getElement() == AIR)
-			character->setEnergy(min(20, 5 + character->getEnergy()));
-		if (character->getElement() == EARTH && character->isDefending)
-			character->setShield(character->getShield() - 2);
-	}
 
-	for (int i = 0; i < player2Characters.size(); i ++)
-	{
-		character = player2Characters[i];
-		if (character->getElement() == AIR)
-			character->setEnergy(min(20, 5 + character->getEnergy()));
-		if (character->getElement() == EARTH && character->isDefending)
-			character->setShield(character->getShield() - 2);
-	}
-}
 
 GameWorld::~GameWorld()
 {
+	delete players[0];
+	delete players[1];
+
 	while (!emptyWorld())
 	{
 		delete tiles.back();
 		tiles.pop_back();
-	}
-
-	for (int i = 0; i < 3; i ++)
-
-	{
-		delete player1Characters[i];
-		delete player2Characters[i];
 	}
 
 	delete movStack;

@@ -62,6 +62,7 @@ int main()
 
 	while (window->isOpen())
 	{
+
 		sf::Event event;
 		while (window->pollEvent(event))
 		{
@@ -74,7 +75,7 @@ int main()
 			case sf::Event::TextEntered:
 				window->menu->textbox->typedOn(event);
 				if (event.text.unicode == ENTER_KEY)
-					renderMenu(window->menu);
+					window->menu->render();
 				break;
 
 			default:

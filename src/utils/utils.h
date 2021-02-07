@@ -3,27 +3,14 @@
 
 #include "../main.h"
 
+
+// ------------------------------------------------ USER INTERACTION
+
 std::string getUserInput(GameWindow* window);
 sf::Vector2f getPositionFromUser(GameMenu* menu);
 
-// ------------------------------------------------------------- MISC
 
-bool stringIsNumeric(std::string s);
-
-/**
- * Generic function for validating file opening.
-*/
-template <class T>
-void validateFile(const T &file, string fileName)
-{
-    if (!file)
-    {
-        cout << "Error opening " << fileName;
-        exit(1);
-    }
-};
-
-// ------------------------------------------------------------- MENU UTILS
+// ------------------------------------------------------ MENU UTILS
 
 /**
    Retrieves options from OPTIONS_FILE and fills the Menu object
@@ -31,23 +18,15 @@ void validateFile(const T &file, string fileName)
    @param filename file name.
 */
 void fillMenu(Menu *m, const char* filename);
-
-/**
-    Nucleus of menu logic, it renders menu options.
-    @param l List object.
-    @param win game window.
-*/
-void renderMenu(GameMenu *menu);
-
-void processOptionChoice(GameMenu *menu, int option);
-
-void processMainMenuOption(GameMenu *menu, int option);
-void processCharMenuOption(GameMenu *menu, int option);
-void processGameMenu1Option(GameMenu *menu, int option);
-void processGameMenu2Option(GameMenu *menu, int option);
-
-
-
+void processAddCharacter(GameMenu *menu);
+void processDeleteCharacter(GameMenu *menu);
+void processSearchCharacter(GameMenu *menu);
+void processShowCharacters(GameMenu *menu);
+void processSaveGame(GameMenu *menu);
+void processFeedOption(GameMenu *menu);
+void processMoveOption(GameMenu *menu);
+void processAttackOption(GameMenu *menu);
+void processDefenseOption(GameMenu *menu);
 
 /**
     Calculates amount of lines(options) in OPTIONS_FILE.
@@ -57,8 +36,7 @@ void processGameMenu2Option(GameMenu *menu, int option);
 int getAmountOfOptions(const char* filename);
 
 
-
-// ------------------------------------------------------------- LIST UTILS
+// ------------------------------------------------------ LIST UTILS
 
 /**
     Main logic for retrieving data from CHARACTERS_FILE and makes use of utility functions.
@@ -91,9 +69,7 @@ string getCharacterElementFromFile(int position);
 void getCharacterDataFromFile(int position, string data[]);
 
 
-
-
-// ---------------------------------------------------- PARSERS & VALIDATORS
+// --------------------------------------------------------- PARSERS
 
 /**
  *  Parser from string to Element(default EARTH).
@@ -115,21 +91,7 @@ string parseElementToString(elements elementToParse);
  * @return terrains
 */
 terrains parseStringToColor(string colorToParse);
-
 sf::Vector2f parseStringToVector2f(std::string input);
-
-
-/**
- * Validates a string to be 'Air, air, Water, water, Earth, earth, Fire or fire'. 
- * @param element string to be validated.
-*/
-void validateElement(string &element);
-
-bool validPosition(std::string input);
-bool validDestinationEnergy(GameMenu* menu, Character *character, sf::Vector2f destination);
-bool positionIsEmpty(GameMenu *menu, sf::Vector2f destination);
-
-bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination);
 
 /**
  * Parse from terrains enum to SFML Color class.
@@ -141,7 +103,34 @@ sf::Color parseTerrainToSf(terrains terrain);
 terrains parseStringToTerrain(string colorToParse);
 
 
-// ---------------------------------------------------------------- MAP UTILS (& some others)
+// ------------------------------------------------------ VALIDATORS
+
+/**
+ * Validates a string to be 'Air, air, Water, water, Earth, earth, Fire or fire'. 
+ * @param element string to be validated.
+*/
+void validateElement(string &element);
+bool validPosition(std::string input);
+bool validDestinationEnergy(GameMenu* menu, Character *character, sf::Vector2f destination);
+bool positionIsEmpty(GameMenu *menu, sf::Vector2f destination);
+bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination);
+bool stringIsNumeric(std::string s);
+
+/**
+ * Generic function for validating file opening.
+*/
+template <class T>
+void validateFile(const T &file, string fileName)
+{
+    if (!file)
+    {
+        cout << "Error opening " << fileName;
+        exit(1);
+    }
+};
+
+
+// ------------------------------------------------------- MAP UTILS
 
 /*
  * Sets the distances and paths matrixes to their initial state according to the FW Shortest Paths algorithm.
@@ -173,12 +162,9 @@ void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f pat
  * Moves the character to the position designated by the top of the movement stack
  */
 void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
-
 void drawStats(GameWindow *win);
 void drawScreen(GameWindow *win);
-
 void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination);
-
 
 
 #endif

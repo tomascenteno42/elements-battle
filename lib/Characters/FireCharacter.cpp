@@ -8,11 +8,7 @@ bool FireCharacter::canBeFeeded()
 
 void FireCharacter::attack(GameWindow* window)
 {
-	vector<Character*> enemies;
-	if (window->world->currentPlayer == 1)
-		enemies = window->world->player2Characters;
-	else
-		enemies = window->world->player1Characters;
+	vector<Character*> enemies = window->world->players[(window->world->currentPlayer + 1) % 2]->characters;
 
 	if (energy < 5)
 	{
@@ -22,7 +18,7 @@ void FireCharacter::attack(GameWindow* window)
 
 	energy -= 5;
 	Character* enemy = 0;
-	for (int i = 0; i < 3; i ++)
+	for (int i = 0; i < enemies.size(); i ++)
 	{
 		enemy = enemies[i];
 		sf::Vector2f enemyPos = enemy->getPos();

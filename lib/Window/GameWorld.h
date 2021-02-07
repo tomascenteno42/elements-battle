@@ -13,18 +13,17 @@ public:
 
 	int distances [4][64][64];
 	sf::Vector2f paths [4][64][64];
-	vector<Character*> player1Characters;
-	vector<Character*> player2Characters;
+
+	Player* players[2];
 
 	Character* currentCharacter = 0;	// Sobre qué personaje aplicar los métodos que se llamen desde el menú
-	int currentPlayer = 1;				// De qué jugador es el turno
+	int currentPlayer = 0;				// De qué jugador es el turno (0 = Jugador1; 1 = Jugador2)
 	int charactersPlayed = 0;			// Cuántos personajes ya jugaron en el turno actual
 
 	void addCharacter(Character* character, int player);
 	void setMap();
 	void setFWMatrixes();
 	void advanceState();
-	void updateCharacters();
 
 	GameWorld();
 	virtual ~GameWorld();

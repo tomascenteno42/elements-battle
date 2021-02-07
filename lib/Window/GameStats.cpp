@@ -11,6 +11,11 @@ void GameStats::setInfoText(std::string info)
     infoText.setString(info);
 }
 
+void GameStats::setCurrentCharacterMark(int player, int character)
+{
+    currentCharacterMark.setPosition(sf::Vector2f(550 + 200*(player-1), 52 + 100*character));
+}
+
 void GameStats::updateStats(GameWorld* world)
 {
     player1Text = sf::Text("PLAYER 1", font, 20);
@@ -21,14 +26,23 @@ void GameStats::updateStats(GameWorld* world)
     player2Text.setFillColor(sf::Color::White);
     player2Text.setPosition(sf::Vector2f(610,10));
     
-    for (int i = 0; i < world->player1Characters.size(); i ++)
-        updateCharacterStats(world->player1Characters[i], 1, i);
-    for (int i = 0; i < world->player2Characters.size(); i ++)
-        updateCharacterStats(world->player2Characters[i], 2, i);
+    for (int p = 0; p < 2; p ++)
+    {
+        for (int i = 0; i < 3; i ++) {
+            if (i < world->players[p]->characters.size())
+                updateCharacterStats(world->players[p]->characters[i], p+1, i);
+            else
+                clearCharacterStats(world->players[p]->characters[i], p+1, i);
+        }
+    }
+
+    currentCharacterMark = sf::Text("<--", font, 14);
+    currentCharacterMark.setFillColor(sf::Color::Yellow);
+    setCurrentCharacterMark(world->currentPlayer + 1, world->charactersPlayed);
 
     infoText = sf::Text("", font, 14);
     infoText.setFillColor(sf::Color::White);
-    infoText.setPosition(sf::Vector2f(410, 350));
+    infoText.setPosition(sf::Vector2f(410, 340));
     setInfoText("Info text goes here\nInfo text goes here\nInfo text goes here");
 }
 
@@ -75,23 +89,16 @@ void GameStats::updateCharacterStats(Character* character, int player, int chara
     }
 }
 
-GameStats::~GameStats()
+void GameStats::clearCharacterStats(Character* character, int player, int characterIndex)
 {
-    /*
-    for (int i = 0; i < 3; i ++)
-    {
-        delete [] player1Stats[i];
-        delete [] player2Stats[i];
-    }
-    */
+    sf::Text* characterStats = 0;
+    if (player == 1) characterStats = player1Stats[characterIndex];
+    if (player == 2) characterStats = player2Stats[characterIndex];
+
+    for (int i = 0; i < 4; i ++)
+        characterStats[i].setString("");
 }
 
-
-
-/*
-        nameStat = new sf::Text("", font, 14);
-        nameStat->setFillColor(sf::Color::Black);
-        nameStat->setString(character->getName());
-        nameStat->setPosition(sf::Vector2f(410, i*50 + 0));
-        player1Stats[i][0] = nameStat;
-*/
+GameStats::~GameStats()
+{
+}

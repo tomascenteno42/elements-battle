@@ -64,6 +64,137 @@ void GameMenu::drawCurrentMenu()
     window->draw(request);
 }
 
+void GameMenu::render()
+{
+    std::string input = textbox->getText();
+    textbox->setText("");
+    
+    if (input == "" || !stringIsNumeric(input) || stoi(input) < 1 || stoi(input) > getCurrentMenu()->getLength())
+       setRequest("Enter a valid choice: ");
+    else
+        processOptionChoice(stoi(input));
+}
+
+void GameMenu::processOptionChoice(int option)
+{
+    switch (getCurrentMenuIndex())
+    {
+        case mainMenu:
+            processMainMenuOption(option);
+            break;
+        case charSelectionMenu:
+            processCharMenuOption(option);
+            break;
+        case gameMenu1:
+            processGameMenu1Option(option);
+            break;
+        case gameMenu2:
+            processGameMenu2Option(option);
+            break;
+    }
+    setRequest("Choose an option");
+}
+
+void GameMenu::processMainMenuOption(int option)
+{
+    switch (option)
+    {
+        case 1:     // Agregar pj
+            processAddCharacter(this);
+            break;
+        case 2:     // Eliminar pj
+            processDeleteCharacter(this);
+            break;
+        case 3:     // Mostrar pjs
+            processShowCharacters(this);
+            break;
+        case 4:     // Buscar pj
+            processSearchCharacter(this);
+            break;
+        case 5:     // Empezar juego
+            changeCurrentMenu(charSelectionMenu);
+            break;
+        case 6:     // Cerrar
+            window->close();
+            break;
+        default:
+            break;
+    }
+}
+
+void GameMenu::processCharMenuOption(int option)
+{
+    switch (option)
+    {
+        case 1:     // Buscar pj
+            processSearchCharacter(this);
+            break;
+        case 2:     // Mostrar pjs
+            processShowCharacters(this);
+            break;
+        case 3:     // Seleccionar pj
+            //menu->setRequest("Pick a character: ");
+            //menu->waitingForOptionChoice = false;
+            //orden: P1, P2, P1, P2, P1, P2
+            //luego de que se eligen los 6 personajes tienen que posicionarlos
+            changeCurrentMenu(gameMenu1);
+            break;
+        case 4:     // Salir
+            changeCurrentMenu(mainMenu);
+            break;
+        default:
+            break;
+    }
+}
+
+void GameMenu::processGameMenu1Option(int option)
+{    
+    switch (option)
+    {
+        case 1:     // Guardar
+            processSaveGame(this);
+            changeCurrentMenu(mainMenu);
+            break;
+        case 2:     // Alimentar
+            processFeedOption(this);    // El cambio de menu se hace dentro de la funcion, así no se pierde el turno si
+            break;                      // se intenta alimentar a un personaje de aire
+        case 3:      // Mover
+            processMoveOption(this);
+            break;
+        case 4:     // Pasar
+            changeCurrentMenu(gameMenu2);
+            break;
+        default:
+            break;
+            
+    }
+}
+
+void GameMenu::processGameMenu2Option(int option)
+{
+    switch (option)
+    {
+        case 1:     // Attack
+            processAttackOption(this);
+            break;
+
+        case 2:     // Defend
+            processDefenseOption(this);
+            break;
+
+        case 3:     // Pasar
+            break;
+
+        default:
+            break;
+    }
+
+    changeCurrentMenu(gameMenu1);
+    window->world->advanceState(); // terminó el turno del personaje actual
+}
+
+
+
 GameMenu::~GameMenu()
 {
     delete textbox;    

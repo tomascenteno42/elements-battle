@@ -27,6 +27,19 @@ public:
     Menu* getCurrentMenu();
     menus getCurrentMenuIndex();
 
+    /**
+        Nucleus of menu logic, it renders menu options.
+    */
+    void render();
+
+    void processOptionChoice(int option);
+
+    void processMainMenuOption(int option);
+    void processCharMenuOption(int option);
+    void processGameMenu1Option(int option);
+    void processGameMenu2Option(int option);
+    
+
     void drawCurrentMenu();
 
     ~GameMenu();
