@@ -23,10 +23,9 @@ bool validPosition(std::string input)
     return (stof(s1) >= 0 && stof(s1) <= 7 && stof(s2) >= 0 && stof(s2) <= 7);
 }
 
-
-bool validDestinationEnergy(GameMenu *menu, Character *character, sf::Vector2f destination)
+bool validDestinationEnergy(GameWorld *world, Character *character, sf::Vector2f destination)
 {
-    int energyRequired = menu->window->world->distances
+    int energyRequired = world->distances
                             [static_cast<int>(character->getElement()) - 1]
                             [int(character->getPos().x + 8 * character->getPos().y)]
                             [int(destination.x + 8 * destination.y)];
@@ -34,19 +33,19 @@ bool validDestinationEnergy(GameMenu *menu, Character *character, sf::Vector2f d
     return (energyRequired <= character->getEnergy());
 }
 
-bool positionIsEmpty(GameMenu *menu, sf::Vector2f destination)
+bool positionIsEmpty(GameWorld* world, sf::Vector2f destination)
 {
-    return (!menu->window->world->tiles[destination.x + 8 * destination.y]->isOccupied());
+    return (!world->tiles[destination.x + 8 * destination.y]->isOccupied());
 }
 
 bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination)
 {
-    if (!positionIsEmpty(menu, destination))
+    if (!positionIsEmpty(menu->window->world, destination))
     {
         menu->setRequest("You can't move there, the cell is occupied. Try a different one");
         return false;
     }
-    if (!validDestinationEnergy(menu, character, destination))
+    if (!validDestinationEnergy(menu->window->world, character, destination))
     {
         menu->setRequest("You can't move there, you lack energy. Try a different one");
         return false;

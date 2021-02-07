@@ -1,10 +1,26 @@
 #include "../../src/main.h"
 
+AirCharacter::AirCharacter(string n, int v, int es)
+	:Character(n, v, es)
+{
+	cell.setFillColor(sf::Color(225, 255, 255));
+}
+
+elements AirCharacter::getElement()
+{
+	return AIR;
+}
+
 bool AirCharacter::canBeFeeded()
 {
     return false;
 }
 
+void AirCharacter::feed(GameWindow* window)
+{
+    if (!this->canBeFeeded())
+        cout << "You can't feed an Air character.";
+}
 
 void AirCharacter::attack(GameWindow* window)
 {
@@ -29,16 +45,20 @@ void AirCharacter::attack(GameWindow* window)
 
 void AirCharacter::defend(GameWindow* window)
 {
-	window->menu->setRequest("Move to position (example: 2,5): ");
-	sf::Vector2f destination = getPositionFromUser(window->menu);
-
-	return;
+	window->menu->setRequest("Enter where you would like to move: (ex: 2,5)");
+	bool validDest = false;
+	sf::Vector2f destination;
+	while (!validDest)
+	{
+		destination = getPositionFromUser(window->menu);
+		if (positionIsEmpty(window->world, destination))
+			validDest = true;
+	}
+	cout << destination.x << "," << destination.y << endl;
+	move(window, destination, 0);
 }
 
-void AirCharacter::feed()
+void AirCharacter::update()
 {
-    if (!this->canBeFeeded())
-    {
-        cout << "You can't feed an Air character.";
-    }
+	energy = min(20, 5 + energy);
 }

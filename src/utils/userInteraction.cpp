@@ -54,3 +54,17 @@ sf::Vector2f getPositionFromUser(GameMenu* menu)
     }
     return position;
 }
+
+sf::Vector2f getDestinationFromUser(GameMenu* menu)
+{
+    Character* character = menu->window->world->currentCharacter;
+    menu->setRequest("Enter where you would like to move: (ex: 2,5)");
+    sf::Vector2f destination;
+    bool validDest = false;
+    while (!validDest)
+    {
+        destination = getPositionFromUser(menu);
+        validDest = validMoveDestination(menu, character, destination);
+    }
+    return destination;
+}

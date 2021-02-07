@@ -56,7 +56,7 @@ void processSaveGame(GameMenu *menu)
 void processFeedOption(GameMenu *menu)
 {
     Character* character = menu->window->world->currentCharacter;
-    character->feed();
+    character->feed(menu->window);
     if (character->getElement() != AIR)
         menu->changeCurrentMenu(gameMenu2);
 }
@@ -64,16 +64,14 @@ void processFeedOption(GameMenu *menu)
 void processMoveOption(GameMenu *menu)
 {
     Character* character = menu->window->world->currentCharacter;
-    menu->setRequest("Enter where you would like to move: (ex: 2,5)");
-    sf::Vector2f destination;
-    bool validDest = false;
-    while (!validDest)
-    {
-        destination = getPositionFromUser(menu);
-        validDest = validMoveDestination(menu, character, destination);
-    }
-    processMoveChoice(menu->window, character, destination);
-    menu->changeCurrentMenu(gameMenu2);
+    sf::Vector2f destination = getDestinationFromUser(menu);
+
+    int energyRequired = menu->window->world->distances
+                        [static_cast<int>(character->getElement()) - 1]
+                        [int(character->getPos().x + 8 * character->getPos().y)]
+                        [int(destination.x + 8 * destination.y)];
+                            
+    character->move(menu->window, destination, energyRequired);
 }
 
 void processAttackOption(GameMenu *menu)

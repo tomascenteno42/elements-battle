@@ -8,6 +8,7 @@
 
 std::string getUserInput(GameWindow* window);
 sf::Vector2f getPositionFromUser(GameMenu* menu);
+sf::Vector2f getDestinationFromUser(GameMenu* menu);
 
 
 // ------------------------------------------------------ MENU UTILS
@@ -111,8 +112,8 @@ terrains parseStringToTerrain(string colorToParse);
 */
 void validateElement(string &element);
 bool validPosition(std::string input);
-bool validDestinationEnergy(GameMenu* menu, Character *character, sf::Vector2f destination);
-bool positionIsEmpty(GameMenu *menu, sf::Vector2f destination);
+bool validDestinationEnergy(GameWorld *world, Character *character, sf::Vector2f destination);
+bool positionIsEmpty(GameWorld *world, sf::Vector2f destination);
 bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination);
 bool stringIsNumeric(std::string s);
 
@@ -158,13 +159,7 @@ void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos,
  */
 void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths[4][64][64]);
 
-/*
- * Moves the character to the position designated by the top of the movement stack
- */
-void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack);
 void drawStats(GameWindow *win);
 void drawScreen(GameWindow *win);
-void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination);
-
 
 #endif

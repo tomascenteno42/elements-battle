@@ -29,17 +29,8 @@ void Player::deleteDeadCharacters()
 // this function is called when a player's turn begins
 void Player::updateCharacters()
 {
-    deleteDeadCharacters();
-    Character *character = 0;
-
-	for (int i = 0; i < characters.size(); i ++)        // maybe create a pute virtual method for character, which updates each character according to their element
-	{
-		character = characters[i];
-		if (character->getElement() == AIR)
-			character->setEnergy(min(20, 5 + character->getEnergy()));
-		if (character->getElement() == EARTH && character->isDefending)
-			character->setShield(character->getShield() - 2);
-	}
+	for (int i = 0; i < characters.size(); i ++)
+		characters[i]->update();
 }
 
 Player::~Player()

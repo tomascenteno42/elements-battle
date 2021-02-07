@@ -62,22 +62,7 @@ void GameStats::updateCharacterStats(Character* character, int player, int chara
     {
         sf::Color color;
         if (i == 0)
-        {
-	        switch (character->getElement()) {
-	            case EARTH:
-		            color = sf::Color(133,91,78);
-	            	break;
-	            case FIRE:
-	            	color = sf::Color(244,65,4);
-	            	break;
-	            case WATER:
-	            	color = sf::Color(20,20,190);
-	            	break;
-	            case AIR:
-	            	color = sf::Color(225,255,255);
-	            	break;
-	        }
-        }
+            color = character->getCell().getFillColor();
         else
             color = sf::Color::White;
 

@@ -9,17 +9,16 @@ class Character
 {
 protected:
     string name;
-    elements element;
 
     int life;
     int shield;
     int energy;
 
-    sf::Vector2f pos;	// pos = (4,5) seria personaje en columna 4 y fila 5
+    sf::Vector2f pos;
     sf::RectangleShape cell;
 
 public:
-    Character(string n, elements e, int l, int s);
+    Character(string n, int l, int s);
 
     bool isDefending = false;
 
@@ -27,7 +26,7 @@ public:
     int getLife();
     int getShield();
     int getEnergy();
-    elements getElement();
+    virtual elements getElement() = 0;
     sf::Vector2f getPos();
     sf::RectangleShape getCell();
 
@@ -37,15 +36,15 @@ public:
     void setLife(int l);
     void setShield(int s);
     void setEnergy(int e);
-    void setElement(elements element);
     void setPos(sf::Vector2f pos);
     void setCell();
 
-    virtual void feed() = 0;
-    void move(sf::Vector2f pos);
+    void move(GameWindow* window, sf::Vector2f destination, int energyRequired);
 
+    virtual void feed(GameWindow* window) = 0;
     virtual void attack(GameWindow* window) = 0;
     virtual void defend(GameWindow* window) = 0;
+    virtual void update() = 0;
 
     virtual ~Character();
 

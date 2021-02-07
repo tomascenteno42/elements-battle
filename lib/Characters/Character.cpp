@@ -1,42 +1,36 @@
 #include "../../src/main.h"
 
-Character::Character(string n, elements e, int l, int s)
+Character::Character(string n, int l, int s)
 {
-    energy = 20; //rand() % 20;
+	energy = 20; //rand() % 20;
 
-    name = n;
-    element = e;
-    life = l;
-    shield = s;
-    pos = sf::Vector2f(-1,-1);
-    setCell();
+	name = n;
+	life = l;
+	shield = s;
+	pos = sf::Vector2f(-1, -1);
+	setCell();
 }
 
 /* GETTERS */
 
 string Character::getName()
 {
-    return name;
+	return name;
 }
 
 int Character::getLife()
 {
-    return life;
+	return life;
 }
 
 int Character::getShield()
 {
-    return shield;
+	return shield;
 }
 
 int Character::getEnergy()
 {
-    return energy;
-}
-
-elements Character::getElement()
-{
-    return element;
+	return energy;
 }
 
 sf::Vector2f Character::getPos()
@@ -58,63 +52,58 @@ bool Character::isDead()
 
 void Character::setName(string n)
 {
-    name = n;
-}
-
-void Character::setElement(elements e)
-{
-    element = e;
+	name = n;
 }
 
 void Character::setLife(int l)
 {
-    life = l;
+	life = l;
 }
 
 void Character::setShield(int s)
 {
-    shield = s;
+	shield = s;
 }
 
 void Character::setEnergy(int e)
 {
-    energy = e;
+	energy = e;
 }
 
 void Character::setPos(sf::Vector2f pos)
 {
-	this -> pos = pos;
+	this->pos = pos;
 	setCell();
 }
-
 
 void Character::setCell()
 {
 	cell.setPosition(sf::Vector2f(50 * pos.x + 12.5, 50 * pos.y + 12.5));
-	cell.setSize(sf::Vector2f(25,25));
-	switch (element) {
-	case EARTH:
-		cell.setFillColor(sf::Color(133,91,78));
-		break;
-	case FIRE:
-		cell.setFillColor(sf::Color(244,65,4));
-		break;
-	case WATER:
-		cell.setFillColor(sf::Color(20,20,190));
-		break;
-	case AIR:
-		cell.setFillColor(sf::Color(225,255,255));
-		break;
-	}
+	cell.setSize(sf::Vector2f(25, 25));
 	cell.setOutlineThickness(1);
 	cell.setOutlineColor(sf::Color::Black);
 }
 
 /* TP3 */
 
-void Character::move(sf::Vector2f pos)
+void Character::move(GameWindow *window, sf::Vector2f destination, int energyRequired)
 {
-	setPos(pos);
+	energy -= energyRequired;
+	std::cout << "Energy Consumed: " << energyRequired << std::endl;
+
+	Stack<sf::Vector2f> *movStack = window->world->movStack;
+	loadMovementsStack(movStack, pos, destination, window->world->paths[static_cast<int>(getElement()) - 1]);
+	movStack->push(pos);
+	while (!movStack->isEmpty())
+	{
+		setPos(movStack->peek());
+		movStack->pop();
+		this_thread::sleep_for(chrono::milliseconds(250));
+
+		window->clear();
+		drawScreen(window);
+		window->display();
+	}
 }
 
 Character::~Character() = default;

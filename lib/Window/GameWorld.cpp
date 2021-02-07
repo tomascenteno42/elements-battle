@@ -97,6 +97,7 @@ bool GameWorld::emptyWorld()
 	return tiles.empty();
 }
 
+// se llama siempre que termina el gameMenu2
 void GameWorld::advanceState()
 {
     charactersPlayed ++;
@@ -108,10 +109,12 @@ void GameWorld::advanceState()
 		players[currentPlayer]->updateCharacters();
     }
 
-	updateOccupiedStates();
+	for (int p = 0; p < 2; p ++)
+		players[p]->deleteDeadCharacters();
+		
     currentCharacter = players[currentPlayer]->characters[charactersPlayed];
 }
-
+// se llama siempre que termina el gameMenu1 o el gameMenu2, se llama despues de advanceState
 void GameWorld::updateOccupiedStates() {
 	for (int i = 0; i < 64; i ++)
 		tiles[i]->setOccupied(false);
@@ -121,12 +124,15 @@ void GameWorld::updateOccupiedStates() {
 		for (int i = 0; i < players[p]->characters.size(); i ++)
 		{	
 			sf::Vector2f playerPos = players[p]->characters[i]->getPos();
-			std::cout << "There is a character here: " << playerPos.x << "," << playerPos.y << std::endl;
 			tiles[playerPos.x + 8*playerPos.y]->setOccupied(true);
 		}
 	}
 }
 
+bool GameWorld::gameOver()
+{
+	return (players[0]->charactersAlive == 0 || players[1]->charactersAlive == 0);
+}
 
 GameWorld::~GameWorld()
 {

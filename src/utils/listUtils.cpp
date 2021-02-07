@@ -52,25 +52,25 @@ void addCharacterToList(List *l, int index, string line[], string element)
     {
     case AIR:
     {
-        character = new AirCharacter(name, AIR, life, shield);
+        character = new AirCharacter(name, life, shield);
         (*l).add(character, index);
         break;
     }
     case FIRE:
     {
-        character = new FireCharacter(name, FIRE, life, shield);
+        character = new FireCharacter(name, life, shield);
         (*l).add(character, index);
         break;
     }
     case WATER:
     {
-        character = new WaterCharacter(name, WATER, life, shield);
+        character = new WaterCharacter(name, life, shield);
         l->add(character, index);
         break;
     }
     case EARTH:
     {
-        character = new EarthCharacter(name, EARTH, life, shield);
+        character = new EarthCharacter(name, life, shield);
         (*l).add(character, index);
         break;
     }

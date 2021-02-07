@@ -5,20 +5,19 @@
 
 class WaterCharacter : public Character
 {
-
 private:
     int timesFeeded = 0;
+    bool canBeFeeded();
 
 public:
-    WaterCharacter(string n, elements e, int v, int es) : Character(n, e, v, es){};
+    WaterCharacter(string n, int v, int es);
 
+    elements getElement();
+
+    void feed(GameWindow* window);
     void attack(GameWindow* window);
     void defend(GameWindow* window);
-
-    void feed();
-
-private:
-    bool canBeFeeded();
+    void update();
 };
 
 #endif

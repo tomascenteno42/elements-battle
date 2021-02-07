@@ -160,6 +160,7 @@ void GameMenu::processGameMenu1Option(int option)
             break;                      // se intenta alimentar a un personaje de aire
         case 3:      // Mover
             processMoveOption(this);
+            changeCurrentMenu(gameMenu2);
             break;
         case 4:     // Pasar
             changeCurrentMenu(gameMenu2);
@@ -168,6 +169,7 @@ void GameMenu::processGameMenu1Option(int option)
             break;
             
     }
+    window->world->updateOccupiedStates();
 }
 
 void GameMenu::processGameMenu2Option(int option)
@@ -189,8 +191,21 @@ void GameMenu::processGameMenu2Option(int option)
             break;
     }
 
+    if (window->world->gameOver())
+    {
+        if (window->world->players[0]->charactersAlive == 0)
+            std::cout << "PLAYER 2 WON" <<  std::endl;
+        else
+            std::cout << "PLAYER 1 WON" <<  std::endl;
+        setRequest("Press Enter to return to main menu");
+        getUserInput(window);
+        changeCurrentMenu(mainMenu);
+        return;
+    }
+
     changeCurrentMenu(gameMenu1);
     window->world->advanceState(); // terminó el turno del personaje actual
+    window->world->updateOccupiedStates();
 }
 
 

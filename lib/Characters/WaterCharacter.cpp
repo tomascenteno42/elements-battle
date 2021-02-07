@@ -1,10 +1,36 @@
 #include "../../src/main.h"
 
-bool WaterCharacter::canBeFeeded()
+WaterCharacter::WaterCharacter(string n, int v, int es)
+	:Character(n, v, es)
 {
-    return this->timesFeeded < 3 && this->getEnergy() <= 10;
+	cell.setFillColor(sf::Color(20, 20, 190));
 }
 
+elements WaterCharacter::getElement()
+{
+	return WATER;
+}
+
+bool WaterCharacter::canBeFeeded()
+{
+    return this->timesFeeded < 3;
+}
+
+void WaterCharacter::feed(GameWindow* window)
+{
+    if (canBeFeeded())
+    {
+        energy = min(20, energy + VALOR_ALIMENTO_AGUA);
+
+        cout << name <<
+		" was fed with plancton. They got " << VALOR_ALIMENTO_AGUA << " energy points."
+		<< endl;
+
+        timesFeeded += 1;
+    }
+    else
+        cout << this->getName() << " was not fed." << endl;
+}
 
 void WaterCharacter::attack(GameWindow* window)
 {
@@ -28,30 +54,35 @@ void WaterCharacter::attack(GameWindow* window)
 		if (attackPos == enemyPos)
 		{
 			enemy->setLife(max(0,enemy->getLife() - 20));
-			std::cout << getName() << " attacked " << enemy->getName() << " and inflicted 20 points of damage!" << std::endl;
+			std::cout << name << " attacked " << enemy->getName() << " and inflicted 20 points of damage!" << std::endl;
 		}
 	}
 }
 
 void WaterCharacter::defend(GameWindow* window)
 {
-	return;
+	vector<Character*> allies = window->world->players[window->world->currentPlayer % 2]->characters;
+
+	if (energy < 12)
+	{
+		std::cout << "Not enough energy" << std::endl;
+		return;
+	}
+
+	energy -= 12;
+	life = min(100, life + 50);
+	Character* ally = 0;
+	for (int i = 0; i < allies.size(); i ++)
+	{
+		ally = allies[i];
+		if (ally != this)
+		{
+			ally->setLife(min(100, ally->getLife() + 10));
+			std::cout << name << " healed " << ally->getName() << " 10 points of HP!" << std::endl;
+		}
+	}
 }
 
-void WaterCharacter::feed()
+void WaterCharacter::update()
 {
-    if (this->canBeFeeded())
-    {
-        energy = min(20, energy + VALOR_ALIMENTO_AGUA);
-
-        cout << this->getName() <<
-		" was fed with plancton. They got " << VALOR_ALIMENTO_AGUA << " energy points."
-		<< endl;
-
-        this->timesFeeded += 1;
-    }
-    else
-    {
-        cout << this->getName() << " was not fed." << endl;
-    }
 }

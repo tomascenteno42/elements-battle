@@ -1,8 +1,34 @@
 #include "../../src/main.h"
 
+EarthCharacter::EarthCharacter(string n, int v, int es)
+    :Character(n, v, es)
+{
+	cell.setFillColor(sf::Color(133, 91, 78));
+}
+
+elements EarthCharacter::getElement()
+{
+	return EARTH;
+}
+
 bool EarthCharacter::canBeFeeded()
 {
-    return this->getEnergy() <= 12;
+    return true;
+}
+
+void EarthCharacter::feed(GameWindow* window)
+{
+    if (this->canBeFeeded())
+    {
+        energy = min(20, energy + VALOR_ALIMENTO_TIERRA);
+        cout << this->getName() <<
+		" was fed with herbs. They got " << VALOR_ALIMENTO_TIERRA << " energy points"
+		<< endl;
+    }
+    else
+    {
+        cout << this->getName() << " was not fed." << endl;
+    }
 }
 
 void EarthCharacter::attack(GameWindow* window)
@@ -36,20 +62,23 @@ void EarthCharacter::attack(GameWindow* window)
 
 void EarthCharacter::defend(GameWindow* window)
 {
+	if (energy < 5)
+	{
+		std::cout << "Not enough energy" << std::endl;
+		return;
+	}
+
+	energy -= 5;
+	shield += 2;
+	isDefending = true;
 	return;
 }
 
-void EarthCharacter::feed()
+void EarthCharacter::update()
 {
-    if (this->canBeFeeded())
-    {
-        energy = min(20, energy + VALOR_ALIMENTO_TIERRA);
-        cout << this->getName() <<
-		" was fed with herbs. They got " << VALOR_ALIMENTO_TIERRA << " energy points"
-		<< endl;
-    }
-    else
-    {
-        cout << this->getName() << " was not fed." << endl;
-    }
+	if (isDefending)
+	{
+		shield -= 2;
+		isDefending = false;
+	}
 }

@@ -97,14 +97,6 @@ void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos,
     loadMovementsStack(movStack, startingPos, intPos, paths);
 }
 
-void moveCharacter(Character *character, Stack<sf::Vector2f> *movStack)
-{
-    sf::Vector2f playerPos = character->getPos();
-    playerPos = movStack->peek();
-    movStack->pop();
-    character->move(playerPos);
-}
-
 void drawStats(GameWindow *win)
 {
     win->draw(win->stats->getCell());
@@ -152,31 +144,4 @@ void drawScreen(GameWindow *win)
     win->draw(win->menu->getCell());
     win->menu->drawCurrentMenu();
     win->menu->textbox->drawTo(*win);
-}
-
-void processMoveChoice(GameWindow *win, Character *character, sf::Vector2f destination)
-{
-    Stack<sf::Vector2f> *movStack = win->world->movStack;
-
-    if (movStack->isEmpty())
-    {
-        int energyRequired = win->world->distances
-                            [static_cast<int>(character->getElement()) - 1]
-                            [int(character->getPos().x + 8 * character->getPos().y)]
-                            [int(destination.x + 8 * destination.y)];
-                            
-        sf::Vector2f characterPos = character->getPos();
-        character->setEnergy(character->getEnergy() - energyRequired);
-        std::cout << "Energy Consumed: " << energyRequired << std::endl;
-        loadMovementsStack(movStack, characterPos, destination, win->world->paths[static_cast<int>(character->getElement()) - 1]);
-        movStack->push(characterPos);
-    }
-    while (!movStack->isEmpty())
-    {
-        moveCharacter(character, movStack);
-        this_thread::sleep_for(chrono::milliseconds(250));
-        win->clear();
-        drawScreen(win);
-        win->display();
-    }
 }

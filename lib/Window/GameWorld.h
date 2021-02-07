@@ -26,6 +26,8 @@ public:
 	void advanceState();
 	void updateOccupiedStates();
 
+	bool gameOver();
+
 	GameWorld();
 	virtual ~GameWorld();
 

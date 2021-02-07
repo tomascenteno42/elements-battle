@@ -1,10 +1,35 @@
 #include "../../src/main.h"
 
-bool FireCharacter::canBeFeeded()
+FireCharacter::FireCharacter(string n, int v, int es)
+    :Character(n, v, es)
 {
-    return this->getLife() <= 85;
+	cell.setFillColor(sf::Color(244, 65, 4));
 }
 
+elements FireCharacter::getElement()
+{
+	return FIRE;
+}
+
+bool FireCharacter::canBeFeeded()
+{
+    return true;
+}
+
+void FireCharacter::feed(GameWindow* window)
+{
+    if (canBeFeeded())
+    {
+        life = min(100, life + VALOR_ALIMENTO_FUEGO);
+		energy = min(20, energy + 10);
+
+        cout << name <<
+		" was fed with wood. They got " << VALOR_ALIMENTO_FUEGO << " health points and 10 energy points"
+		<< endl;
+    }
+    else
+        cout << name << " was not fed." << endl;
+}
 
 void FireCharacter::attack(GameWindow* window)
 {
@@ -32,22 +57,17 @@ void FireCharacter::attack(GameWindow* window)
 
 void FireCharacter::defend(GameWindow* window)
 {
+	if (energy < 10)
+	{
+		std::cout << "Not enough energy" << std::endl;
+		return;
+	}
+
+	energy -= 10;
+	life = min(100, life + 10);
 	return;
 }
 
-void FireCharacter::feed()
+void FireCharacter::update()
 {
-    if (this->canBeFeeded())
-    {
-        life = min(100, life + VALOR_ALIMENTO_FUEGO);
-		energy = min(20, energy + 10);
-
-        cout << this->getName() <<
-		" was fed with wood. They got " << VALOR_ALIMENTO_FUEGO << " health points and 10 energy points"
-		<< endl;
-    }
-    else
-    {
-        cout << this->getName() << " was not fed." << endl;
-    }
 }
