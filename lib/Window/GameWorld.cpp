@@ -108,9 +108,24 @@ void GameWorld::advanceState()
 		players[currentPlayer]->updateCharacters();
     }
 
+	updateOccupiedStates();
     currentCharacter = players[currentPlayer]->characters[charactersPlayed];
 }
 
+void GameWorld::updateOccupiedStates() {
+	for (int i = 0; i < 64; i ++)
+		tiles[i]->setOccupied(false);
+
+	for (int p = 0; p < 2; p ++)
+	{
+		for (int i = 0; i < players[p]->characters.size(); i ++)
+		{	
+			sf::Vector2f playerPos = players[p]->characters[i]->getPos();
+			std::cout << "There is a character here: " << playerPos.x << "," << playerPos.y << std::endl;
+			tiles[playerPos.x + 8*playerPos.y]->setOccupied(true);
+		}
+	}
+}
 
 
 GameWorld::~GameWorld()
