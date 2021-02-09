@@ -23,6 +23,8 @@ void processAddCharacter(GameMenu *menu);
 void processDeleteCharacter(GameMenu *menu);
 void processSearchCharacter(GameMenu *menu);
 void processShowCharacters(GameMenu *menu);
+void processSelectCharacter(GameMenu* menu);
+void processPlaceCharacters(GameMenu* menu);
 void processSaveGame(GameMenu *menu);
 void processFeedOption(GameMenu *menu);
 void processMoveOption(GameMenu *menu);

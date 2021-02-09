@@ -105,8 +105,11 @@ void GameWorld::advanceState()
     if (charactersPlayed == players[currentPlayer]->charactersAlive)	// Ya jugaron todos los personajes en el turno
     {
         charactersPlayed = 0;
-        currentPlayer = (currentPlayer + 1) % 2;
-		players[currentPlayer]->updateCharacters();
+		if (!gameOver())
+		{
+        	currentPlayer = (currentPlayer + 1) % 2;
+			players[currentPlayer]->updateCharacters();
+		}
     }
 
 	for (int p = 0; p < 2; p ++)
@@ -114,6 +117,7 @@ void GameWorld::advanceState()
 		
     currentCharacter = players[currentPlayer]->characters[charactersPlayed];
 }
+
 // se llama siempre que termina el gameMenu1 o el gameMenu2, se llama despues de advanceState
 void GameWorld::updateOccupiedStates() {
 	for (int i = 0; i < 64; i ++)

@@ -113,7 +113,8 @@ void drawStats(GameWindow *win)
     win->draw(win->stats->player1Text);
     win->draw(win->stats->player2Text);
     win->draw(win->stats->infoText);
-    win->draw(win->stats->currentCharacterMark);
+    if (!win->world->gameOver())
+        win->draw(win->stats->currentCharacterMark);
 }
 
 void drawScreen(GameWindow *win)

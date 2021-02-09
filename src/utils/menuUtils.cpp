@@ -48,6 +48,20 @@ void processShowCharacters(GameMenu *menu)
     std::cout << "Showing all characters" << std::endl;
 }
 
+void processSelectCharacter(GameMenu* menu)
+{
+    std::string input;
+    menu->setRequest("Select a character: ");
+    input = getUserInput(menu->window);
+    std::cout << "Selected character " << input << std::endl;
+    menu->window->world->charactersSelected ++;
+}
+
+void processPlaceCharacters(GameMenu* menu)
+{
+    // posicionar los 6 personajes aca, pidiendo intercaladamente a los jugadores posiciones
+}
+
 void processSaveGame(GameMenu *menu)
 {
     std::cout << "Saved succesfully" << std::endl;

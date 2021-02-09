@@ -66,6 +66,18 @@ void GameMenu::drawCurrentMenu()
 
 void GameMenu::render()
 {
+    if (window->world->gameOver() && currentMenuIndex != mainMenu)
+    {
+        if (window->world->players[0]->charactersAlive == 0)
+            std::cout << "PLAYER 2 WON" <<  std::endl;
+        else
+            std::cout << "PLAYER 1 WON" <<  std::endl;
+            
+        changeCurrentMenu(mainMenu);
+        return;
+    }
+
+
     std::string input = textbox->getText();
     textbox->setText("");
     
@@ -93,6 +105,8 @@ void GameMenu::processOptionChoice(int option)
             break;
     }
     setRequest("Choose an option");
+    if (window->world->gameOver())
+        setRequest("Press Enter to return to main menu");
 }
 
 void GameMenu::processMainMenuOption(int option)
@@ -112,6 +126,8 @@ void GameMenu::processMainMenuOption(int option)
             processSearchCharacter(this);
             break;
         case 5:     // Empezar juego
+            // Aca habria que cargar partida en el caso de que exista una partida cargada, yendo directamente a gameMenu1
+            // En caso contrario se inicia un juego nuevo y se tienen que seleccionar los personajes
             changeCurrentMenu(charSelectionMenu);
             break;
         case 6:     // Cerrar
@@ -132,12 +148,15 @@ void GameMenu::processCharMenuOption(int option)
         case 2:     // Mostrar pjs
             processShowCharacters(this);
             break;
-        case 3:     // Seleccionar pj
-            //menu->setRequest("Pick a character: ");
-            //menu->waitingForOptionChoice = false;
-            //orden: P1, P2, P1, P2, P1, P2
-            //luego de que se eligen los 6 personajes tienen que posicionarlos
-            changeCurrentMenu(gameMenu1);
+        case 3:     // Seleccionar pj // Posicionar pj
+            if (window->world->charactersSelected < 5)
+                processSelectCharacter(this);
+            else
+            {
+                processSelectCharacter(this);
+                processPlaceCharacters(this);
+                changeCurrentMenu(gameMenu1);
+            }
             break;
         case 4:     // Salir
             changeCurrentMenu(mainMenu);
@@ -148,7 +167,7 @@ void GameMenu::processCharMenuOption(int option)
 }
 
 void GameMenu::processGameMenu1Option(int option)
-{    
+{
     switch (option)
     {
         case 1:     // Guardar
@@ -189,18 +208,6 @@ void GameMenu::processGameMenu2Option(int option)
 
         default:
             break;
-    }
-
-    if (window->world->gameOver())
-    {
-        if (window->world->players[0]->charactersAlive == 0)
-            std::cout << "PLAYER 2 WON" <<  std::endl;
-        else
-            std::cout << "PLAYER 1 WON" <<  std::endl;
-        setRequest("Press Enter to return to main menu");
-        getUserInput(window);
-        changeCurrentMenu(mainMenu);
-        return;
     }
 
     changeCurrentMenu(gameMenu1);
