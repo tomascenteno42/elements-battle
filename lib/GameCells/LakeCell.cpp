@@ -1,5 +1,10 @@
 #include "../../src/main.h"
 
+LakeCell::LakeCell(float xPos, float yPos, float ySize, float xSize)
+	:GameCell(xPos, yPos, ySize, xSize, parseTerrainToSf(lake), lake)
+{
+}
+
 void LakeCell::setCost(elements element)
 {
 	switch (element)

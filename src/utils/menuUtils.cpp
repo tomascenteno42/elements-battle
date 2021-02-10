@@ -80,6 +80,9 @@ void processMoveOption(GameMenu *menu)
     Character* character = menu->window->world->currentCharacter;
     sf::Vector2f destination = getDestinationFromUser(menu);
 
+    if (destination == character->getPos())
+        return;
+
     int energyRequired = menu->window->world->distances
                         [static_cast<int>(character->getElement()) - 1]
                         [int(character->getPos().x + 8 * character->getPos().y)]
@@ -98,6 +101,21 @@ void processDefenseOption(GameMenu *menu)
 {
     Character* character = menu->window->world->currentCharacter;
     character->defend(menu->window);
+}
+
+void endGame(GameMenu *menu)
+{
+    if (menu->window->world->players[0]->charactersAlive == 0)
+        menu->window->stats->setInfoText("PLAYER 2 WON");
+    else
+        menu->window->stats->setInfoText("PLAYER 1 WON");
+
+    cout << "aaa" << endl;
+    menu->setRequest("Enter any text to return to main menu");
+    cout << "bbb" << endl;
+    getUserInput(menu->window);
+    cout << "ccc" << endl;
+    menu->changeCurrentMenu(mainMenu);
 }
 
 

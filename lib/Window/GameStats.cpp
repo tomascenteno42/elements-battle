@@ -4,6 +4,21 @@ GameStats::GameStats(float xPos, float yPos, float ySize, float xSize, sf::Color
     :Cell(xPos, yPos, ySize, xSize, color)
 {
     font.loadFromFile(FONT_FILE);
+
+    player1Text = sf::Text("PLAYER 1", font, 20);
+    player1Text.setFillColor(sf::Color::White);
+    player1Text.setPosition(sf::Vector2f(410,10));
+
+    player2Text = sf::Text("PLAYER 2", font, 20);
+    player2Text.setFillColor(sf::Color::White);
+    player2Text.setPosition(sf::Vector2f(610,10));
+
+    infoText = sf::Text("", font, 14);
+    infoText.setFillColor(sf::Color::White);
+    infoText.setPosition(sf::Vector2f(410, 340));
+
+    currentCharacterMark = sf::Text("<--", font, 14);
+    currentCharacterMark.setFillColor(sf::Color::Yellow);
 }
 
 void GameStats::setInfoText(std::string info)
@@ -18,13 +33,6 @@ void GameStats::setCurrentCharacterMark(int player, int character)
 
 void GameStats::updateStats(GameWorld* world)
 {
-    player1Text = sf::Text("PLAYER 1", font, 20);
-    player1Text.setFillColor(sf::Color::White);
-    player1Text.setPosition(sf::Vector2f(410,10));
-
-    player2Text = sf::Text("PLAYER 2", font, 20);
-    player2Text.setFillColor(sf::Color::White);
-    player2Text.setPosition(sf::Vector2f(610,10));
     
     for (int p = 0; p < 2; p ++)
     {
@@ -36,14 +44,8 @@ void GameStats::updateStats(GameWorld* world)
         }
     }
 
-    currentCharacterMark = sf::Text("<--", font, 14);
-    currentCharacterMark.setFillColor(sf::Color::Yellow);
     setCurrentCharacterMark(world->currentPlayer + 1, world->charactersPlayed);
 
-    infoText = sf::Text("", font, 14);
-    infoText.setFillColor(sf::Color::White);
-    infoText.setPosition(sf::Vector2f(410, 340));
-    setInfoText("Info text goes here\nInfo text goes here\nInfo text goes here");
 }
 
 void GameStats::updateCharacterStats(Character* character, int player, int characterIndex)
@@ -52,9 +54,12 @@ void GameStats::updateCharacterStats(Character* character, int player, int chara
     if (player == 1) characterStats = player1Stats[characterIndex];
     if (player == 2) characterStats = player2Stats[characterIndex];
 
+    std::ostringstream life;
+    life << character->getLife();
+
     characterStats[0] = sf::Text(character->getName(), font, 18);
-    characterStats[1] = sf::Text((std::string)"HP: " + to_string(character->getLife()), font, 16);
-    characterStats[2] = sf::Text((std::string)"EN: " + to_string(character->getEnergy()), font, 16);
+    characterStats[1] = sf::Text((std::string)"HP: " + life.str() + "/" + to_string(character->getMaxLife()), font, 16);
+    characterStats[2] = sf::Text((std::string)"EN: " + to_string(character->getEnergy()) + "/20", font, 16);
     characterStats[3] = sf::Text((std::string)"SH: " + to_string(character->getShield()), font, 16);
 
     float x;

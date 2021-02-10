@@ -5,9 +5,7 @@
 
 class MountainCell : public GameCell {
 public:
-	MountainCell(float xPos, float yPos, float ySize, float xSize)
-		:GameCell(xPos, yPos, ySize, xSize, parseTerrainToSf(mountain), mountain)
-		{};
+	MountainCell(float xPos, float yPos, float ySize, float xSize);
 
 	void setCost(elements element);
 };

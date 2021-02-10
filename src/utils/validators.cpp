@@ -40,7 +40,7 @@ bool positionIsEmpty(GameWorld* world, sf::Vector2f destination)
 
 bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination)
 {
-    if (!positionIsEmpty(menu->window->world, destination))
+    if (!positionIsEmpty(menu->window->world, destination) && destination != character->getPos())
     {
         menu->setRequest("You can't move there, the cell is occupied. Try a different one");
         return false;

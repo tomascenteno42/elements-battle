@@ -6,16 +6,17 @@
 class FireCharacter : public Character
 {
 private:
-    bool canBeFeeded();
+    bool canBeFed();
 
 public:
-    FireCharacter(string n, int v, int es);
+    FireCharacter(string name, float life, int shield);
 
     elements getElement();
 
     void feed(GameWindow* window);
     void attack(GameWindow* window);
     void defend(GameWindow* window);
+    void adjustDamageTaken(float &damage, elements attackerElement);
     void update();
 };
 

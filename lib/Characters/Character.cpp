@@ -1,11 +1,12 @@
 #include "../../src/main.h"
 
-Character::Character(string n, int l, int s)
+Character::Character(string n, float l, int s)
 {
-	energy = 20; //rand() % 20;
+	energy = rand() % 20;
 
 	name = n;
 	life = l;
+	maxLife = l;
 	shield = s;
 	pos = sf::Vector2f(-1, -1);
 	setCell();
@@ -18,9 +19,14 @@ string Character::getName()
 	return name;
 }
 
-int Character::getLife()
+float Character::getLife()
 {
 	return life;
+}
+
+int Character::getMaxLife()
+{
+	return maxLife;
 }
 
 int Character::getShield()
@@ -55,7 +61,7 @@ void Character::setName(string n)
 	name = n;
 }
 
-void Character::setLife(int l)
+void Character::setLife(float l)
 {
 	life = l;
 }
@@ -84,8 +90,6 @@ void Character::setCell()
 	cell.setOutlineColor(sf::Color::Black);
 }
 
-/* TP3 */
-
 void Character::move(GameWindow *window, sf::Vector2f destination, int energyRequired)
 {
 	energy -= energyRequired;
@@ -103,6 +107,24 @@ void Character::move(GameWindow *window, sf::Vector2f destination, int energyReq
 		window->clear();
 		drawScreen(window);
 		window->display();
+	}
+}
+
+void Character::shieldDamage(float &damage)
+{
+	switch (shield)
+	{
+		case 0:
+			break;
+		case 1:
+			damage *= 0.9;
+			break;
+		case 2:
+			damage *= 0.8;
+			break;
+		default:
+			damage *= 0.2;
+			break;
 	}
 }
 

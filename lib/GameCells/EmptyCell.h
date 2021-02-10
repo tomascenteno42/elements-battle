@@ -5,9 +5,7 @@
 
 class EmptyCell : public GameCell {
 public:
-	EmptyCell(float xPos, float yPos, float ySize, float xSize)
-		:GameCell(xPos, yPos, ySize, xSize, parseTerrainToSf(empty), empty)
-		{};
+	EmptyCell(float xPos, float yPos, float ySize, float xSize);
 
 	void setCost(elements element);
 };

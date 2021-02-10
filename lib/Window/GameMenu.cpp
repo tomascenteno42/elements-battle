@@ -66,18 +66,6 @@ void GameMenu::drawCurrentMenu()
 
 void GameMenu::render()
 {
-    if (window->world->gameOver() && currentMenuIndex != mainMenu)
-    {
-        if (window->world->players[0]->charactersAlive == 0)
-            std::cout << "PLAYER 2 WON" <<  std::endl;
-        else
-            std::cout << "PLAYER 1 WON" <<  std::endl;
-            
-        changeCurrentMenu(mainMenu);
-        return;
-    }
-
-
     std::string input = textbox->getText();
     textbox->setText("");
     
@@ -105,8 +93,6 @@ void GameMenu::processOptionChoice(int option)
             break;
     }
     setRequest("Choose an option");
-    if (window->world->gameOver())
-        setRequest("Press Enter to return to main menu");
 }
 
 void GameMenu::processMainMenuOption(int option)
@@ -213,6 +199,9 @@ void GameMenu::processGameMenu2Option(int option)
     changeCurrentMenu(gameMenu1);
     window->world->advanceState(); // terminó el turno del personaje actual
     window->world->updateOccupiedStates();
+    
+    if (window->world->gameOver())
+        endGame(this);
 }
 
 

@@ -5,9 +5,7 @@
 
 class PathCell : public GameCell {
 public:
-	PathCell(float xPos, float yPos, float ySize, float xSize)
-		:GameCell(xPos, yPos, ySize, xSize, parseTerrainToSf(path), path)
-		{};
+	PathCell(float xPos, float yPos, float ySize, float xSize);
 
 	void setCost(elements element);
 };

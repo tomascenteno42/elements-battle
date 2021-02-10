@@ -1,7 +1,7 @@
 #include "../../src/main.h"
 
-WaterCharacter::WaterCharacter(string n, int v, int es)
-	:Character(n, v, es)
+WaterCharacter::WaterCharacter(string name, float life, int shield)
+	:Character(name, life, shield)
 {
 	cell.setFillColor(sf::Color(20, 20, 190));
 }
@@ -11,76 +11,107 @@ elements WaterCharacter::getElement()
 	return WATER;
 }
 
-bool WaterCharacter::canBeFeeded()
+bool WaterCharacter::canBeFed()
 {
-    return this->timesFeeded < 3;
+    return this->timesFed < 3;
 }
 
 void WaterCharacter::feed(GameWindow* window)
 {
-    if (canBeFeeded())
+    if (canBeFed())
     {
-        energy = min(20, energy + VALOR_ALIMENTO_AGUA);
-
-        cout << name <<
-		" was fed with plancton. They got " << VALOR_ALIMENTO_AGUA << " energy points."
-		<< endl;
-
-        timesFeeded += 1;
+		int heal = min(VALOR_ALIMENTO_AGUA, 20 - energy);
+        energy += heal;
+        window->stats->setInfoText(name + " was fed with plancton,\nthey got " + to_string(heal) + " EN");
+        timesFed += 1;
     }
     else
-        cout << this->getName() << " was not fed." << endl;
+        window->stats->setInfoText("You can't feed " + name + " again");
 }
 
 void WaterCharacter::attack(GameWindow* window)
 {
-	window->menu->setRequest("Attack at position (ex: 2,5): ");
-	sf::Vector2f attackPos = getPositionFromUser(window->menu);
-
-	vector<Character*> enemies = window->world->players[(window->world->currentPlayer + 1) % 2]->characters;
-
 	if (energy < 5)
 	{
-		std::cout << "Not enough energy" << std::endl;
+		window->stats->setInfoText("Not enough EN");
 		return;
 	}
 
+	window->menu->setRequest("Attack at position (ex: 2,5): ");
+	sf::Vector2f attackPos = getPositionFromUser(window->menu);
+	vector<Character*> enemies = window->world->players[(window->world->currentPlayer + 1) % 2]->characters;
+
 	energy -= 5;
+
 	Character* enemy = 0;
+	float damage = 20;
+	std::ostringstream damageStr;
 	for (int i = 0; i < enemies.size(); i ++)
 	{
 		enemy = enemies[i];
 		sf::Vector2f enemyPos = enemy->getPos();
 		if (attackPos == enemyPos)
 		{
-			enemy->setLife(max(0,enemy->getLife() - 20));
-			std::cout << name << " attacked " << enemy->getName() << " and inflicted 20 points of damage!" << std::endl;
+			enemy->adjustDamageTaken(damage, WATER);
+			damage = min(damage, enemy->getLife());
+			enemy->setLife(enemy->getLife() - damage);
+			damageStr << damage;
+			window->stats->setInfoText(name + " attacked " + enemy->getName() + "\nand inflicted " + damageStr.str() + " points of damage\n");
+			damageStr.str("");
 		}
 	}
 }
 
+void WaterCharacter::adjustDamageTaken(float &damage, elements attackerElement)
+{
+	switch (attackerElement)
+	{
+		case FIRE:
+			damage = 10;
+			break;
+		case EARTH:
+			damage += 20;
+			break;
+		default:
+			break;
+	}
+	shieldDamage(damage);	
+}
+
 void WaterCharacter::defend(GameWindow* window)
 {
-	vector<Character*> allies = window->world->players[window->world->currentPlayer % 2]->characters;
-
 	if (energy < 12)
 	{
-		std::cout << "Not enough energy" << std::endl;
+		window->stats->setInfoText("Not enough EN");
 		return;
 	}
 
+	vector<Character*> allies = window->world->players[window->world->currentPlayer % 2]->characters;
+	std::string infoText = "";
+
 	energy -= 12;
-	life = min(100, life + 50);
+
+	float heal = min((float)50, maxLife - life);
+	life += heal;
+	std::ostringstream healStr;
+	healStr << heal;
+	infoText.append(name + " healed " + healStr.str() + " HP\n");
+
 	Character* ally = 0;
+	healStr.str("");
 	for (int i = 0; i < allies.size(); i ++)
 	{
 		ally = allies[i];
 		if (ally != this)
 		{
-			ally->setLife(min(100, ally->getLife() + 10));
-			std::cout << name << " healed " << ally->getName() << " 10 points of HP!" << std::endl;
+			heal = min((float)10, ally->getMaxLife() - ally->getLife());
+			ally->setLife(ally->getLife() + heal);
+			healStr << heal;
+			infoText.append(name + " healed " + ally->getName() + " " + healStr.str() + " HP\n");
+			healStr.str("");
 		}
 	}
+	window->stats->setInfoText(infoText);
 }
 
 void WaterCharacter::update()

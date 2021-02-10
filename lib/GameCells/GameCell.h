@@ -11,10 +11,7 @@ protected:
 	bool occupied = false;
 
 public:
-	GameCell(float xPos, float yPos, float ySize, float xSize, sf::Color color, terrains terrain) : Cell(xPos, yPos, ySize, xSize, color)
-	{
-		setTerrain(terrain);
-	};
+	GameCell(float xPos, float yPos, float ySize, float xSize, sf::Color color, terrains terrain);
 
 	terrains getTerrain();
 

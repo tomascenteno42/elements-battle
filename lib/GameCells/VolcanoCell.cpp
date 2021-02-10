@@ -1,5 +1,10 @@
 #include "../../src/main.h"
 
+VolcanoCell::VolcanoCell(float xPos, float yPos, float ySize, float xSize)
+	:GameCell(xPos, yPos, ySize, xSize, parseTerrainToSf(volcano), volcano)
+{
+}
+
 void VolcanoCell::setCost(elements element)
 {
 	switch (element)

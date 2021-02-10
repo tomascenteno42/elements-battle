@@ -6,17 +6,18 @@
 class WaterCharacter : public Character
 {
 private:
-    int timesFeeded = 0;
-    bool canBeFeeded();
+    int timesFed = 0;
+    bool canBeFed();
 
 public:
-    WaterCharacter(string n, int v, int es);
+    WaterCharacter(string name, float life, int shield);
 
     elements getElement();
 
     void feed(GameWindow* window);
     void attack(GameWindow* window);
     void defend(GameWindow* window);
+    void adjustDamageTaken(float &damage, elements attackerElement);
     void update();
 };
 

@@ -5,9 +5,7 @@
 
 class CliffCell : public GameCell {
 public:
-	CliffCell(float xPos, float yPos, float ySize, float xSize)
-		:GameCell(xPos, yPos, ySize, xSize, parseTerrainToSf(cliff), cliff)
-		{};
+	CliffCell(float xPos, float yPos, float ySize, float xSize);
 
 	void setCost(elements element);
 };

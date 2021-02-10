@@ -10,7 +10,8 @@ class Character
 protected:
     string name;
 
-    int life;
+    float life;
+    int maxLife;
     int shield;
     int energy;
 
@@ -18,12 +19,13 @@ protected:
     sf::RectangleShape cell;
 
 public:
-    Character(string n, int l, int s);
+    Character(string n, float l, int s);
 
     bool isDefending = false;
 
     string getName();
-    int getLife();
+    float getLife();
+    int getMaxLife();
     int getShield();
     int getEnergy();
     virtual elements getElement() = 0;
@@ -33,7 +35,7 @@ public:
     bool isDead();
 
     void setName(string n);
-    void setLife(int l);
+    void setLife(float l);
     void setShield(int s);
     void setEnergy(int e);
     void setPos(sf::Vector2f pos);
@@ -41,15 +43,18 @@ public:
 
     void move(GameWindow* window, sf::Vector2f destination, int energyRequired);
 
+    void shieldDamage(float &damage);
+
     virtual void feed(GameWindow* window) = 0;
     virtual void attack(GameWindow* window) = 0;
+    virtual void adjustDamageTaken(float &damage, elements attackerElement) = 0;
     virtual void defend(GameWindow* window) = 0;
     virtual void update() = 0;
 
     virtual ~Character();
 
 protected:
-    bool canBeFeeded();
+    bool canBeFed();
 };
 
 #endif

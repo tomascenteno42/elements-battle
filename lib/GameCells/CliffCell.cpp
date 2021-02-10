@@ -1,5 +1,10 @@
 #include "../../src/main.h"
 
+CliffCell::CliffCell(float xPos, float yPos, float ySize, float xSize)
+	:GameCell(xPos, yPos, ySize, xSize, parseTerrainToSf(cliff), cliff)
+{
+}
+
 void CliffCell::setCost(elements element)
 {
 	switch (element)

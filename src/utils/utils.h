@@ -31,6 +31,8 @@ void processMoveOption(GameMenu *menu);
 void processAttackOption(GameMenu *menu);
 void processDefenseOption(GameMenu *menu);
 
+void endGame(GameMenu *menu);
+
 /**
     Calculates amount of lines(options) in OPTIONS_FILE.
     @return Amount of options (int).
