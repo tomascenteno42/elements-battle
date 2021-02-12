@@ -40,6 +40,8 @@ void AirCharacter::attack(GameWindow* window)
 	for (int i = 0; i < enemies.size(); i ++)
 	{
 		enemy = enemies[i];
+		if (enemy->isDead())
+			continue;
 		enemy->adjustDamageTaken(damage, AIR);
 		damage = min(damage, enemy->getLife());
 		enemy->setLife(enemy->getLife() - damage);

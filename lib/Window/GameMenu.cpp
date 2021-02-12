@@ -69,7 +69,7 @@ void GameMenu::render()
     std::string input = textbox->getText();
     textbox->setText("");
     
-    if (input == "" || !stringIsNumeric(input) || stoi(input) < 1 || stoi(input) > getCurrentMenu()->getLength())
+    if (input == "" || !stringIsNumeric(input) || stoi(input) < 1 || stoi(input) > currentMenu->getLength())
        setRequest("Enter a valid choice: ");
     else
         processOptionChoice(stoi(input));
@@ -92,7 +92,6 @@ void GameMenu::processOptionChoice(int option)
             processGameMenu2Option(option);
             break;
     }
-    setRequest("Choose an option");
 }
 
 void GameMenu::processMainMenuOption(int option)
@@ -112,9 +111,7 @@ void GameMenu::processMainMenuOption(int option)
             processSearchCharacter(this);
             break;
         case 5:     // Empezar juego
-            // Aca habria que cargar partida en el caso de que exista una partida cargada, yendo directamente a gameMenu1
-            // En caso contrario se inicia un juego nuevo y se tienen que seleccionar los personajes
-            changeCurrentMenu(charSelectionMenu);
+            processLoadGame(this);
             break;
         case 6:     // Cerrar
             window->close();
@@ -122,6 +119,7 @@ void GameMenu::processMainMenuOption(int option)
         default:
             break;
     }
+    setRequest("Choose an option");
 }
 
 void GameMenu::processCharMenuOption(int option)
@@ -150,6 +148,7 @@ void GameMenu::processCharMenuOption(int option)
         default:
             break;
     }
+    setRequest("Choose an option");
 }
 
 void GameMenu::processGameMenu1Option(int option)
@@ -158,23 +157,21 @@ void GameMenu::processGameMenu1Option(int option)
     {
         case 1:     // Guardar
             processSaveGame(this);
-            changeCurrentMenu(mainMenu);
             break;
         case 2:     // Alimentar
-            processFeedOption(this);    // El cambio de menu se hace dentro de la funcion, así no se pierde el turno si
-            break;                      // se intenta alimentar a un personaje de aire
+            processFeedOption(this);
+            break;
         case 3:      // Mover
             processMoveOption(this);
-            changeCurrentMenu(gameMenu2);
             break;
         case 4:     // Pasar
             changeCurrentMenu(gameMenu2);
+            setRequest("Choose an option");
             break;
         default:
             break;
             
     }
-    window->world->updateOccupiedStates();
 }
 
 void GameMenu::processGameMenu2Option(int option)
@@ -184,27 +181,25 @@ void GameMenu::processGameMenu2Option(int option)
         case 1:     // Attack
             processAttackOption(this);
             break;
-
         case 2:     // Defend
             processDefenseOption(this);
             break;
-
         case 3:     // Pasar
             break;
-
         default:
             break;
     }
 
     changeCurrentMenu(gameMenu1);
+    window->world->canSave = false;
     window->world->advanceState(); // terminó el turno del personaje actual
     window->world->updateOccupiedStates();
     
+    setRequest("Choose an option");
+
     if (window->world->gameOver())
         endGame(this);
 }
-
-
 
 GameMenu::~GameMenu()
 {

@@ -47,6 +47,8 @@ void FireCharacter::attack(GameWindow* window)
 	for (int i = 0; i < enemies.size(); i ++)
 	{
 		enemy = enemies[i];
+		if (enemy->isDead())
+			continue;
 		sf::Vector2f enemyPos = enemy->getPos();
 		if (abs(enemyPos.y - pos.y) <= 1)
 		{

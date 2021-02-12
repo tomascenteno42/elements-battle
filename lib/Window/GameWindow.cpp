@@ -9,6 +9,12 @@ GameWindow::GameWindow(sf::VideoMode window, string title)
     setKeyRepeatEnabled(true);
 }
 
+void GameWindow::setWorld(GameWorld* world)
+{
+    delete this -> world;
+    this -> world = world;
+}
+
 GameWindow::~GameWindow()
 {
     delete world;

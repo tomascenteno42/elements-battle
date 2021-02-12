@@ -7,30 +7,32 @@ Player::Player()
 void Player::addCharacter(Character* character)
 {
     characters.push_back(character);
-    charactersAlive ++;
 }
 
-void Player::deleteDeadCharacters()
+int Player::charactersAlive()
 {
-	std::vector<int*>::size_type i = 0;
-	while (i < characters.size())
-	{
-   		if (characters[i] -> isDead())
-        {
-		    delete characters[i];
-    	    characters.erase(characters.begin() + i);
-            charactersAlive --;
-		}
-   		else
-    	    i++;
+    int charactersAlive = 0;
+    for (int i = 0; i < characters.size(); i ++)
+    {
+        if (!characters[i]->isDead())
+            charactersAlive ++;
     }
+    return charactersAlive;
 }
 
 // this function is called when a player's turn begins
 void Player::updateCharacters()
 {
 	for (int i = 0; i < characters.size(); i ++)
-		characters[i]->update();
+	{
+		if (!characters[i]->isDead())
+			characters[i]->update();
+	}
+}
+
+bool Player::lost()
+{
+    return (charactersAlive() == 0);
 }
 
 Player::~Player()

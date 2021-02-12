@@ -11,6 +11,7 @@ public:
     GameStats *stats;
     
     GameWindow(sf::VideoMode window, string title);
+    void setWorld(GameWorld* world);
 
     ~GameWindow();
 };

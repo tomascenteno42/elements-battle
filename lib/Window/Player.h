@@ -7,12 +7,12 @@ class Player
 {
 public:
     vector<Character*> characters;
-    int charactersAlive = 0;
 
     Player();
-    void deleteDeadCharacters();
+    int charactersAlive();
     void updateCharacters();
     void addCharacter(Character* character);
+    bool lost();
 
     ~Player();
 };

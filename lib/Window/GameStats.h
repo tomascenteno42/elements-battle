@@ -17,11 +17,8 @@ public:
 
     sf::Font font;
 
-    sf::Text player1Text;
-    sf::Text player2Text;
-
-    sf::Text player1Stats [3][4];
-    sf::Text player2Stats [3][4];
+    sf::Text playerText [2];
+    sf::Text playerStats [2][3][4];     // 2 jugadores, cada uno con 3 pj, cada uno con 4 stats
 
     sf::Text infoText; // Para escribir cosas como "Tal jugador ataco a tal otro"
     sf::Text currentCharacterMark;

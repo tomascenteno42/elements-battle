@@ -3,6 +3,15 @@
 
 #include "../main.h"
 
+void loadNewGame(GameWorld* world);
+
+// ----------------------------------------------------------- FILES
+void openFile(string path, fstream& file);
+void loadCharacterData();
+void loadMapData(GameWorld* world);
+void loadGameData(fstream& file, GameWorld* world);
+void saveGameData(GameWorld* world);
+Character* createNewCharacterFromStrings(std::string elementStr, std::string name, std::string maxLifeStr, std::string shieldStr);
 
 // ------------------------------------------------ USER INTERACTION
 
@@ -25,6 +34,7 @@ void processSearchCharacter(GameMenu *menu);
 void processShowCharacters(GameMenu *menu);
 void processSelectCharacter(GameMenu* menu);
 void processPlaceCharacters(GameMenu* menu);
+void processLoadGame(GameMenu*menu);
 void processSaveGame(GameMenu *menu);
 void processFeedOption(GameMenu *menu);
 void processMoveOption(GameMenu *menu);
@@ -41,39 +51,6 @@ void endGame(GameMenu *menu);
 int getAmountOfOptions(const char* filename);
 
 
-// ------------------------------------------------------ LIST UTILS
-
-/**
-    Main logic for retrieving data from CHARACTERS_FILE and makes use of utility functions.
-    @param l List object.
- 
-*/
-void fillList(List *l);
-
-/**
-    Creates a character object and store it accordingly to its element inside the list.    
-    @param l List object where character object will be stored.
-    @param index position where to store character object in `l.
-    @param line Data array to construct character object.
-    @param element character element.
-*/
-void addCharacterToList(List *l, int index, string line[], string element);
-
-/**
-    Reads and return first element of line, (character element).
-    @param position starting position for reading an element of the file.
-    @return An element of the file.
-*/
-string getCharacterElementFromFile(int position);
-
-/**
-    Reads 3 elements of file. In this case it reads character's name, life and shield from file. It saves this data in data[].
-    @param position starting position for reading elements of the file.
-    @param data array passed by reference which will store 3 elements.
-*/
-void getCharacterDataFromFile(int position, string data[]);
-
-
 // --------------------------------------------------------- PARSERS
 
 /**
@@ -81,21 +58,9 @@ void getCharacterDataFromFile(int position, string data[]);
     @param e character element to parse to integer.
     @return elements(integer).
 */
-elements parseStringToElement(string stringToParse);
+elements parseStringToElement(std::string stringToParse);
+std::string parseElementToString(elements element);
 
-/**
- * Parser from Element to string.
- * @param elementToParse element to be parsed to string
- * @return elements as string.
-*/
-string parseElementToString(elements elementToParse);
-
-/**
- * Parse given string to terrains enum.
- * @param colorToParse 
- * @return terrains
-*/
-terrains parseStringToColor(string colorToParse);
 sf::Vector2f parseStringToVector2f(std::string input);
 
 /**
@@ -105,34 +70,16 @@ sf::Vector2f parseStringToVector2f(std::string input);
 */
 sf::Color parseTerrainToSf(terrains terrain);
 
-terrains parseStringToTerrain(string colorToParse);
+terrains parseStringToTerrain(string stringToParse);
 
 
 // ------------------------------------------------------ VALIDATORS
 
-/**
- * Validates a string to be 'Air, air, Water, water, Earth, earth, Fire or fire'. 
- * @param element string to be validated.
-*/
-void validateElement(string &element);
 bool validPosition(std::string input);
 bool validDestinationEnergy(GameWorld *world, Character *character, sf::Vector2f destination);
 bool positionIsEmpty(GameWorld *world, sf::Vector2f destination);
 bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination);
 bool stringIsNumeric(std::string s);
-
-/**
- * Generic function for validating file opening.
-*/
-template <class T>
-void validateFile(const T &file, string fileName)
-{
-    if (!file)
-    {
-        cout << "Error opening " << fileName;
-        exit(1);
-    }
-};
 
 
 // ------------------------------------------------------- MAP UTILS

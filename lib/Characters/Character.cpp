@@ -93,8 +93,6 @@ void Character::setCell()
 void Character::move(GameWindow *window, sf::Vector2f destination, int energyRequired)
 {
 	energy -= energyRequired;
-	std::cout << "Energy Consumed: " << energyRequired << std::endl;
-
 	Stack<sf::Vector2f> *movStack = window->world->movStack;
 	loadMovementsStack(movStack, pos, destination, window->world->paths[static_cast<int>(getElement()) - 1]);
 	movStack->push(pos);

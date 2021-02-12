@@ -28,7 +28,7 @@ public:
 
 	std::string getText();
 
-	void drawTo(sf::RenderWindow &window);
+	void drawTextbox(GameWindow* window);
 
 	// Function for event loop:
 	void typedOn(sf::Event input);
@@ -44,7 +44,7 @@ private:
 
 	// Delete the last character of the text:
 	void deleteLastChar()
-  {
+  	{
 		std::string t = textStream.str();
 
 		std::string newT = "";

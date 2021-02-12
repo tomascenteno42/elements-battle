@@ -49,6 +49,8 @@ void WaterCharacter::attack(GameWindow* window)
 	for (int i = 0; i < enemies.size(); i ++)
 	{
 		enemy = enemies[i];
+		if (enemy->isDead())
+			continue;
 		sf::Vector2f enemyPos = enemy->getPos();
 		if (attackPos == enemyPos)
 		{
@@ -102,6 +104,8 @@ void WaterCharacter::defend(GameWindow* window)
 	for (int i = 0; i < allies.size(); i ++)
 	{
 		ally = allies[i];
+		if (ally->isDead())
+			continue;
 		if (ally != this)
 		{
 			heal = min((float)10, ally->getMaxLife() - ally->getLife());

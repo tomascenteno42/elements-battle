@@ -44,6 +44,8 @@ void EarthCharacter::attack(GameWindow* window)
 	for (int i = 0; i < enemies.size(); i ++)
 	{
 		enemy = enemies[i];
+		if (enemy->isDead())
+			continue;
 		sf::Vector2f enemyPos = enemy->getPos();
 		distance = max(abs(pos.x - enemyPos.x), abs(pos.y - enemyPos.y));
 		if (distance <= 2)

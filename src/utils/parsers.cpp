@@ -2,70 +2,32 @@
 
 elements parseStringToElement(string stringToParse)
 {
-    // THIS 2 LINES REMOVES '\n' from e
-    regex newlines_re("\n+");
-    string result = regex_replace(stringToParse, newlines_re, "");
+	std::transform(stringToParse.begin(), stringToParse.end(), stringToParse.begin(), [](unsigned char c){ return std::tolower(c); });
 
-    if (result == "Fire" || result == "fire")
-    {
-        return FIRE;
-    }
-    else if (result == "Air" || result == "air")
-    {
+    if (stringToParse == "air")
         return AIR;
-    }
-    else if (result == "Water" || result == "water")
-    {
-        return WATER;
-    }
-    else // PARA EVITAR ERRORES (escribir mal el elemento en characters.csv) COLOQUE COMO DEFAULT EL CASO DE EARTH
-    {
+    if (stringToParse == "earth")
         return EARTH;
-    }
-}
-string parseElementToString(elements elementToParse)
-{
-    switch (elementToParse)
-    {
-    case FIRE:
-        return "Fire";
-    case WATER:
-        return "Water";
-    case EARTH:
-        return "Earth";
-    case AIR:
-        return "Air";
-    default:
-        return "ELEMENTO INCOMPATIBLE.";
-    }
+    if (stringToParse == "fire")
+        return FIRE;
+    if (stringToParse == "water")
+        return WATER;
 }
 
-terrains parseStringToTerrain(string colorToParse)
+terrains parseStringToTerrain(string stringToParse)
 {
-    if (colorToParse == "l")
-    {
+    if (stringToParse == "l")
         return lake;
-    }
-    else if (colorToParse == "v")
-    {
+    else if (stringToParse == "v")
         return volcano;
-    }
-    else if (colorToParse == "c")
-    {
+    else if (stringToParse == "c")
         return cliff;
-    }
-    else if (colorToParse == "m")
-    {
+    else if (stringToParse == "m")
         return mountain;
-    }
-    else if (colorToParse == "p")
-    {
+    else if (stringToParse == "p")
         return path;
-    }
     else
-    {
         return empty;
-    }
 }
 
 sf::Color parseTerrainToSf(terrains terrain)
@@ -103,5 +65,26 @@ sf::Vector2f parseStringToVector2f(std::string input)
     std::string s1 = input.substr(0, pos);
     std::string s2 = input.substr(pos+1, input.length());
     return sf::Vector2f(stof(s1), stof(s2));
+}
+
+std::string parseElementToString(elements element)
+{
+    switch (element)
+    {
+        case AIR:
+            return "air";
+            break;
+        case EARTH:
+            return "earth";
+            break;
+        case FIRE:
+            return "fire";
+            break;
+        case WATER:
+            return "water";
+            break;
+        default:
+            break;
+    }
 }
 

@@ -62,9 +62,36 @@ void processPlaceCharacters(GameMenu* menu)
     // posicionar los 6 personajes aca, pidiendo intercaladamente a los jugadores posiciones
 }
 
+void processLoadGame(GameMenu* menu)
+{
+    fstream file;
+    file.open(SAVE_FILE, ios::in);
+
+    if (file.is_open())
+    {
+        loadGameData(file, menu->window->world);
+        file.close();
+        menu->changeCurrentMenu(gameMenu1);
+    }
+    else
+    {
+        menu->window->setWorld(new GameWorld());
+        loadNewGame(menu->window->world);
+        menu->changeCurrentMenu(charSelectionMenu);
+    }
+}
+
 void processSaveGame(GameMenu *menu)
 {
-    std::cout << "Saved succesfully" << std::endl;
+    if (menu->window->world->canSave)
+    {
+        saveGameData(menu->window->world);
+        menu->window->setWorld(new GameWorld());
+        menu->changeCurrentMenu(mainMenu);
+        menu->setRequest("Choose an option");
+    }
+    else
+        menu->setRequest("Saving is only available at the beggining of the turn. Choose another option: ");
 }
 
 void processFeedOption(GameMenu *menu)
@@ -72,7 +99,12 @@ void processFeedOption(GameMenu *menu)
     Character* character = menu->window->world->currentCharacter;
     character->feed(menu->window);
     if (character->getElement() != AIR)
+    {
         menu->changeCurrentMenu(gameMenu2);
+        menu->setRequest("Choose an option");
+    }
+    else
+        menu->setRequest("You can't feed an air character. Choose another option: ");
 }
 
 void processMoveOption(GameMenu *menu)
@@ -81,7 +113,11 @@ void processMoveOption(GameMenu *menu)
     sf::Vector2f destination = getDestinationFromUser(menu);
 
     if (destination == character->getPos())
+    {
+        menu->changeCurrentMenu(gameMenu2);
+        menu->setRequest("Choose an option");   
         return;
+    }
 
     int energyRequired = menu->window->world->distances
                         [static_cast<int>(character->getElement()) - 1]
@@ -89,6 +125,10 @@ void processMoveOption(GameMenu *menu)
                         [int(destination.x + 8 * destination.y)];
                             
     character->move(menu->window, destination, energyRequired);
+
+    menu->window->world->updateOccupiedStates();
+    menu->changeCurrentMenu(gameMenu2);
+    menu->setRequest("Choose an option");
 }
 
 void processAttackOption(GameMenu *menu)
@@ -105,16 +145,15 @@ void processDefenseOption(GameMenu *menu)
 
 void endGame(GameMenu *menu)
 {
-    if (menu->window->world->players[0]->charactersAlive == 0)
+    remove(SAVE_FILE);
+
+    if (menu->window->world->players[0]->lost())
         menu->window->stats->setInfoText("PLAYER 2 WON");
     else
         menu->window->stats->setInfoText("PLAYER 1 WON");
 
-    cout << "aaa" << endl;
     menu->setRequest("Enter any text to return to main menu");
-    cout << "bbb" << endl;
     getUserInput(menu->window);
-    cout << "ccc" << endl;
     menu->changeCurrentMenu(mainMenu);
 }
 

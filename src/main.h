@@ -15,6 +15,7 @@
 #define OPTIONS_FILE_4 "files/options4.txt"
 #define CHARACTERS_FILE "files/characters.csv"
 #define MAPSTATS_FILE "files/mapStats.csv"
+#define SAVE_FILE "files/partida.csv"
 
 #define DELETE_KEY 8
 #define ENTER_KEY 13
@@ -56,6 +57,7 @@ using namespace std;
 #include <SFML/Graphics/Font.hpp>
 #include <fstream>
 #include <iostream>
+#include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <sstream>
@@ -64,6 +66,8 @@ using namespace std;
 #include <unistd.h>
 #include <chrono>
 #include <thread>
+#include <algorithm>
+#include <cctype>
 
 #include "../lib/Characters/Character.h"
 
