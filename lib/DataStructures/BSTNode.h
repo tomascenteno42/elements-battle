@@ -21,15 +21,15 @@ public:
 	void setRight(BSTNode<T>* right);
 	BSTNode<T>* getRight();
 
-	void set_left(BSTNode<T>* left);
-	BSTNode<T>* get_left();
+	void setLeft(BSTNode<T>* left);
+	BSTNode<T>* getLeft();
 
-	void set_dad(BSTNode<T>* dad);
-	BSTNode<T>* get_dad();
+	void setDad(BSTNode<T>* dad);
+	BSTNode<T>* getDad();
 
-	bool es_hoja();
-	bool solo_tiene_right();
-	bool solo_tiene_left();
+	bool isLeaf();
+	bool onlyRight();
+	bool onlyLeft();
 };
 
 
@@ -56,15 +56,15 @@ T BSTNode<T>::getData() {
 }
 
 template <class T>
-void BSTNode<T>::set_left(BSTNode<T>* left) {
+void BSTNode<T>::setLeft(BSTNode<T>* left) {
 
 	this -> left = left;
 	if (left)
-		left -> set_dad(this);
+		left -> setDad(this);
 }
 
 template <class T>
-BSTNode<T>* BSTNode<T>::get_left() {
+BSTNode<T>* BSTNode<T>::getLeft() {
 
 	return this -> left;
 }
@@ -74,7 +74,7 @@ void BSTNode<T>::setRight(BSTNode<T>* right) {
 
 	this -> right = right;
 	if (right)
-		right -> set_dad(this);
+		right -> setDad(this);
 }
 
 template <class T>
@@ -84,33 +84,33 @@ BSTNode<T>* BSTNode<T>::getRight() {
 }
 
 template <class T>
-void BSTNode<T>::set_dad(BSTNode<T>* dad) {
+void BSTNode<T>::setDad(BSTNode<T>* dad) {
 
 	this -> dad = dad;
 }
 
 template <class T>
-BSTNode<T>* BSTNode<T>::get_dad() {
+BSTNode<T>* BSTNode<T>::getDad() {
 
 	return this -> dad;
 }
 
 template <class T>
-bool BSTNode<T>::es_hoja() {
+bool BSTNode<T>::isLeaf() {
 
-	return (this -> get_left() == nullptr && this -> getRight() == nullptr);
+	return (this -> getLeft() == nullptr && this -> getRight() == nullptr);
 }
 
 template <class T>
-bool BSTNode<T>::solo_tiene_right() {
+bool BSTNode<T>::onlyRight() {
 
-	return (this -> get_left() == nullptr && this -> getRight() != nullptr);
+	return (this -> getLeft() == nullptr && this -> getRight() != nullptr);
 }
 
 template <class T>
-bool BSTNode<T>::solo_tiene_left() {
+bool BSTNode<T>::onlyLeft() {
 
-	return (this -> get_left() != nullptr && this -> getRight() == nullptr);
+	return (this -> getLeft() != nullptr && this -> getRight() == nullptr);
 }
 
 
