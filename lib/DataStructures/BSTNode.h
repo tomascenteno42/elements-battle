@@ -1,116 +1,124 @@
 #ifndef NODO_H_
 #define NODO_H_
 
-template <class T>
-class BSTNode {
+template <class K, class T>
+class DictionaryNode {
 
 private:
 	// Atributos
+	K key;
 	T data;
-	BSTNode<T>* right;
-	BSTNode<T>* left;
-	BSTNode<T>* dad;
+	DictionaryNode<K,T>* right;
+	DictionaryNode<K,T>* left;
+	DictionaryNode<K,T>* dad;
 
 public:
 	// Metodos
-	BSTNode(T data);
+	DictionaryNode(K key, T data);
 
 	void setData(T data);
+	void setKey(K key);
 	T getData();
+	K getKey();
 
-	void setRight(BSTNode<T>* right);
-	BSTNode<T>* getRight();
+	void setRight(DictionaryNode<K,T>* right);
+	DictionaryNode<K,T>* getRight();
 
-	void set_left(BSTNode<T>* left);
-	BSTNode<T>* get_left();
+	void setLeft(DictionaryNode<K,T>* left);
+	DictionaryNode<K,T>* getLeft();
 
-	void set_dad(BSTNode<T>* dad);
-	BSTNode<T>* get_dad();
+	void setDad(DictionaryNode<K,T>* dad);
+	DictionaryNode<K,T>* getDad();
 
-	bool es_hoja();
-	bool solo_tiene_right();
-	bool solo_tiene_left();
+	bool isLeaf();
+	bool onlyRight();
+	bool onlyLeft();
 };
 
+// -------------- IMPLEMENTATION -----------------
 
-
-template <class T>
-BSTNode<T>::BSTNode(T data) {
+template <class K, class T>
+DictionaryNode<K,T>::DictionaryNode(K key, T data) {
 
 	this -> data = data;
+	this -> key = key;
 	this -> right = nullptr;
 	this -> left = nullptr;
 	this -> dad = nullptr;
 }
 
-template <class T>
-void BSTNode<T>::setData(T data) {
-
+template <class K, class T>
+void DictionaryNode<K,T>::setData(T data) {
 	this -> data = data;
 }
 
-template <class T>
-T BSTNode<T>::getData() {
+template <class K, class T>
+void DictionaryNode<K,T>::setKey(K key) {
+	this -> key = key;
+}
 
+template <class K, class T>
+T DictionaryNode<K,T>::getData() {
 	return this -> data;
 }
 
-template <class T>
-void BSTNode<T>::set_left(BSTNode<T>* left) {
-
-	this -> left = left;
-	if (left)
-		left -> set_dad(this);
+template <class K, class T>
+K DictionaryNode<K,T>::getKey() {
+	return this -> key;
 }
 
-template <class T>
-BSTNode<T>* BSTNode<T>::get_left() {
+template <class K, class T>
+void DictionaryNode<K,T>::setLeft(DictionaryNode<K,T>* left) {
 
+	this -> left = left;
+	if (left) left -> setDad(this);
+}
+
+template <class K, class T>
+DictionaryNode<K,T>* DictionaryNode<K,T>::getLeft() {
 	return this -> left;
 }
 
-template <class T>
-void BSTNode<T>::setRight(BSTNode<T>* right) {
+template <class K, class T>
+void DictionaryNode<K,T>::setRight(DictionaryNode<K,T>* right) {
 
 	this -> right = right;
-	if (right)
-		right -> set_dad(this);
+	if (right) right -> setDad(this);
 }
 
-template <class T>
-BSTNode<T>* BSTNode<T>::getRight() {
-
+template <class K, class T>
+DictionaryNode<K,T>* DictionaryNode<K,T>::getRight() {
 	return this -> right;
 }
 
-template <class T>
-void BSTNode<T>::set_dad(BSTNode<T>* dad) {
+template <class K, class T>
+void DictionaryNode<K,T>::setDad(DictionaryNode<K,T>* dad) {
 
 	this -> dad = dad;
 }
 
-template <class T>
-BSTNode<T>* BSTNode<T>::get_dad() {
+template <class K, class T>
+DictionaryNode<K,T>* DictionaryNode<K,T>::getDad() {
 
 	return this -> dad;
 }
 
-template <class T>
-bool BSTNode<T>::es_hoja() {
+template <class K, class T>
+bool DictionaryNode<K,T>::isLeaf() {
 
-	return (this -> get_left() == nullptr && this -> getRight() == nullptr);
+	return (this -> getLeft() == nullptr && this -> getRight() == nullptr);
 }
 
-template <class T>
-bool BSTNode<T>::solo_tiene_right() {
+template <class K, class T>
+bool DictionaryNode<K,T>::onlyRight() {
 
-	return (this -> get_left() == nullptr && this -> getRight() != nullptr);
+	return (this -> getLeft() == nullptr && this -> getRight() != nullptr);
 }
 
-template <class T>
-bool BSTNode<T>::solo_tiene_left() {
+template <class K, class T>
+bool DictionaryNode<K,T>::onlyLeft() {
 
-	return (this -> get_left() != nullptr && this -> getRight() == nullptr);
+	return (this -> getLeft() != nullptr && this -> getRight() == nullptr);
 }
 
 

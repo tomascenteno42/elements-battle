@@ -100,7 +100,7 @@ void Character::move(GameWindow *window, sf::Vector2f destination, int energyReq
 	{
 		setPos(movStack->peek());
 		movStack->pop();
-		this_thread::sleep_for(chrono::milliseconds(250));
+		//this_thread::sleep_for(chrono::milliseconds(250));
 
 		window->clear();
 		drawScreen(window);
