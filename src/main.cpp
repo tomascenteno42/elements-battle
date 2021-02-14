@@ -4,6 +4,7 @@ int main()
 {
 	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
 
+
 	while (window->isOpen())
 	{
 		sf::Event event;

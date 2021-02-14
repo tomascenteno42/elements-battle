@@ -278,7 +278,7 @@ void BST<K,T>::showInOrder(BSTNode<K,T>* node)
 	if (node != 0)
 	{
 		showInOrder(node->getLeft());
-		cout << node->getData() << " ";
+		cout << node->getKey() << " ";
 		showInOrder(node->getRight());
 	}
 }
