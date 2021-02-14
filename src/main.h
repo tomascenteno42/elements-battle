@@ -76,15 +76,12 @@ using namespace std;
 #include "../lib/Characters/FireCharacter.h"
 #include "../lib/Characters/AirCharacter.h"
 
-#include "../lib/DataStructures/Node.h"
 #include "../lib/DataStructures/GenericNode.h"
-#include "../lib/DataStructures/List.h"
 #include "../lib/DataStructures/GenericList.h"
 #include "../lib/DataStructures/Stack.h"
 #include "../lib/DataStructures/BSTNode.h"
 #include "../lib/DataStructures/BST.h"
-#include "../lib/DataStructures/graph.h"
-
+#include "../lib/DataStructures/Graph.h"
 
 #include "../lib/Window/Menu.h"
 #include "../lib/Window/textBox.h"

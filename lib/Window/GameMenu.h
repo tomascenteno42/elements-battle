@@ -16,6 +16,7 @@ private:
 public:
     GameWindow* window;
     Textbox *textbox;
+    BST<string, Character*>* characterMap;
     sf::Text request;
 
     GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window);

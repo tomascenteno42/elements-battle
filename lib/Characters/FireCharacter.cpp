@@ -42,10 +42,11 @@ void FireCharacter::attack(GameWindow* window)
 	energy -= 5;
 
 	Character* enemy = 0;
-	float damage = 20;
+	float damage;
 	std::ostringstream damageStr;
 	for (int i = 0; i < enemies.size(); i ++)
 	{
+		damage = 20;
 		enemy = enemies[i];
 		if (enemy->isDead())
 			continue;

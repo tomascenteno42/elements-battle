@@ -21,45 +21,93 @@ void fillMenu(Menu *m, const char* filename)
 
 void processAddCharacter(GameMenu *menu)
 {
-    std::string input;
-    menu->setRequest("Add a character: ");
-    input = getUserInput(menu->window);
-    std::cout << "Added character " << input << std::endl;
+	string elementStr, name, shieldStr, maxLifeStr;
+    Character* character = 0;
+    elementStr = getCharElementFromUser(menu);
+    name = getCharNameFromUser(menu);
+    shieldStr = getCharShieldFromUser(menu);
+    maxLifeStr = getCharLifeFromUser(menu);
+    character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+    menu->characterMap->insert(name, character);
 }
 
 void processDeleteCharacter(GameMenu *menu)
 {
-    std::string input;
-    menu->setRequest("Delete a character: ");
-    input = getUserInput(menu->window);
-    std::cout << "Deleted character " << input << std::endl;            
+    std::string name;
+    menu->setRequest("Delete character named: ");
+    name = getUserInput(menu->window);
+    if (menu->characterMap->search(name))
+        menu->characterMap->erase(name);
+    else
+        menu->setRequest("That character does not exist. Choose an option");
 }
 
 void processSearchCharacter(GameMenu *menu)
 {
-    std::string input;
+    std::string name;
     menu->setRequest("Search character by name: ");
-    input = getUserInput(menu->window);
-    std::cout << "Searched character " << input << std::endl;            
+    name = getUserInput(menu->window);
+    Character* character = 0;
+    if (menu->characterMap->search(name))
+    {
+        character = menu->characterMap->getData(name);
+        // show character stats
+    }
+    else
+        menu->setRequest("That character does not exist. Choose an option");
 }
 
 void processShowCharacters(GameMenu *menu)
 {
-    std::cout << "Showing all characters" << std::endl;
+    menu->characterMap->showInOrder();
 }
 
-void processSelectCharacter(GameMenu* menu)
+void processCharacterSelection(GameMenu* menu)
 {
-    std::string input;
-    menu->setRequest("Select a character: ");
-    input = getUserInput(menu->window);
-    std::cout << "Selected character " << input << std::endl;
-    menu->window->world->charactersSelected ++;
+    std::string name;
+    menu->setRequest("Select character by name: ");
+    name = getCharNameFromUser(menu);
+    Character* character = 0;
+    int player = menu->window->world->charactersSelected % 2;
+    if (menu->characterMap->search(name) && !menu->window->world->characterIsInGame(name))
+    {
+        character = menu->characterMap->getData(name);
+        menu->window->world->players[player]->addCharacter(character);
+        menu->window->world->charactersSelected ++;
+    }
+    else
+        menu->setRequest("Either that character is already selected or it does not exist. Choose an option");
 }
 
-void processPlaceCharacters(GameMenu* menu)
+void processCharacterPositioning(GameMenu* menu)
 {
-    // posicionar los 6 personajes aca, pidiendo intercaladamente a los jugadores posiciones
+    int player = rand() % 1;
+    int index;
+    Character* character = 0;
+    sf::Vector2f pos;
+    for (int i = 0; i < 6; i ++)
+    {
+        index = i;
+        if (i % 2)
+            index --;
+        else
+            index /= 2;
+
+        character = menu->window->world->players[player]->characters[index];
+
+        bool validPos = false;
+        menu->setRequest("Position character at: (ex.: 2,5)");
+        while (!validPos)
+        {
+            pos = getPositionFromUser(menu);
+            if (positionIsEmpty(menu->window->world, pos))
+                validPos = true;
+            else
+                menu->setRequest("That cell is occupied, choose a different one");
+        }
+        character->setPos(pos);
+        player = (player + 1) % 2;
+    }
 }
 
 void processLoadGame(GameMenu* menu)
@@ -76,7 +124,7 @@ void processLoadGame(GameMenu* menu)
     else
     {
         menu->window->setWorld(new GameWorld());
-        loadNewGame(menu->window->world);
+        //loadNewGame(menu->window->world);
         menu->changeCurrentMenu(charSelectionMenu);
     }
 }

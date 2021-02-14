@@ -40,6 +40,19 @@ void GameWorld::addCharacter(Character *character, int player)
 	tiles->getData(1 + character->getPos().x + 8 * character->getPos().y)->data->setOccupied(true);
 }
 
+bool GameWorld::characterIsInGame(std::string name)
+{
+	for (int p = 0; p < 2; p ++)
+	{
+		for (int i = 0; i < players[p]->characters.size(); i ++)
+		{
+			if (players[p]->characters[i]->getName() == name)
+				return true;
+		}
+	}
+	return false;
+}
+
 void GameWorld::setFWMatrixes()
 {
 	for (int i = 0; i < 4; i++)

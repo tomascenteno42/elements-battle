@@ -7,7 +7,7 @@ void loadNewGame(GameWorld* world);
 
 // ----------------------------------------------------------- FILES
 void openFile(string path, fstream& file);
-void loadCharacterData();
+void loadCharacterData(BST<string, Character*>* characterMap);
 void loadMapData(GameWorld* world);
 void loadMapDataGraph(GameWorld* world);
 void loadGameData(fstream& file, GameWorld* world);
@@ -19,6 +19,10 @@ Character* createNewCharacterFromStrings(std::string elementStr, std::string nam
 std::string getUserInput(GameWindow* window);
 sf::Vector2f getPositionFromUser(GameMenu* menu);
 sf::Vector2f getDestinationFromUser(GameMenu* menu);
+std::string getCharElementFromUser(GameMenu* menu);
+std::string getCharNameFromUser(GameMenu* menu);
+std::string getCharShieldFromUser(GameMenu* menu);
+std::string getCharLifeFromUser(GameMenu* menu);
 
 
 // ------------------------------------------------------ MENU UTILS
@@ -33,8 +37,8 @@ void processAddCharacter(GameMenu *menu);
 void processDeleteCharacter(GameMenu *menu);
 void processSearchCharacter(GameMenu *menu);
 void processShowCharacters(GameMenu *menu);
-void processSelectCharacter(GameMenu* menu);
-void processPlaceCharacters(GameMenu* menu);
+void processCharacterSelection(GameMenu* menu);
+void processCharacterPositioning(GameMenu* menu);
 void processLoadGame(GameMenu*menu);
 void processSaveGame(GameMenu *menu);
 void processFeedOption(GameMenu *menu);

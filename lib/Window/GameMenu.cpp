@@ -2,14 +2,16 @@
 
 GameMenu::GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window)
     :Cell(xPos, yPos, ySize, xSize, color)
-    {
-        font.loadFromFile(FONT_FILE);
-        textbox = new Textbox(14, sf::Color::White, true, font);
-        menuList = new GenericList<Menu*>;
-        this -> window = window;
-        fillMenuList();
-        setRequest("Choose an option");
-    };
+{
+    font.loadFromFile(FONT_FILE);
+    textbox = new Textbox(14, sf::Color::White, true, font);
+    menuList = new GenericList<Menu*>;
+    characterMap = new BST<string, Character*>();
+    loadCharacterData(characterMap);
+    this -> window = window;
+    fillMenuList();
+    setRequest("Choose an option");
+}
 
 void GameMenu::fillMenuList()
 {
@@ -133,12 +135,11 @@ void GameMenu::processCharMenuOption(int option)
             processShowCharacters(this);
             break;
         case 3:     // Seleccionar pj // Posicionar pj
-            if (window->world->charactersSelected < 5)
-                processSelectCharacter(this);
+            if (window->world->charactersSelected < 6)
+                processCharacterSelection(this);
             else
             {
-                processSelectCharacter(this);
-                processPlaceCharacters(this);
+                processCharacterPositioning(this);
                 changeCurrentMenu(gameMenu1);
             }
             break;
@@ -205,4 +206,5 @@ GameMenu::~GameMenu()
 {
     delete textbox;    
     delete menuList;
+    delete characterMap;
 }

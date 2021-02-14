@@ -35,10 +35,11 @@ void AirCharacter::attack(GameWindow* window)
 	energy -= 8;
 
 	Character* enemy = 0;
-	float damage = 15;
+	float damage;
 	std::ostringstream damageStr;
 	for (int i = 0; i < enemies.size(); i ++)
 	{
+		damage = 15;
 		enemy = enemies[i];
 		if (enemy->isDead())
 			continue;

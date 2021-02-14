@@ -1,6 +1,8 @@
 #ifndef NODO_H_
 #define NODO_H_
 
+#include "../../src/main.h"
+
 template <class K, class T>
 class BSTNode {
 
@@ -139,7 +141,5 @@ bool BSTNode<K,T>::onlyLeft()
 {
 	return (getLeft() != 0 && getRight() == 0);
 }
-
-
 
 #endif /* NODO_H_ */

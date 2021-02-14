@@ -2,34 +2,6 @@
 
 int main()
 {
-	//////////////////////// MAIN TP2 //////////////////////////////
-
-	/*     srand((unsigned int)time(0));
-
-    List *l = new List;
-    int menuLength = getAmountOfOptions();
-    Menu m(menuLength);
-
-    if (menuLength == 0)
-    {
-        cout << "THERE IS AN ERROR WITH YOUR options.txt FILE" << endl;
-        return 0;
-    }
-
-    fillMenu(&m);
-    fillList(l);
-
-    if ((*l).getQuantity() == 0)
-    {
-        cout << "THERE IS SOMETHING WRONG WITH YOUR characters.csv FILE" << endl;
-        return 0;
-    }
-
-    renderMenu(&m, l);
-    delete l; */
-
-	////////////////////////////////////////////////////////////////
-
 	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
 
 	while (window->isOpen())

@@ -73,20 +73,19 @@ void loadMapData(GameWorld* world)
 	file.close();
 }
 
-void loadCharacterData() // parameter: structure where characters will be saved (dictionary)
+void loadCharacterData(BST<string, Character*>* characterMap)
 { 
 	fstream file;
 	openFile(CHARACTERS_FILE, file);
 
-	string element, name, shieldStr, lifeStr;
-
-	while (getline(file, element, ',')) {
+	string elementStr, name, shieldStr, maxLifeStr;
+	Character* character = 0;
+	while (getline(file, elementStr, ',')) {
 		getline(file, name, ',');
 		getline(file, shieldStr, ',');
-		getline(file, lifeStr);
-		int escudo = stoi(shieldStr);
-		int vidas = stoi(lifeStr);
-		// load character to structure
+		getline(file, maxLifeStr);
+		character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+		characterMap->insert(name, character);
 	}
 
 	file.close();
