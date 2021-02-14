@@ -6,26 +6,26 @@
 using namespace std;
 
 template <class K, class T>
-class Dictionary {
+class BST {
 
 private:
 	
-	DictionaryNode<K,T>* root;
+	BSTNode<K,T>* root;
 
-	DictionaryNode<K,T>* insert(K key, T data, DictionaryNode<K,T>* node);
-	DictionaryNode<K,T>* search(K key, DictionaryNode<K,T>* node);
-	DictionaryNode<K,T>* erase(K key, DictionaryNode<K,T>* node);
+	BSTNode<K,T>* insert(K key, T data, BSTNode<K,T>* node);
+	BSTNode<K,T>* search(K key, BSTNode<K,T>* node);
+	BSTNode<K,T>* erase(K key, BSTNode<K,T>* node);
 
-	K findMin(DictionaryNode<K,T>* node);
-	K findMax(DictionaryNode<K,T>* node);
-	K successor(DictionaryNode<K,T>* node);
-	K predecessor(DictionaryNode<K,T>* node);
+	K findMin(BSTNode<K,T>* node);
+	K findMax(BSTNode<K,T>* node);
+	K successor(BSTNode<K,T>* node);
+	K predecessor(BSTNode<K,T>* node);
 
-	void showInOrder(DictionaryNode<K,T>* node);
-	void deleteAll(DictionaryNode<K,T>* node);
+	void showInOrder(BSTNode<K,T>* node);
+	void deleteAll(BSTNode<K,T>* node);
 
 public:
-	Dictionary();
+	BST();
 
 	// Inserts element in tree (key, data)
 	void insert(K key, T data);
@@ -42,14 +42,14 @@ public:
 	void showInOrder();
 	void deleteAll();
 
-	~Dictionary();
+	~BST();
 
 
-	DictionaryNode<K,T>* getRoot();
+	BSTNode<K,T>* getRoot();
 };
 
 template <class K, class T>
-DictionaryNode<K,T>* Dictionary<K,T>::getRoot() {
+BSTNode<K,T>* BST<K,T>::getRoot() {
 	return this -> root;
 }
 
@@ -58,7 +58,7 @@ DictionaryNode<K,T>* Dictionary<K,T>::getRoot() {
 // =============================================================================================================================================================================
 
 template <class K, class T>
-Dictionary<K,T>::Dictionary() {
+BST<K,T>::BST() {
 	this -> root = nullptr;
 }
 
@@ -66,10 +66,10 @@ Dictionary<K,T>::Dictionary() {
 
 
 template <class K, class T>
-DictionaryNode<K,T>* Dictionary<K,T>::insert(K key, T data, DictionaryNode<K,T>* node) {
+BSTNode<K,T>* BST<K,T>::insert(K key, T data, BSTNode<K,T>* node) {
 
 	if (node == nullptr)
-		node = new DictionaryNode<K,T>(key, data);
+		node = new BSTNode<K,T>(key, data);
 
 	else if (key < node -> getKey())
 		node -> setLeft(insert(key, data, node -> getLeft()));
@@ -84,7 +84,7 @@ DictionaryNode<K,T>* Dictionary<K,T>::insert(K key, T data, DictionaryNode<K,T>*
 
 
 template <class K, class T>
-void Dictionary<K,T>::insert(K key, T data) {
+void BST<K,T>::insert(K key, T data) {
 	if (!search(key))
 		this -> root = insert(key, data, this -> root);
 }
@@ -93,7 +93,7 @@ void Dictionary<K,T>::insert(K key, T data) {
 
 
 template <class K, class T>
-DictionaryNode<K,T>* Dictionary<K,T>::search(K key, DictionaryNode<K,T>* node) {
+BSTNode<K,T>* BST<K,T>::search(K key, BSTNode<K,T>* node) {
 
 	if (node && key < node ->getKey())
 		node = search(key, node -> getLeft());
@@ -107,7 +107,7 @@ DictionaryNode<K,T>* Dictionary<K,T>::search(K key, DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-bool Dictionary<K,T>::search(K key) {
+bool BST<K,T>::search(K key) {
 	return (search(key, this -> root) != nullptr);
 }
 
@@ -115,7 +115,7 @@ bool Dictionary<K,T>::search(K key) {
 
 
 template <class K, class T>
-DictionaryNode<K,T>* Dictionary<K,T>::erase(K key, DictionaryNode<K,T>* node) {
+BSTNode<K,T>* BST<K,T>::erase(K key, BSTNode<K,T>* node) {
 
 	if (!node) {}
 
@@ -134,13 +134,13 @@ DictionaryNode<K,T>* Dictionary<K,T>::erase(K key, DictionaryNode<K,T>* node) {
 
 		} else if (node -> onlyRight()) {
 			node -> getRight() -> setDad(node -> getDad());
-			DictionaryNode<K,T>* aux = node -> getRight();
+			BSTNode<K,T>* aux = node -> getRight();
 			delete node;
 			node = aux;
 
 		} else if (node -> onlyLeft()) {
 			node -> getLeft() -> setDad(node -> getDad());
-			DictionaryNode<K,T>* aux = node -> getLeft();
+			BSTNode<K,T>* aux = node -> getLeft();
 			delete node;
 			node = aux;
 
@@ -164,7 +164,7 @@ DictionaryNode<K,T>* Dictionary<K,T>::erase(K key, DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-void Dictionary<K,T>::erase(K key) {
+void BST<K,T>::erase(K key) {
 
 	if (search(key))
 		this -> root = erase(key, this -> root);
@@ -176,7 +176,7 @@ void Dictionary<K,T>::erase(K key) {
 
 
 template <class K, class T>
-K Dictionary<K,T>::findMin(DictionaryNode<K,T>* node) {
+K BST<K,T>::findMin(BSTNode<K,T>* node) {
 
 	if (node -> getLeft())
 		return findMin(node -> getLeft());
@@ -188,7 +188,7 @@ K Dictionary<K,T>::findMin(DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-K Dictionary<K,T>::findMin() {
+K BST<K,T>::findMin() {
 
 	if (this -> root) {
 		return findMin(this -> root);
@@ -202,7 +202,7 @@ K Dictionary<K,T>::findMin() {
 
 
 template <class K, class T>
-K Dictionary<K,T>::findMax(DictionaryNode<K,T>* node) {
+K BST<K,T>::findMax(BSTNode<K,T>* node) {
 
 	if (node -> getRight())
 		return findMax(node -> getRight());
@@ -214,7 +214,7 @@ K Dictionary<K,T>::findMax(DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-K Dictionary<K,T>::findMax() {
+K BST<K,T>::findMax() {
 
 	if (this -> root) {
 		return findMax(this -> root);
@@ -228,7 +228,7 @@ K Dictionary<K,T>::findMax() {
 
 
 template <class K, class T>
-K Dictionary<K,T>::successor(DictionaryNode<K,T>* node) {
+K BST<K,T>::successor(BSTNode<K,T>* node) {
 
 	K outcome;
 	// Caso 1:
@@ -243,7 +243,7 @@ K Dictionary<K,T>::successor(DictionaryNode<K,T>* node) {
 	// Caso 3:
 	else {
 		T data = node -> getData();
-		DictionaryNode<K,T>* ancestor = node -> getDad();
+		BSTNode<K,T>* ancestor = node -> getDad();
 		while (data >= ancestor -> getData()) {
 			ancestor = ancestor -> getDad();
 		}
@@ -257,9 +257,9 @@ K Dictionary<K,T>::successor(DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-K Dictionary<K,T>::successor(K key) {
+K BST<K,T>::successor(K key) {
 
-	DictionaryNode<K,T>* node = search(key, this -> root);
+	BSTNode<K,T>* node = search(key, this -> root);
 
 	if (node) {
 		return successor(node);
@@ -273,7 +273,7 @@ K Dictionary<K,T>::successor(K key) {
 
 
 template <class K, class T>
-K Dictionary<K,T>::predecessor(DictionaryNode<K,T>* node) {
+K BST<K,T>::predecessor(BSTNode<K,T>* node) {
 
 	K outcome;
 	// Caso 1:
@@ -288,7 +288,7 @@ K Dictionary<K,T>::predecessor(DictionaryNode<K,T>* node) {
 	// Caso 3:
 	else {
 		T data = node -> getData();
-		DictionaryNode<K,T>* ancestor = node -> getDad();
+		BSTNode<K,T>* ancestor = node -> getDad();
 		while (data <= ancestor -> getData()) {
 			ancestor = ancestor -> getDad();
 		}
@@ -302,9 +302,9 @@ K Dictionary<K,T>::predecessor(DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-K Dictionary<K,T>::predecessor(K key) {
+K BST<K,T>::predecessor(K key) {
 
-	DictionaryNode<K,T>* node = search(key, this -> root);
+	BSTNode<K,T>* node = search(key, this -> root);
 
 	if (node) {
 		return predecessor(node);
@@ -318,8 +318,8 @@ K Dictionary<K,T>::predecessor(K key) {
 
 
 template <class K, class T>
-T Dictionary<K,T>::getData(K key){
-	DictionaryNode<K,T>* node = search(key, this -> root);
+T BST<K,T>::getData(K key){
+	BSTNode<K,T>* node = search(key, this -> root);
 	T data = node->getData();
 	return data;
 }
@@ -328,7 +328,7 @@ T Dictionary<K,T>::getData(K key){
 
 
 template <class K, class T>
-void Dictionary<K,T>::showInOrder(DictionaryNode<K,T>* node) {
+void BST<K,T>::showInOrder(BSTNode<K,T>* node) {
 
 	if (node != nullptr) {
 		showInOrder(node -> getLeft());
@@ -341,7 +341,7 @@ void Dictionary<K,T>::showInOrder(DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-void Dictionary<K,T>::showInOrder() {
+void BST<K,T>::showInOrder() {
 
 	showInOrder(this -> root);
 	cout << endl;
@@ -351,7 +351,7 @@ void Dictionary<K,T>::showInOrder() {
 
 
 template <class K, class T>
-void Dictionary<K,T>::deleteAll(DictionaryNode<K,T>* node) {
+void BST<K,T>::deleteAll(BSTNode<K,T>* node) {
 
 	if (node) {
 		this -> deleteAll(node -> getLeft());
@@ -364,7 +364,7 @@ void Dictionary<K,T>::deleteAll(DictionaryNode<K,T>* node) {
 
 
 template <class K, class T>
-void Dictionary<K,T>::deleteAll() {
+void BST<K,T>::deleteAll() {
 
 	this -> deleteAll(this -> root);
 }
@@ -373,7 +373,7 @@ void Dictionary<K,T>::deleteAll() {
 
 
 template <class K, class T>
-Dictionary<K,T>::~Dictionary() {
+BST<K,T>::~BST() {
 
 	deleteAll();
 }

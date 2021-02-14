@@ -2,33 +2,33 @@
 #define NODO_H_
 
 template <class K, class T>
-class DictionaryNode {
+class BSTNode {
 
 private:
 	// Atributos
 	K key;
 	T data;
-	DictionaryNode<K,T>* right;
-	DictionaryNode<K,T>* left;
-	DictionaryNode<K,T>* dad;
+	BSTNode<K,T>* right;
+	BSTNode<K,T>* left;
+	BSTNode<K,T>* dad;
 
 public:
 	// Metodos
-	DictionaryNode(K key, T data);
+	BSTNode(K key, T data);
 
 	void setData(T data);
 	void setKey(K key);
 	T getData();
 	K getKey();
 
-	void setRight(DictionaryNode<K,T>* right);
-	DictionaryNode<K,T>* getRight();
+	void setRight(BSTNode<K,T>* right);
+	BSTNode<K,T>* getRight();
 
-	void setLeft(DictionaryNode<K,T>* left);
-	DictionaryNode<K,T>* getLeft();
+	void setLeft(BSTNode<K,T>* left);
+	BSTNode<K,T>* getLeft();
 
-	void setDad(DictionaryNode<K,T>* dad);
-	DictionaryNode<K,T>* getDad();
+	void setDad(BSTNode<K,T>* dad);
+	BSTNode<K,T>* getDad();
 
 	bool isLeaf();
 	bool onlyRight();
@@ -38,7 +38,7 @@ public:
 // -------------- IMPLEMENTATION -----------------
 
 template <class K, class T>
-DictionaryNode<K,T>::DictionaryNode(K key, T data) {
+BSTNode<K,T>::BSTNode(K key, T data) {
 
 	this -> data = data;
 	this -> key = key;
@@ -48,75 +48,75 @@ DictionaryNode<K,T>::DictionaryNode(K key, T data) {
 }
 
 template <class K, class T>
-void DictionaryNode<K,T>::setData(T data) {
+void BSTNode<K,T>::setData(T data) {
 	this -> data = data;
 }
 
 template <class K, class T>
-void DictionaryNode<K,T>::setKey(K key) {
+void BSTNode<K,T>::setKey(K key) {
 	this -> key = key;
 }
 
 template <class K, class T>
-T DictionaryNode<K,T>::getData() {
+T BSTNode<K,T>::getData() {
 	return this -> data;
 }
 
 template <class K, class T>
-K DictionaryNode<K,T>::getKey() {
+K BSTNode<K,T>::getKey() {
 	return this -> key;
 }
 
 template <class K, class T>
-void DictionaryNode<K,T>::setLeft(DictionaryNode<K,T>* left) {
+void BSTNode<K,T>::setLeft(BSTNode<K,T>* left) {
 
 	this -> left = left;
 	if (left) left -> setDad(this);
 }
 
 template <class K, class T>
-DictionaryNode<K,T>* DictionaryNode<K,T>::getLeft() {
+BSTNode<K,T>* BSTNode<K,T>::getLeft() {
 	return this -> left;
 }
 
 template <class K, class T>
-void DictionaryNode<K,T>::setRight(DictionaryNode<K,T>* right) {
+void BSTNode<K,T>::setRight(BSTNode<K,T>* right) {
 
 	this -> right = right;
 	if (right) right -> setDad(this);
 }
 
 template <class K, class T>
-DictionaryNode<K,T>* DictionaryNode<K,T>::getRight() {
+BSTNode<K,T>* BSTNode<K,T>::getRight() {
 	return this -> right;
 }
 
 template <class K, class T>
-void DictionaryNode<K,T>::setDad(DictionaryNode<K,T>* dad) {
+void BSTNode<K,T>::setDad(BSTNode<K,T>* dad) {
 
 	this -> dad = dad;
 }
 
 template <class K, class T>
-DictionaryNode<K,T>* DictionaryNode<K,T>::getDad() {
+BSTNode<K,T>* BSTNode<K,T>::getDad() {
 
 	return this -> dad;
 }
 
 template <class K, class T>
-bool DictionaryNode<K,T>::isLeaf() {
+bool BSTNode<K,T>::isLeaf() {
 
 	return (this -> getLeft() == nullptr && this -> getRight() == nullptr);
 }
 
 template <class K, class T>
-bool DictionaryNode<K,T>::onlyRight() {
+bool BSTNode<K,T>::onlyRight() {
 
 	return (this -> getLeft() == nullptr && this -> getRight() != nullptr);
 }
 
 template <class K, class T>
-bool DictionaryNode<K,T>::onlyLeft() {
+bool BSTNode<K,T>::onlyLeft() {
 
 	return (this -> getLeft() != nullptr && this -> getRight() == nullptr);
 }

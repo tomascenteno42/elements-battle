@@ -30,7 +30,7 @@ int main()
 
 	////////////////////////////////////////////////////////////////
 
-/* 	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
+	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
 
 	while (window->isOpen())
 	{
@@ -59,9 +59,9 @@ int main()
 		window->display();
 	}
 
-	delete window; */
+	delete window;
 
-	Dictionary<string, int>* d = new Dictionary<string, int>();
+/* 	BST<string, int>* d = new BST<string, int>();
 
 	string A = "A";
 	string B = "B";
@@ -81,10 +81,10 @@ int main()
 	d->erase(C);
 	cout << "Erased 3" << endl;
 
-	d->showInOrder();
+	d->showInOrder(); 
 
 
-	delete d;
+	delete d;*/
 
 	return 0;
 }
