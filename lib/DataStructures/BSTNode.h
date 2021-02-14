@@ -35,6 +35,8 @@ public:
 	bool isLeaf();
 	bool onlyRight();
 	bool onlyLeft();
+
+	~BSTNode();
 };
 
 // -------------- IMPLEMENTATION -----------------
@@ -140,6 +142,13 @@ template <class K, class T>
 bool BSTNode<K,T>::onlyLeft()
 {
 	return (getLeft() != 0 && getRight() == 0);
+}
+
+
+template <class K, class T>
+BSTNode<K,T>::~BSTNode()
+{
+	delete data;
 }
 
 #endif /* NODO_H_ */

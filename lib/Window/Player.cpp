@@ -36,9 +36,9 @@ bool Player::lost()
 }
 
 Player::~Player()
-{
+{/*
     for (int i = 0; i < characters.size(); i ++)
     {
         delete characters[i];
-    }
+    }*/
 }

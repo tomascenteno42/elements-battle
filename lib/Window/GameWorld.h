@@ -31,7 +31,6 @@ public:
 
 	void advanceState();
 	void updateOccupiedStates();
-	void reset();
 
 	bool gameOver();
 	bool canSave = true;

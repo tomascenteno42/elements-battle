@@ -106,6 +106,11 @@ void drawStats(GameWindow *win)
 {
     win->draw(win->stats->getCell());
 
+    for (int i = 0; i < 20; i ++)  // por algun motivo no se dibuja
+    {
+        win->draw(win->stats->characterList[i]);
+    }
+
     for (int p = 0; p < 2; p ++)
     {
         win->draw(win->stats->playerText[p]);
@@ -139,7 +144,6 @@ void drawScreen(GameWindow *win)
                 win->draw(win->world->players[p]->characters[i]->getCell());
     }
 
-
     // Game stats & info
     win->draw(win->stats->getCell());
 
@@ -148,43 +152,9 @@ void drawScreen(GameWindow *win)
         win->stats->updateStats(win->world);
         drawStats(win);
     }
-    
 
     // Game menu & user interaction
     win->draw(win->menu->getCell());
     win->menu->drawCurrentMenu();
     win->menu->textbox->drawTextbox(win);
-}
-
-
-
-void loadNewGame(GameWorld* world)
-{
-	Character *character1 = new WaterCharacter("WaterChr1", 50, 2);
-	character1->setPos(sf::Vector2f(0, 0));
-	world->addCharacter(character1, 1);
-
-	Character *character2 = new AirCharacter("AirChr1", 75, 0);
-	character2->setPos(sf::Vector2f(1, 0));
-	world->addCharacter(character2, 1);
-
-	Character *character3 = new FireCharacter("FireChr1", 90, 1);
-	character3->setPos(sf::Vector2f(0, 1));
-	world->addCharacter(character3, 1);
-
-	Character *character4 = new WaterCharacter("WaterChr2", 100, 1);
-	character4->setPos(sf::Vector2f(6, 7));
-	world->addCharacter(character4, 2);
-
-	Character *character5 = new FireCharacter("FireChr2", 70, 2);
-	character5->setPos(sf::Vector2f(7, 6));
-	world->addCharacter(character5, 2);
-
-	Character *character6 = new EarthCharacter("EarthChr2", 85, 1);
-	character6->setPos(sf::Vector2f(7, 7));
-	world->addCharacter(character6, 2);
-
-	world->currentCharacter = character1;
-    world->charactersPlayed = 0;
-    world->currentPlayer = 0;
 }

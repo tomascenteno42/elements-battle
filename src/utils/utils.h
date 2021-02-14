@@ -3,19 +3,17 @@
 
 #include "../main.h"
 
-void loadNewGame(GameWorld* world);
-
 // ----------------------------------------------------------- FILES
 void openFile(string path, fstream& file);
 void loadCharacterData(BST<string, Character*>* characterMap);
 void loadMapData(GameWorld* world);
-void loadMapDataGraph(GameWorld* world);
-void loadGameData(fstream& file, GameWorld* world);
+void loadGameData(fstream& file, GameWorld* world, BST<string, Character*>* characterMap);
 void saveGameData(GameWorld* world);
+void saveChangesToCharFile(BST<string, Character*>* characterMap);
 Character* createNewCharacterFromStrings(std::string elementStr, std::string name, std::string maxLifeStr, std::string shieldStr);
 
-// ------------------------------------------------ USER INTERACTION
 
+// ------------------------------------------------ USER INTERACTION
 std::string getUserInput(GameWindow* window);
 sf::Vector2f getPositionFromUser(GameMenu* menu);
 sf::Vector2f getDestinationFromUser(GameMenu* menu);
@@ -26,28 +24,25 @@ std::string getCharLifeFromUser(GameMenu* menu);
 
 
 // ------------------------------------------------------ MENU UTILS
-
 /**
    Retrieves options from OPTIONS_FILE and fills the Menu object
    @param m Object menu.
    @param filename file name.
 */
 void fillMenu(Menu *m, const char* filename);
-void processAddCharacter(GameMenu *menu);
-void processDeleteCharacter(GameMenu *menu);
-void processSearchCharacter(GameMenu *menu);
-void processShowCharacters(GameMenu *menu);
-void processCharacterSelection(GameMenu* menu);
+void processAddCharacter(GameMenu *menu, BST<string, Character*>* characterMap);
+void processDeleteCharacter(GameMenu *menu, BST<string, Character*>* characterMap);
+void processSearchCharacter(GameMenu *menu, BST<string, Character*>* characterMap);
+void processShowCharacters(GameMenu *menu, BST<string, Character*>* characterMap);
+void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characterMap);
 void processCharacterPositioning(GameMenu* menu);
-void processLoadGame(GameMenu*menu);
+void processLoadGame(GameMenu*menu, BST<string, Character*>* characterMap);
 void processSaveGame(GameMenu *menu);
 void processFeedOption(GameMenu *menu);
 void processMoveOption(GameMenu *menu);
 void processAttackOption(GameMenu *menu);
 void processDefenseOption(GameMenu *menu);
-
 void endGame(GameMenu *menu);
-
 /**
     Calculates amount of lines(options) in OPTIONS_FILE.
     @return Amount of options (int).

@@ -8,8 +8,8 @@ GameWorld::GameWorld()
 	players[1] = player2;
 
 	tiles = new Graph<GameCell*>(64);
-	setMap();
 	movStack = new Stack<sf::Vector2f>();
+	setMap();
 }
 
 void GameWorld::setMap()

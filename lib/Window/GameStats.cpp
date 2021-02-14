@@ -20,6 +20,16 @@ GameStats::GameStats(float xPos, float yPos, float ySize, float xSize, sf::Color
     currentCharacterMark.setFillColor(sf::Color::Yellow);
 }
 
+void GameStats::setCharacterList(std::vector<std::string> names)
+{
+    for (int i = 0; i < names.size(); i ++)
+    {
+        characterList[i] = sf::Text(names[i], font, 16);
+        characterList[i].setFillColor(sf::Color::White);
+        characterList[i].setPosition(sf::Vector2f(410, 10 + 20*i));
+    }
+}
+
 void GameStats::setInfoText(std::string info)
 {
     infoText.setString(info);

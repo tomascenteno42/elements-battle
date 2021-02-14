@@ -21,6 +21,8 @@ private:
 	K predecessor(BSTNode<K,T>* node);
 
 	void showInOrder(BSTNode<K,T>* node);
+	void keysInOrder(BSTNode<K,T>* node, std::vector<K> &keysVector);
+
 	void deleteAll(BSTNode<K,T>* node);
 
 public:
@@ -40,6 +42,8 @@ public:
 	BSTNode<K,T>* getRoot();
 
 	void showInOrder();
+	std::vector<K> keysInOrder();
+
 	void deleteAll();
 
 	~BST();
@@ -289,6 +293,27 @@ void BST<K,T>::showInOrder()
 {
 	showInOrder(root);
 	cout << endl;
+}
+
+
+template <class K, class T>
+void BST<K,T>::keysInOrder(BSTNode<K,T>* node, std::vector<K> &keysVector)
+{
+	if (node != 0)
+	{
+		keysInOrder(node->getLeft(), keysVector);
+		keysVector.push_back(node->getKey());
+		keysInOrder(node->getRight(), keysVector);
+	}
+}
+
+
+template <class K, class T>
+std::vector<K> BST<K,T>::keysInOrder()
+{
+	std::vector<K> keysVector;
+	keysInOrder(root, keysVector);
+	return keysVector;
 }
 
 
