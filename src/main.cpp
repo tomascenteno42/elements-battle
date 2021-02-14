@@ -60,5 +60,31 @@ int main()
 	}
 
 	delete window;
+
+/* 	BST<string, int>* d = new BST<string, int>();
+
+	string A = "A";
+	string B = "B";
+	string C = "C";
+	string D = "D";
+	string E = "E";
+
+	d->insert(D, 4);
+	d->insert(A, 1);
+	d->insert(C, 3);
+	d->insert(B, 2);
+	d->insert(E, 5);
+	cout << "Inserted 5 nodes" << endl;
+
+	d->showInOrder();
+
+	d->erase(C);
+	cout << "Erased 3" << endl;
+
+	d->showInOrder(); 
+
+
+	delete d;*/
+
 	return 0;
 }

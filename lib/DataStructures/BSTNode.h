@@ -1,116 +1,143 @@
 #ifndef NODO_H_
 #define NODO_H_
 
-template <class T>
+template <class K, class T>
 class BSTNode {
 
 private:
 	// Atributos
+	K key;
 	T data;
-	BSTNode<T>* right;
-	BSTNode<T>* left;
-	BSTNode<T>* dad;
+	BSTNode<K,T>* right;
+	BSTNode<K,T>* left;
+	BSTNode<K,T>* parent;
 
 public:
 	// Metodos
-	BSTNode(T data);
+	BSTNode(K key, T data);
 
 	void setData(T data);
+	void setKey(K key);
 	T getData();
+	K getKey();
 
-	void setRight(BSTNode<T>* right);
-	BSTNode<T>* getRight();
+	void setRight(BSTNode<K,T>* right);
+	BSTNode<K,T>* getRight();
 
-	void setLeft(BSTNode<T>* left);
-	BSTNode<T>* getLeft();
+	void setLeft(BSTNode<K,T>* left);
+	BSTNode<K,T>* getLeft();
 
-	void setDad(BSTNode<T>* dad);
-	BSTNode<T>* getDad();
+	void setParent(BSTNode<K,T>* parent);
+	BSTNode<K,T>* getParent();
 
 	bool isLeaf();
 	bool onlyRight();
 	bool onlyLeft();
 };
 
+// -------------- IMPLEMENTATION -----------------
 
-
-template <class T>
-BSTNode<T>::BSTNode(T data) {
-
+template <class K, class T>
+BSTNode<K,T>::BSTNode(K key, T data)
+{
 	this -> data = data;
-	this -> right = nullptr;
-	this -> left = nullptr;
-	this -> dad = nullptr;
+	this -> key = key;
+	this -> right = 0;
+	this -> left = 0;
+	this -> parent = 0;
 }
 
-template <class T>
-void BSTNode<T>::setData(T data) {
-
+template <class K, class T>
+void BSTNode<K,T>::setData(T data)
+{
 	this -> data = data;
 }
 
-template <class T>
-T BSTNode<T>::getData() {
-
-	return this -> data;
+template <class K, class T>
+void BSTNode<K,T>::setKey(K key)
+{
+	this -> key = key;
 }
 
-template <class T>
-void BSTNode<T>::setLeft(BSTNode<T>* left) {
+template <class K, class T>
+T BSTNode<K,T>::getData()
+{
+	return data;
+}
 
+
+template <class K, class T>
+K BSTNode<K,T>::getKey()
+{
+	return key;
+}
+
+
+template <class K, class T>
+void BSTNode<K,T>::setLeft(BSTNode<K,T>* left)
+{
 	this -> left = left;
+  
 	if (left)
-		left -> setDad(this);
+    left -> setParent(this);
 }
 
-template <class T>
-BSTNode<T>* BSTNode<T>::getLeft() {
 
+template <class K, class T>
+BSTNode<K,T>* BSTNode<K,T>::getLeft()
+{
 	return this -> left;
 }
 
-template <class T>
-void BSTNode<T>::setRight(BSTNode<T>* right) {
 
+template <class K, class T>
+void BSTNode<K,T>::setRight(BSTNode<K,T>* right)
+{
 	this -> right = right;
+
 	if (right)
-		right -> setDad(this);
+    right -> setParent(this);
 }
 
-template <class T>
-BSTNode<T>* BSTNode<T>::getRight() {
-
-	return this -> right;
+template <class K, class T>
+BSTNode<K,T>* BSTNode<K,T>::getRight()
+{
+	return right;
 }
 
-template <class T>
-void BSTNode<T>::setDad(BSTNode<T>* dad) {
 
-	this -> dad = dad;
+template <class K, class T>
+void BSTNode<K,T>::setParent(BSTNode<K,T>* parent)
+{
+	this -> parent = parent;
 }
 
-template <class T>
-BSTNode<T>* BSTNode<T>::getDad() {
 
-	return this -> dad;
+template <class K, class T>
+BSTNode<K,T>* BSTNode<K,T>::getParent()
+{
+	return parent;
 }
 
-template <class T>
-bool BSTNode<T>::isLeaf() {
 
-	return (this -> getLeft() == nullptr && this -> getRight() == nullptr);
+template <class K, class T>
+bool BSTNode<K,T>::isLeaf()
+{
+	return (getLeft() == 0 && getRight() == 0);
 }
 
-template <class T>
-bool BSTNode<T>::onlyRight() {
 
-	return (this -> getLeft() == nullptr && this -> getRight() != nullptr);
+template <class K, class T>
+bool BSTNode<K,T>::onlyRight()
+{
+	return (getLeft() == 0 && getRight() != 0);
 }
 
-template <class T>
-bool BSTNode<T>::onlyLeft() {
 
-	return (this -> getLeft() != nullptr && this -> getRight() == nullptr);
+template <class K, class T>
+bool BSTNode<K,T>::onlyLeft()
+{
+	return (getLeft() != 0 && getRight() == 0);
 }
 
 

@@ -1,57 +1,43 @@
 #ifndef ARBOL_H_
 #define ARBOL_H_
 
-#include <iostream>
-
 #include "BSTNode.h"
 
 using namespace std;
 
-template <class T>
+template <class K, class T>
 class BST {
 
 private:
-	// Atributos
-	BSTNode<T>* root;
+	
+	BSTNode<K,T>* root;
 
-	// Metodos
-	/* Como todos los metodos son recursivos, en general se llaman tipo "hacé este método de este node en adelante"
-	 * por ejemplo, "imprimí in order a partir de este node". Eso va a ser muy útil para los llamados recursivos
-	 * pero el usuario nunca va a tener que "hacer algo a partir de tal node", el usuario siempre querría hacerlo
-	 * desde la raíz. O sea si quiere imprimir, que imprima de la root hacia abajo. Si quiere insert, que inserte
-	 * en el árbol que empieza en la raíz.
-	 *
-	 * A priori se me ocurrió que estos métodos tengan un parámetro de "node inicial" llamado simplemente "node"
-	 * que por default sean la root, pero esto no se puede hacer así, lo que se ponga por default deben ser contantes.
-	 *
-	 * Entonces una solución es que el usuario, siempre que llame a un método, le pase por parámetro la raíz del árbol,
-	 * pero esto obviamente es muy poco práctico y honestamente está mal. Entonces la solución definitiva es tener, para
-	 * cada método, dos versiones: una privada y una pública. El público llamará al privado con "node inicial" = raíz.
-	 * Luego el privado se llamará a sí mismo con los sub-árboles.
-	 */
-	BSTNode<T>* insert(T data, BSTNode<T>* node);
-	BSTNode<T>* search(T data, BSTNode<T>* node);
-	BSTNode<T>* erase(T data, BSTNode<T>* node);
+	BSTNode<K,T>* insert(K key, T data, BSTNode<K,T>* node);
+	BSTNode<K,T>* search(K key, BSTNode<K,T>* node);
+	BSTNode<K,T>* erase(K key, BSTNode<K,T>* node);
 
-	T findMin(BSTNode<T>* node);
-	T findMax(BSTNode<T>* node);
-	T successor(BSTNode<T>* node);
-	T predecessor(BSTNode<T>* node);
+	K findMin(BSTNode<K,T>* node);
+	K findMax(BSTNode<K,T>* node);
+	K successor(BSTNode<K,T>* node);
+	K predecessor(BSTNode<K,T>* node);
 
-	void showInOrder(BSTNode<T>* node);
-	void deleteAll(BSTNode<T>* node);
+	void showInOrder(BSTNode<K,T>* node);
+	void deleteAll(BSTNode<K,T>* node);
 
 public:
 	BST();
 
-	void insert(T data);
-	bool search(T data);
-	void erase(T data);
+	// Inserts element in tree (key, data)
+	void insert(K key, T data);
+	bool search(K key);
+	void erase(K key);
 
-	T findMin();
-	T findMax();
-	T successor(T data);
-	T predecessor(T data);
+	K findMin();
+	K findMax();
+	K successor(K key);
+	K predecessor(K key);
+
+	T getData(K key);
 
 	void showInOrder();
 	void deleteAll();
@@ -59,12 +45,11 @@ public:
 	~BST();
 
 
-	BSTNode<T>* getRoot();
+	BSTNode<K,T>* getRoot();
 };
 
-template <class T>
-BSTNode<T>* BST<T>::getRoot() {
-
+template <class K, class T>
+BSTNode<K,T>* BST<K,T>::getRoot() {
 	return this -> root;
 }
 
@@ -72,30 +57,25 @@ BSTNode<T>* BST<T>::getRoot() {
 // =============================================================================================================================================================================
 // =============================================================================================================================================================================
 
-template <class T>
-BST<T>::BST() {
+template <class K, class T>
+BST<K,T>::BST() {
 	this -> root = nullptr;
 }
 
-/*
- * Si hago <void insert(T data, node* node)>, node se pasa por referencia, entonces los cambios que se hagan
- * adentro de la función no se verán reflejados en el node original. Pensé en solucionar esto pasando el node
- * por referencia pero esto me da error de compilación ya que este node que se pasa por referencia, en los
- * llamados recursivos, no será algo constante, así que no se puede pasar por referencia.
- *
- * La única solución que queda es que <insert> devuelva un puntero, así se lo asigno al puntero original directamente.
- */
-template <class T>
-BSTNode<T>* BST<T>::insert(T data, BSTNode<T>* node) {
+
+
+
+template <class K, class T>
+BSTNode<K,T>* BST<K,T>::insert(K key, T data, BSTNode<K,T>* node) {
 
 	if (node == nullptr)
-		node = new BSTNode<T>(data);
+		node = new BSTNode<K,T>(key, data);
 
-	else if (data < node -> getData())
-		node -> setLeft(insert(data, node -> getLeft()));
+	else if (key < node -> getKey())
+		node -> setLeft(insert(key, data, node -> getLeft()));
 
 	else
-		node -> setRight(insert(data, node -> getRight()));
+		node -> setRight(insert(key, data, node -> getRight()));
 
 	return node;
 }
@@ -103,23 +83,22 @@ BSTNode<T>* BST<T>::insert(T data, BSTNode<T>* node) {
 
 
 
-template <class T>
-void BST<T>::insert(T data) {
-
-	if (!search(data))
-		this -> root = insert(data, this -> root);
+template <class K, class T>
+void BST<K,T>::insert(K key, T data) {
+	if (!search(key))
+		this -> root = insert(key, data, this -> root);
 }
 
 
 
 
-template <class T>
-BSTNode<T>* BST<T>::search(T data, BSTNode<T>* node) {
+template <class K, class T>
+BSTNode<K,T>* BST<K,T>::search(K key, BSTNode<K,T>* node) {
 
-	if (node && data < node -> getData())
-		node = search(data, node -> getLeft());
-	if (node && data > node -> getData())
-		node = search(data, node -> getRight());
+	if (node && key < node ->getKey())
+		node = search(key, node -> getLeft());
+	if (node && key > node ->getKey())
+		node = search(key, node -> getRight());
 
 	return node;
 }
@@ -127,55 +106,54 @@ BSTNode<T>* BST<T>::search(T data, BSTNode<T>* node) {
 
 
 
-template <class T>
-bool BST<T>::search(T data) {
-
-	return (search(data, this -> root) != nullptr);
+template <class K, class T>
+bool BST<K,T>::search(K key) {
+	return (search(key, this -> root) != nullptr);
 }
 
 
 
 
-template <class T>
-BSTNode<T>* BST<T>::erase(T data, BSTNode<T>* node) {
+template <class K, class T>
+BSTNode<K,T>* BST<K,T>::erase(K key, BSTNode<K,T>* node) {
 
-	if (! node) {}
+	if (!node) {}
 
-	else if (data < node -> getData())
-		node -> setLeft(erase(data, node -> getLeft()));
+	else if (key < node -> getKey())
+		node -> setLeft(erase(key, node -> getLeft()));
 
-	else if (data > node -> getData())
-		node -> setRight(erase(data, node -> getRight()));
+	else if (key > node -> getKey())
+		node -> setRight(erase(key, node -> getRight()));
 
 	else {
-		// Caso 1:
+		
 		if (node -> isLeaf()) {
+
 			delete node;
 			node = nullptr;
-		}
-		// Caso 2:
-		else if (node -> onlyRight()) {
+
+		} else if (node -> onlyRight()) {
 			node -> getRight() -> setDad(node -> getDad());
-			BSTNode<T>* aux = node -> getRight();
+			BSTNode<K,T>* aux = node -> getRight();
 			delete node;
 			node = aux;
-		}
-		// Caso 3:
-		else if (node -> olnyLeft()) {
+
+		} else if (node -> onlyLeft()) {
 			node -> getLeft() -> setDad(node -> getDad());
-			BSTNode<T>* aux = node -> getLeft();
+			BSTNode<K,T>* aux = node -> getLeft();
 			delete node;
 			node = aux;
-		}
-		// Caso 4:
-		else {
-			T replacement;
-			if (search(successor(data)))
-				replacement = search(successor(data), this -> root) -> getData();
+
+		} else {
+			K replacement;
+			if (search(successor(key)))
+				replacement = search(successor(key), this -> root) -> getData();
 			else
-				replacement = search(predecessor(data), this -> root) -> getData();
+				replacement = search(predecessor(key), this -> root) -> getData();
 			this -> root = erase(replacement, this -> root);
-			node -> set_data(replacement);
+			T newData = getData(replacement);
+			node -> setData(newData);
+			node -> setKey(replacement);
 		}
 		// - - - -
 	}
@@ -185,11 +163,11 @@ BSTNode<T>* BST<T>::erase(T data, BSTNode<T>* node) {
 
 
 
-template <class T>
-void BST<T>::erase(T data) {
+template <class K, class T>
+void BST<K,T>::erase(K key) {
 
-	if (search(data))
-		this -> root = erase(data, this -> root);
+	if (search(key))
+		this -> root = erase(key, this -> root);
 	else
 		cout << "Ese data no está en el árbol." << endl;
 }
@@ -197,66 +175,66 @@ void BST<T>::erase(T data) {
 
 
 
-template <class T>
-T BST<T>::findMin(BSTNode<T>* node) {
+template <class K, class T>
+K BST<K,T>::findMin(BSTNode<K,T>* node) {
 
 	if (node -> getLeft())
 		return findMin(node -> getLeft());
 	else
-		return node -> getData();
+		return node -> getKey();
 }
 
 
 
 
-template <class T>
-T BST<T>::findMin() {
+template <class K, class T>
+K BST<K,T>::findMin() {
 
 	if (this -> root) {
 		return findMin(this -> root);
 	} else {
 		cout << "Árbol vacio." << endl;
-		return -1;
+		return "";
 	}
 }
 
 
 
 
-template <class T>
-T BST<T>::findMax(BSTNode<T>* node) {
+template <class K, class T>
+K BST<K,T>::findMax(BSTNode<K,T>* node) {
 
 	if (node -> getRight())
 		return findMax(node -> getRight());
 	else
-		return node -> getData();
+		return node -> getKey();
 }
 
 
 
 
-template <class T>
-T BST<T>::findMax() {
+template <class K, class T>
+K BST<K,T>::findMax() {
 
 	if (this -> root) {
 		return findMax(this -> root);
 	} else {
 		cout << "Árbol vacio." << endl;
-		return -1;
+		return "";
 	}
 }
 
 
 
 
-template <class T>
-T BST<T>::successor(BSTNode<T>* node) {
+template <class K, class T>
+K BST<K,T>::successor(BSTNode<K,T>* node) {
 
-	T outcome;
+	K outcome;
 	// Caso 1:
-	if (node -> getData() == findMax()) {
+	if (node -> getKey() == findMax()) {
 		cout << "El valor no tiene successor." << endl;
-		outcome = -1;
+		outcome = nullptr;
 	}
 	// Caso 2:
 	else if (node -> getRight()) {
@@ -265,40 +243,43 @@ T BST<T>::successor(BSTNode<T>* node) {
 	// Caso 3:
 	else {
 		T data = node -> getData();
-		BSTNode<T>* ancestor = node -> getDad();
+		BSTNode<K,T>* ancestor = node -> getDad();
 		while (data >= ancestor -> getData()) {
 			ancestor = ancestor -> getDad();
 		}
-		outcome = ancestor -> getData();
+		outcome = ancestor -> getKey();
 	}
 	// - - - -
 	return outcome;
 }
 
-template <class T>
-T BST<T>::successor(T data) {
 
-	BSTNode<T>* node = search(data, this -> root);
+
+
+template <class K, class T>
+K BST<K,T>::successor(K key) {
+
+	BSTNode<K,T>* node = search(key, this -> root);
 
 	if (node) {
 		return successor(node);
 	} else {
 		cout << "Ese valor no pertenece al árbol." << endl;
-		return -1;
+		return "";
 	}
 }
 
 
 
 
-template <class T>
-T BST<T>::predecessor(BSTNode<T>* node) {
+template <class K, class T>
+K BST<K,T>::predecessor(BSTNode<K,T>* node) {
 
-	T outcome;
+	K outcome;
 	// Caso 1:
-	if (node -> getData() == findMin()) {
+	if (node -> getKey() == findMin()) {
 		cout << "El valor no tiene predecessor." << endl;
-		outcome = -1;
+		outcome = nullptr;
 	}
 	// Caso 2:
 	else if (node -> getLeft()) {
@@ -307,11 +288,11 @@ T BST<T>::predecessor(BSTNode<T>* node) {
 	// Caso 3:
 	else {
 		T data = node -> getData();
-		BSTNode<T>* ancestor = node -> getDad();
+		BSTNode<K,T>* ancestor = node -> getDad();
 		while (data <= ancestor -> getData()) {
 			ancestor = ancestor -> getDad();
 		}
-		outcome = ancestor -> getData();
+		outcome = ancestor -> getKey();
 	}
 	// - - - -
 	return outcome;
@@ -320,24 +301,34 @@ T BST<T>::predecessor(BSTNode<T>* node) {
 
 
 
-template <class T>
-T BST<T>::predecessor(T data) {
+template <class K, class T>
+K BST<K,T>::predecessor(K key) {
 
-	BSTNode<T>* node = search(data, this -> root);
+	BSTNode<K,T>* node = search(key, this -> root);
 
 	if (node) {
 		return predecessor(node);
 	} else {
 		cout << "Ese valor no pertenece al árbol." << endl;
-		return -1;
+		return "";
 	}
 }
 
 
 
 
-template <class T>
-void BST<T>::showInOrder(BSTNode<T>* node) {
+template <class K, class T>
+T BST<K,T>::getData(K key){
+	BSTNode<K,T>* node = search(key, this -> root);
+	T data = node->getData();
+	return data;
+}
+
+
+
+
+template <class K, class T>
+void BST<K,T>::showInOrder(BSTNode<K,T>* node) {
 
 	if (node != nullptr) {
 		showInOrder(node -> getLeft());
@@ -349,8 +340,8 @@ void BST<T>::showInOrder(BSTNode<T>* node) {
 
 
 
-template <class T>
-void BST<T>::showInOrder() {
+template <class K, class T>
+void BST<K,T>::showInOrder() {
 
 	showInOrder(this -> root);
 	cout << endl;
@@ -359,8 +350,8 @@ void BST<T>::showInOrder() {
 
 
 
-template <class T>
-void BST<T>::deleteAll(BSTNode<T>* node) {
+template <class K, class T>
+void BST<K,T>::deleteAll(BSTNode<K,T>* node) {
 
 	if (node) {
 		this -> deleteAll(node -> getLeft());
@@ -372,8 +363,8 @@ void BST<T>::deleteAll(BSTNode<T>* node) {
 
 
 
-template <class T>
-void BST<T>::deleteAll() {
+template <class K, class T>
+void BST<K,T>::deleteAll() {
 
 	this -> deleteAll(this -> root);
 }
@@ -381,8 +372,8 @@ void BST<T>::deleteAll() {
 
 
 
-template <class T>
-BST<T>::~BST() {
+template <class K, class T>
+BST<K,T>::~BST() {
 
 	deleteAll();
 }
