@@ -11,3 +11,13 @@ bool stringIsNumeric(std::string s)
     }
     return true;
 }
+
+bool dataIsInVector(std::vector<int> vector, int data)
+{
+    for (int i = 0; i < vector.size(); i ++)
+    {
+        if (vector[i] == data)
+            return true;
+    }
+    return false;
+}

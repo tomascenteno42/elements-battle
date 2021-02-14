@@ -7,7 +7,7 @@ class CliffCell : public GameCell {
 public:
 	CliffCell(float xPos, float yPos, float ySize, float xSize);
 
-	void setCost(elements element);
+	void adjustCost(int &cost, elements element);
 };
 
 #endif

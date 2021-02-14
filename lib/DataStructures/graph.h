@@ -27,10 +27,10 @@ public:
     Graph(int v);
     
     // Fills index node
-    void FillNode(T data, int cost, int index);
+    void fillNode(T data, int cost, int index);
 
     // Links two nodes
-    void addEdge(int from, int to); // A -> B y B -> A
+    void addEdge(int from, int to); // A -> B
 
     // Returns number of vertices
     int getVertices();
@@ -51,31 +51,37 @@ Graph<T>::Graph(int v)
 {
     vertices = v;
     head = new GenericList<GraphData<T>*>;
-    current = nullptr;
+    current = 0;
 
-    for (size_t i = 0; i < vertices; i++){
+    for (size_t i = 0; i < vertices; i++)
+    {
         GraphData<T> *nodeData = new GraphData<T>();
 
-        if (head->isEmpty() == 0){
+        if (head->isEmpty())
             head->add(nodeData, 1);
-        }else head->add(nodeData, head->getQuantity() + 1);
+        else
+            head->add(nodeData, head->getQuantity() + 1);
     }
 }
 
 template <class T> 
-void Graph<T>::FillNode(T data, int cost, int index)
+void Graph<T>::fillNode(T data, int cost, int index)
 {
-    if (index < vertices && index > 0 && head->get(index) != nullptr){
+    if (index <= vertices && index > 0 && head->get(index) != 0)
+    {
         GraphData<T> *graphdata = head->get(index);
         graphdata->cost = cost;
         graphdata->data = data;
-    } cout << "FILL NODE ERROR" << endl;
+    }
+    else
+        cout << "FILL NODE ERROR" << endl;
 }
 
 template <class T>
 void Graph<T>::addEdge(int A, int B)
 {
-    if (A < vertices && A > 0 && B < vertices && B > 0 && A != B && head->get(A) != nullptr && head->get(A) != nullptr){
+    if (A <= vertices && A > 0 && B <= vertices && B > 0 && A != B && head->get(A) != 0 && head->get(A) != 0)
+    {
         GraphData<T> *graphdata; 
     
         graphdata = head->get(A);
@@ -83,7 +89,9 @@ void Graph<T>::addEdge(int A, int B)
 
         graphdata = head->get(B);
         graphdata->adjList.push_back(A);/* code */
-    } else cout << "ADD EDGE ERROR" << endl;
+    }
+    else
+        cout << "ADD EDGE ERROR" << endl;
 }
 
 template <class T> 
@@ -95,11 +103,12 @@ int Graph<T>::getVertices()
 template <class T>
 GraphData<T>* Graph<T>::getData(int pos)
 {
-    if (pos <= vertices && pos > 0 && head->get(pos) != nullptr){
+    if (pos <= vertices && pos > 0 && head->get(pos) != 0)
         return head->get(pos);
-    } else {
+    else
+    {
         cout << "GETDATA ERROR" << endl;
-        return nullptr;
+        return 0;
     }
 }
 
@@ -116,19 +125,16 @@ void Graph<T>::printGraph()
         cout << "Cost: " << graphdata->cost << endl;
         cout << "Linked to: ";
         for (size_t i = 0; i < graphdata->adjList.size(); i++)
-        {
             cout << graphdata->adjList[i] << ",";
-        }
         cout << endl << endl;
     }
 }
 
 template <class T>
-Graph<T>::~Graph(){  
+Graph<T>::~Graph()
+{  
     for (size_t i = 0; i < vertices; i++)
-    {
-        delete getData(i+1);
-    }
+        delete getData(i+1)->data;
     delete head;
 }
 

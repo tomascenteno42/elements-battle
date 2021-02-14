@@ -7,7 +7,7 @@ class GameWorld
 {
 public:
 	int gridLength = 8;
-	vector<GameCell *> tiles;
+	Graph<GameCell*> *tiles;
 
 	Stack<sf::Vector2f> *movStack;
 
@@ -25,6 +25,7 @@ public:
 	void addCharacter(Character* character, int player);
 
 	void setMap();
+	void connectVertices();
 	void setFWMatrixes();
 
 	void advanceState();
@@ -36,9 +37,6 @@ public:
 
 	GameWorld();
 	virtual ~GameWorld();
-
-private:
-	bool emptyWorld();
 };
 
 #endif /* GAMEWORLD_H_ */

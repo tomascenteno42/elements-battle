@@ -5,21 +5,17 @@ LakeCell::LakeCell(float xPos, float yPos, float ySize, float xSize)
 {
 }
 
-void LakeCell::setCost(elements element)
+void LakeCell::adjustCost(int &cost ,elements element)
 {
 	switch (element)
 	{
-	case EARTH:
-		cost = 1;
-		break;
 	case FIRE:
-		cost = 2;
+		cost ++;
 		break;
 	case WATER:
-		cost = 0;
+		cost --;
 		break;
-	case AIR:
-		cost = 1;
+	default:
 		break;
 	}
 }

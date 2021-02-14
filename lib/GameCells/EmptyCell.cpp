@@ -5,7 +5,7 @@ EmptyCell::EmptyCell(float xPos, float yPos, float ySize, float xSize)
 {
 }
 
-void EmptyCell::setCost(elements element)
+void EmptyCell::adjustCost(int &cost, elements element)
 {
-	cost = 15;
 }
+

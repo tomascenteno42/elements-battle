@@ -7,6 +7,7 @@ GameWorld::GameWorld()
 	players[0] = player1;
 	players[1] = player2;
 
+	tiles = new Graph<GameCell*>(64);
 	setMap();
 	movStack = new Stack<sf::Vector2f>();
 }
@@ -14,13 +15,29 @@ GameWorld::GameWorld()
 void GameWorld::setMap()
 {
 	loadMapData(this);
+	connectVertices();
 	setFWMatrixes();
+}
+
+void GameWorld::connectVertices()
+{
+	for (int v = 1; v <= 64; v ++)
+	{
+		if (v - 8 > 0)			// Conecta con la celda de arriba
+			tiles->addEdge(v, v-8);
+		if (v + 8 <= 64)		// Conecta con la celda de abajo
+			tiles->addEdge(v, v+8);
+		if ((v-1) % 8)			// Conecta con la celda de la izquierda
+			tiles->addEdge(v, v-1);
+		if (v % 8 || v == 0)	// Conecta con la celda de la derecha
+			tiles->addEdge(v, v+1);
+	}
 }
 
 void GameWorld::addCharacter(Character *character, int player)
 {
 	players[player - 1]->addCharacter(character);
-	tiles[character->getPos().x + 8 * character->getPos().y]->setOccupied(true);
+	tiles->getData(1 + character->getPos().x + 8 * character->getPos().y)->data->setOccupied(true);
 }
 
 void GameWorld::setFWMatrixes()
@@ -40,11 +57,6 @@ void GameWorld::setFWMatrixes()
 			}
 		}
 	}
-}
-
-bool GameWorld::emptyWorld()
-{
-	return tiles.empty();
 }
 
 // se llama siempre que termina el gameMenu2
@@ -71,7 +83,7 @@ void GameWorld::advanceState()
 // se llama siempre que termina el gameMenu1 o el gameMenu2, se llama despues de advanceState
 void GameWorld::updateOccupiedStates() {
 	for (int i = 0; i < 64; i ++)
-		tiles[i]->setOccupied(false);
+		tiles->getData(i+1)->data->setOccupied(false);
 
 	for (int p = 0; p < 2; p ++)
 	{
@@ -80,7 +92,7 @@ void GameWorld::updateOccupiedStates() {
 			if (!players[p]->characters[i]->isDead())
 			{
 				sf::Vector2f playerPos = players[p]->characters[i]->getPos();
-				tiles[playerPos.x + 8*playerPos.y]->setOccupied(true);
+				tiles->getData(1 + playerPos.x + 8*playerPos.y)->data->setOccupied(true);
 			}
 		}
 	}
@@ -95,12 +107,6 @@ GameWorld::~GameWorld()
 {
 	delete players[0];
 	delete players[1];
-
-	while (!emptyWorld())
-	{
-		delete tiles.back();
-		tiles.pop_back();
-	}
-
 	delete movStack;
+	delete tiles;
 }
