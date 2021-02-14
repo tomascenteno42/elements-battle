@@ -24,7 +24,7 @@ bool validDestinationEnergy(GameWorld *world, Character *character, sf::Vector2f
 
 bool positionIsEmpty(GameWorld* world, sf::Vector2f destination)
 {
-    return (!world->tiles[destination.x + 8 * destination.y]->isOccupied());
+    return (!world->tiles->getData(1 + destination.x + 8 * destination.y)->data->isOccupied());
 }
 
 bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination)

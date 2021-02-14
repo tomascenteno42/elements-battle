@@ -5,21 +5,17 @@ CliffCell::CliffCell(float xPos, float yPos, float ySize, float xSize)
 {
 }
 
-void CliffCell::setCost(elements element)
+void CliffCell::adjustCost(int &cost, elements element)
 {
 	switch (element)
 	{
 	case EARTH:
-		cost = 2;
-		break;
-	case FIRE:
-		cost = 1;
-		break;
-	case WATER:
-		cost = 1;
+		cost ++;
 		break;
 	case AIR:
-		cost = 0;
+		cost --;
+		break;
+	default:
 		break;
 	}
 }

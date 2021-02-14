@@ -5,21 +5,17 @@ VolcanoCell::VolcanoCell(float xPos, float yPos, float ySize, float xSize)
 {
 }
 
-void VolcanoCell::setCost(elements element)
+void VolcanoCell::adjustCost(int &cost, elements element)
 {
 	switch (element)
 	{
-	case EARTH:
-		cost = 1;
-		break;
 	case FIRE:
-		cost = 0;
+		cost --;
 		break;
 	case WATER:
-		cost = 2;
+		cost ++;
 		break;
-	case AIR:
-		cost = 1;
+	default:
 		break;
 	}
 }

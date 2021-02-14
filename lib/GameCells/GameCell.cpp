@@ -11,11 +11,6 @@ terrains GameCell::getTerrain()
 	return terrain;
 }
 
-int GameCell::getCost()
-{
-	return cost;
-}
-
 bool GameCell::isOccupied()
 {
 	return occupied;

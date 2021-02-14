@@ -5,21 +5,17 @@ MountainCell::MountainCell(float xPos, float yPos, float ySize, float xSize)
 {
 }
 
-void MountainCell::setCost(elements element)
+void MountainCell::adjustCost(int &cost, elements element)
 {
 	switch (element)
 	{
 	case EARTH:
-		cost = 0;
-		break;
-	case FIRE:
-		cost = 1;
-		break;
-	case WATER:
-		cost = 1;
+		cost --;
 		break;
 	case AIR:
-		cost = 2;
+		cost ++;
+		break;
+	default:
 		break;
 	}
 }

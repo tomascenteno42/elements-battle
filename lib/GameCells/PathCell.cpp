@@ -5,7 +5,6 @@ PathCell::PathCell(float xPos, float yPos, float ySize, float xSize)
 {
 }
 
-void PathCell::setCost(elements element)
+void PathCell::adjustCost(int &cost, elements element)
 {
-	cost = 1;
 }

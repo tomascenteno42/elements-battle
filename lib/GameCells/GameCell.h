@@ -7,18 +7,15 @@ class GameCell : public Cell
 {
 protected:
 	terrains terrain;
-	int cost = 0;
 	bool occupied = false;
 
 public:
 	GameCell(float xPos, float yPos, float ySize, float xSize, sf::Color color, terrains terrain);
 
 	terrains getTerrain();
-
-	int getCost();
 	bool isOccupied();
 
-	virtual void setCost(elements element) = 0;
+	virtual void adjustCost(int &cost, elements element) = 0;
 	void setOccupied(bool occupied);
 	void setTerrain(terrains t);
 

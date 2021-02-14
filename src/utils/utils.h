@@ -9,6 +9,7 @@ void loadNewGame(GameWorld* world);
 void openFile(string path, fstream& file);
 void loadCharacterData();
 void loadMapData(GameWorld* world);
+void loadMapDataGraph(GameWorld* world);
 void loadGameData(fstream& file, GameWorld* world);
 void saveGameData(GameWorld* world);
 Character* createNewCharacterFromStrings(std::string elementStr, std::string name, std::string maxLifeStr, std::string shieldStr);
@@ -80,6 +81,7 @@ bool validDestinationEnergy(GameWorld *world, Character *character, sf::Vector2f
 bool positionIsEmpty(GameWorld *world, sf::Vector2f destination);
 bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f destination);
 bool stringIsNumeric(std::string s);
+bool dataIsInVector(std::vector<int> vector, int data);
 
 
 // ------------------------------------------------------- MAP UTILS
@@ -87,8 +89,7 @@ bool stringIsNumeric(std::string s);
 /*
  * Sets the distances and paths matrixes to their initial state according to the FW Shortest Paths algorithm.
  */
-void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
-
+void setInitialMatrixes(Graph<GameCell*> *tilesGraph, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 /*
  * Determines whether two cells share an edge. (If two cells share only a corner, it returns false)
  */

@@ -7,7 +7,7 @@ class MountainCell : public GameCell {
 public:
 	MountainCell(float xPos, float yPos, float ySize, float xSize);
 
-	void setCost(elements element);
+	void adjustCost(int &cost, elements element);
 };
 
 #endif

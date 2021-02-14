@@ -14,6 +14,7 @@ void openFile(string path, fstream& file)
 	}
 }
 
+
 void loadMapData(GameWorld* world)
 {
     fstream file;
@@ -51,7 +52,12 @@ void loadMapData(GameWorld* world)
 		default:
 			break;
 		}
-		world->tiles.push_back(cell);
+
+		if (terrain == empty)
+			world->tiles->fillNode(cell, 15, cellCounter+1);
+		else
+			world->tiles->fillNode(cell, 1, cellCounter+1);
+		
 
 		cellCounter++;
 

@@ -9,26 +9,30 @@ bool intersects(GameCell *cell1, GameCell *cell2)
     return ((abs(cell1x - cell2x) + abs(cell1y - cell2y)) <= 50);
 }
 
-void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element)
+void setInitialMatrixes(Graph<GameCell*> *tilesGraph, int distances[64][64], sf::Vector2f paths[64][64], elements element)
 {
+    GraphData<GameCell*>* vertex = 0;
+    GameCell* cell = 0;
+    vector<int> adjList;
+    int cost = 0;
     for (int i = 0; i < 64; i++)
     {
-        world->tiles[i]->setCost(element);
-    }
-    int cost;
-    for (int i = 0; i < 64; i++)
-    {
-        cost = world->tiles[i]->getCost();
+        vertex = tilesGraph->getData(i+1);
+        cell = vertex->data;
+        cost = vertex->cost;
+        cell->adjustCost(cost, element);
+        adjList = vertex->adjList;
+
         for (int j = 0; j < 64; j++)
         {
             if (i != j)
-                paths[i][j] = world->tiles[j]->getPos();
+                paths[i][j] = tilesGraph->getData(j+1)->data->getPos();
             if (i == j)
             {
                 distances[i][j] = 0;
                 paths[i][j] = sf::Vector2f(-50, -50);
             }
-            else if (intersects(world->tiles[j], world->tiles[i]))
+            else if (dataIsInVector(adjList, j+1))
                 distances[i][j] = cost;
             else
                 distances[i][j] = 1000;
@@ -36,13 +40,14 @@ void setInitialMatrixes(GameWorld *world, int distances[64][64], sf::Vector2f pa
     }
 }
 
+
 void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element)
 {
-    setInitialMatrixes(world, distances, paths, element);
+    setInitialMatrixes(world->tiles, distances, paths, element);
     GameCell *node;
     for (int k = 0; k < 64; k++)
     {
-        node = world->tiles[k];
+        node = world->tiles->getData(k+1)->data;
         for (int i = 0; i < 64; i++)
         {
             for (int j = 0; j < 64; j++)
@@ -121,9 +126,9 @@ void drawStats(GameWindow *win)
 void drawScreen(GameWindow *win)
 {
     // Game board
-    for (size_t i = 0; i < win->world->tiles.size(); i++)
+    for (size_t i = 0; i < win->world->tiles->getVertices(); i++)
     {
-        win->draw(win->world->tiles[i]->getCell());
+        win->draw(win->world->tiles->getData(i+1)->data->getCell());
     }
 
     // Characters
