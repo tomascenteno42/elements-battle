@@ -1,6 +1,8 @@
 #ifndef NODO_H_
 #define NODO_H_
 
+#include "../../src/main.h"
+
 template <class K, class T>
 class BSTNode {
 
@@ -33,6 +35,8 @@ public:
 	bool isLeaf();
 	bool onlyRight();
 	bool onlyLeft();
+
+	~BSTNode();
 };
 
 // -------------- IMPLEMENTATION -----------------
@@ -141,5 +145,10 @@ bool BSTNode<K,T>::onlyLeft()
 }
 
 
+template <class K, class T>
+BSTNode<K,T>::~BSTNode()
+{
+	delete data;
+}
 
 #endif /* NODO_H_ */

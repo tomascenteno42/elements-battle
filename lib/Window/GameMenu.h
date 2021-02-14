@@ -30,12 +30,12 @@ public:
     /**
         Nucleus of menu logic, it renders menu options.
     */
-    void render();
+    void render(BST<string, Character*>* characterMap);
 
-    void processOptionChoice(int option);
+    void processOptionChoice(int option, BST<string, Character*>* characterMap);
 
-    void processMainMenuOption(int option);
-    void processCharMenuOption(int option);
+    void processMainMenuOption(int option, BST<string, Character*>* characterMap);
+    void processCharMenuOption(int option, BST<string, Character*>* characterMap);
     void processGameMenu1Option(int option);
     void processGameMenu2Option(int option);
     

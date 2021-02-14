@@ -1,15 +1,14 @@
 #ifndef ARBOL_H_
 #define ARBOL_H_
 
-#include "BSTNode.h"
+#include "../../src/main.h"
 
 using namespace std;
 
 template <class K, class T>
-class BST {
-
+class BST
+{
 private:
-	
 	BSTNode<K,T>* root;
 
 	BSTNode<K,T>* insert(K key, T data, BSTNode<K,T>* node);
@@ -22,6 +21,8 @@ private:
 	K predecessor(BSTNode<K,T>* node);
 
 	void showInOrder(BSTNode<K,T>* node);
+	void keysInOrder(BSTNode<K,T>* node, std::vector<K> &keysVector);
+
 	void deleteAll(BSTNode<K,T>* node);
 
 public:
@@ -38,343 +39,306 @@ public:
 	K predecessor(K key);
 
 	T getData(K key);
+	BSTNode<K,T>* getRoot();
 
 	void showInOrder();
+	std::vector<K> keysInOrder();
+
 	void deleteAll();
 
 	~BST();
-
-
-	BSTNode<K,T>* getRoot();
 };
 
-template <class K, class T>
-BSTNode<K,T>* BST<K,T>::getRoot() {
-	return this -> root;
-}
-
-// =============================================================================================================================================================================
-// =============================================================================================================================================================================
-// =============================================================================================================================================================================
 
 template <class K, class T>
-BST<K,T>::BST() {
-	this -> root = nullptr;
+BST<K,T>::BST()
+{
+	root = 0;
 }
 
 
-
-
 template <class K, class T>
-BSTNode<K,T>* BST<K,T>::insert(K key, T data, BSTNode<K,T>* node) {
-
-	if (node == nullptr)
+BSTNode<K,T>* BST<K,T>::insert(K key, T data, BSTNode<K,T>* node)
+{
+	if (node == 0)
 		node = new BSTNode<K,T>(key, data);
-
-	else if (key < node -> getKey())
-		node -> setLeft(insert(key, data, node -> getLeft()));
-
+	else if (key < node->getKey())
+		node->setLeft(insert(key, data, node->getLeft()));
 	else
-		node -> setRight(insert(key, data, node -> getRight()));
+		node->setRight(insert(key, data, node->getRight()));
 
 	return node;
 }
 
 
-
-
 template <class K, class T>
-void BST<K,T>::insert(K key, T data) {
+void BST<K,T>::insert(K key, T data)
+{
 	if (!search(key))
-		this -> root = insert(key, data, this -> root);
+		root = insert(key, data, root);
 }
 
 
-
-
 template <class K, class T>
-BSTNode<K,T>* BST<K,T>::search(K key, BSTNode<K,T>* node) {
-
-	if (node && key < node ->getKey())
-		node = search(key, node -> getLeft());
-	if (node && key > node ->getKey())
-		node = search(key, node -> getRight());
+BSTNode<K,T>* BST<K,T>::search(K key, BSTNode<K,T>* node)
+{
+	if (node && key < node->getKey())
+		node = search(key, node->getLeft());
+	if (node && key > node->getKey())
+		node = search(key, node->getRight());
 
 	return node;
 }
 
 
-
-
 template <class K, class T>
-bool BST<K,T>::search(K key) {
-	return (search(key, this -> root) != nullptr);
+bool BST<K,T>::search(K key)
+{
+	return (search(key, root) != 0);
 }
 
 
-
-
 template <class K, class T>
-BSTNode<K,T>* BST<K,T>::erase(K key, BSTNode<K,T>* node) {
-
-	if (!node) {}
-
-	else if (key < node -> getKey())
-		node -> setLeft(erase(key, node -> getLeft()));
-
-	else if (key > node -> getKey())
-		node -> setRight(erase(key, node -> getRight()));
-
-	else {
-		
-		if (node -> isLeaf()) {
-
+BSTNode<K,T>* BST<K,T>::erase(K key, BSTNode<K,T>* node)
+{
+	if (!node)
+	{}
+	else if (key < node->getKey())
+		node->setLeft(erase(key, node->getLeft()));
+	else if (key > node->getKey())
+		node->setRight(erase(key, node->getRight()));
+	else
+	{
+		if (node->isLeaf())
+		{
 			delete node;
-			node = nullptr;
-
-		} else if (node -> onlyRight()) {
-			node -> getRight() -> setDad(node -> getDad());
-			BSTNode<K,T>* aux = node -> getRight();
-			delete node;
-			node = aux;
-
-		} else if (node -> onlyLeft()) {
-			node -> getLeft() -> setDad(node -> getDad());
-			BSTNode<K,T>* aux = node -> getLeft();
+			node = 0;
+		}
+		else if (node->onlyRight())
+		{
+			node->getRight()->setParent(node->getParent());
+			BSTNode<K,T>* aux = node->getRight();
 			delete node;
 			node = aux;
-
-		} else {
+		}
+		else if (node->onlyLeft())
+		{
+			node->getLeft()->setParent(node->getParent());
+			BSTNode<K,T>* aux = node->getLeft();
+			delete node;
+			node = aux;
+		}
+		else
+		{
 			K replacement;
 			if (search(successor(key)))
-				replacement = search(successor(key), this -> root) -> getData();
+				replacement = search(successor(key), root)->getKey();
 			else
-				replacement = search(predecessor(key), this -> root) -> getData();
-			this -> root = erase(replacement, this -> root);
+				replacement = search(predecessor(key), root)->getKey();
+			root = erase(replacement, root);
 			T newData = getData(replacement);
-			node -> setData(newData);
-			node -> setKey(replacement);
+			node->setData(newData);
+			node->setKey(replacement);
 		}
-		// - - - -
 	}
 	return node;
 }
 
 
-
-
 template <class K, class T>
-void BST<K,T>::erase(K key) {
-
+void BST<K,T>::erase(K key)
+{
 	if (search(key))
-		this -> root = erase(key, this -> root);
+		root = erase(key, root);
 	else
-		cout << "Ese data no está en el árbol." << endl;
+		cout << "The tree does not contain specified data" << endl;
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::findMin(BSTNode<K,T>* node) {
-
-	if (node -> getLeft())
-		return findMin(node -> getLeft());
+K BST<K,T>::findMin(BSTNode<K,T>* node)
+{
+	if (node->getLeft())
+		return findMin(node->getLeft());
 	else
-		return node -> getKey();
+		return node->getKey();
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::findMin() {
-
-	if (this -> root) {
-		return findMin(this -> root);
-	} else {
-		cout << "Árbol vacio." << endl;
+K BST<K,T>::findMin()
+{
+	if (root)
+		return findMin(root);
+	else
 		return "";
-	}
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::findMax(BSTNode<K,T>* node) {
-
-	if (node -> getRight())
-		return findMax(node -> getRight());
+K BST<K,T>::findMax(BSTNode<K,T>* node)
+{
+	if (node->getRight())
+		return findMax(node->getRight());
 	else
-		return node -> getKey();
+		return node->getKey();
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::findMax() {
-
-	if (this -> root) {
-		return findMax(this -> root);
-	} else {
-		cout << "Árbol vacio." << endl;
+K BST<K,T>::findMax()
+{
+	if (root)
+		return findMax(root);
+	else
 		return "";
-	}
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::successor(BSTNode<K,T>* node) {
-
+K BST<K,T>::successor(BSTNode<K,T>* node)
+{
 	K outcome;
-	// Caso 1:
-	if (node -> getKey() == findMax()) {
-		cout << "El valor no tiene successor." << endl;
-		outcome = nullptr;
+
+	if (node->getKey() == findMax())	// node has no successor
+		outcome = "";
+	else if (node->getRight())
+		outcome = findMin(node->getRight());
+	else
+	{
+		T data = node->getData();
+		BSTNode<K,T>* ancestor = node->getParent();
+		while (data >= ancestor->getData())
+			ancestor = ancestor->getParent();
+		outcome = ancestor->getKey();
 	}
-	// Caso 2:
-	else if (node -> getRight()) {
-		outcome = findMin(node -> getRight());
-	}
-	// Caso 3:
-	else {
-		T data = node -> getData();
-		BSTNode<K,T>* ancestor = node -> getDad();
-		while (data >= ancestor -> getData()) {
-			ancestor = ancestor -> getDad();
-		}
-		outcome = ancestor -> getKey();
-	}
-	// - - - -
 	return outcome;
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::successor(K key) {
+K BST<K,T>::successor(K key)
+{
+	BSTNode<K,T>* node = search(key, root);
 
-	BSTNode<K,T>* node = search(key, this -> root);
-
-	if (node) {
+	if (node) 
 		return successor(node);
-	} else {
-		cout << "Ese valor no pertenece al árbol." << endl;
+	else
 		return "";
-	}
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::predecessor(BSTNode<K,T>* node) {
-
+K BST<K,T>::predecessor(BSTNode<K,T>* node)
+{
 	K outcome;
-	// Caso 1:
-	if (node -> getKey() == findMin()) {
-		cout << "El valor no tiene predecessor." << endl;
-		outcome = nullptr;
+	if (node->getKey() == findMin())	// node has no predecessor
+		outcome = "";
+	else if (node->getLeft())
+		outcome = findMax(node->getLeft());
+	else
+	{
+		T data = node->getData();
+		BSTNode<K,T>* ancestor = node->getParent();
+		while (data <= ancestor->getData())
+			ancestor = ancestor->getParent();
+		outcome = ancestor->getKey();
 	}
-	// Caso 2:
-	else if (node -> getLeft()) {
-		outcome = findMax(node -> getLeft());
-	}
-	// Caso 3:
-	else {
-		T data = node -> getData();
-		BSTNode<K,T>* ancestor = node -> getDad();
-		while (data <= ancestor -> getData()) {
-			ancestor = ancestor -> getDad();
-		}
-		outcome = ancestor -> getKey();
-	}
-	// - - - -
 	return outcome;
 }
 
 
-
-
 template <class K, class T>
-K BST<K,T>::predecessor(K key) {
+K BST<K,T>::predecessor(K key)
+{
+	BSTNode<K,T>* node = search(key, root);
 
-	BSTNode<K,T>* node = search(key, this -> root);
-
-	if (node) {
+	if (node)
 		return predecessor(node);
-	} else {
-		cout << "Ese valor no pertenece al árbol." << endl;
+	else
 		return "";
-	}
 }
 
 
-
-
 template <class K, class T>
-T BST<K,T>::getData(K key){
-	BSTNode<K,T>* node = search(key, this -> root);
+T BST<K,T>::getData(K key)
+{
+	BSTNode<K,T>* node = search(key, root);
 	T data = node->getData();
 	return data;
 }
 
 
+template <class K, class T>
+BSTNode<K,T>* BST<K,T>::getRoot()
+{
+	return root;
+}
 
 
 template <class K, class T>
-void BST<K,T>::showInOrder(BSTNode<K,T>* node) {
-
-	if (node != nullptr) {
-		showInOrder(node -> getLeft());
-		cout << node -> getData() << " ";
-		showInOrder(node -> getRight());
+void BST<K,T>::showInOrder(BSTNode<K,T>* node)
+{
+	if (node != 0)
+	{
+		showInOrder(node->getLeft());
+		cout << node->getKey() << " ";
+		showInOrder(node->getRight());
 	}
 }
 
 
-
-
 template <class K, class T>
-void BST<K,T>::showInOrder() {
-
-	showInOrder(this -> root);
+void BST<K,T>::showInOrder()
+{
+	showInOrder(root);
 	cout << endl;
 }
 
 
+template <class K, class T>
+void BST<K,T>::keysInOrder(BSTNode<K,T>* node, std::vector<K> &keysVector)
+{
+	if (node != 0)
+	{
+		keysInOrder(node->getLeft(), keysVector);
+		keysVector.push_back(node->getKey());
+		keysInOrder(node->getRight(), keysVector);
+	}
+}
 
 
 template <class K, class T>
-void BST<K,T>::deleteAll(BSTNode<K,T>* node) {
+std::vector<K> BST<K,T>::keysInOrder()
+{
+	std::vector<K> keysVector;
+	keysInOrder(root, keysVector);
+	return keysVector;
+}
 
-	if (node) {
-		this -> deleteAll(node -> getLeft());
-		this -> deleteAll(node -> getRight());
+
+template <class K, class T>
+void BST<K,T>::deleteAll(BSTNode<K,T>* node)
+{
+	if (node)
+	{
+		deleteAll(node->getLeft());
+		deleteAll(node->getRight());
 		delete node;
 	}
 }
 
 
-
-
 template <class K, class T>
-void BST<K,T>::deleteAll() {
-
-	this -> deleteAll(this -> root);
+void BST<K,T>::deleteAll()
+{
+	deleteAll(root);
 }
 
 
-
-
 template <class K, class T>
-BST<K,T>::~BST() {
-
+BST<K,T>::~BST()
+{
 	deleteAll();
 }
 

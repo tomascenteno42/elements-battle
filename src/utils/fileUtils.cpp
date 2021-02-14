@@ -73,26 +73,27 @@ void loadMapData(GameWorld* world)
 	file.close();
 }
 
-void loadCharacterData() // parameter: structure where characters will be saved (dictionary)
+
+void loadCharacterData(BST<string, Character*>* characterMap)
 { 
 	fstream file;
 	openFile(CHARACTERS_FILE, file);
 
-	string element, name, shieldStr, lifeStr;
-
-	while (getline(file, element, ',')) {
+	string elementStr, name, shieldStr, maxLifeStr;
+	Character* character = 0;
+	while (getline(file, elementStr, ',')) {
 		getline(file, name, ',');
 		getline(file, shieldStr, ',');
-		getline(file, lifeStr);
-		int escudo = stoi(shieldStr);
-		int vidas = stoi(lifeStr);
-		// load character to structure
+		getline(file, maxLifeStr);
+		character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+		characterMap->insert(name, character);
 	}
 
 	file.close();
 }
 
-void loadGameData(fstream& file, GameWorld* world)
+
+void loadGameData(fstream& file, GameWorld* world, BST<string, Character*>* characterMap)
 {
     string playerStr, elementStr, name, shieldStr, lifeStr, maxLifeStr, energyStr, rowStr, colStr;
 
@@ -116,11 +117,17 @@ void loadGameData(fstream& file, GameWorld* world)
         getline(file, rowStr, ',');
         getline(file, colStr);
 
-        character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+		if (!characterMap->search(name))  // si no esta en el arbol, lo crea y agrega
+		{
+        	character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+			characterMap->insert(name, character);
+		}
+		else
+			character = characterMap->getData(name);
+
         character->setLife(stof(lifeStr));
         character->setEnergy(stoi(energyStr));
         character->setPos(sf::Vector2f(stof(colStr), stof(rowStr)));
-
         world->addCharacter(character, player);
 
         counter ++;
@@ -138,6 +145,7 @@ void loadGameData(fstream& file, GameWorld* world)
 	world->charactersPlayed = i;
 	world->updateOccupiedStates();
 }
+
 
 void saveGameData(GameWorld* world)
 {
@@ -164,6 +172,21 @@ void saveGameData(GameWorld* world)
 		}
 	}
 }
+
+/*
+void saveChangesToCharFile(BST<string, Character*>* characterMap)
+{
+    ofstream file(CHARACTERS_FILE);
+	vector<string> names = characterMap->keysInOrder();
+    lista_personajes -> reiniciar();
+    while (lista_personajes -> hay_siguiente()) {
+    	Character* character = lista_personajes -> siguiente();
+        file << character -> getElement() << ","
+        		<< character -> getName()    << ","
+				<< character -> getShield()  << ","
+				<< character -> getMaxLife() << "\n";
+    }
+}*/
 
 Character* createNewCharacterFromStrings(std::string elementStr, std::string name, std::string maxLifeStr, std::string shieldStr)
 {

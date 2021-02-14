@@ -19,67 +19,121 @@ void fillMenu(Menu *m, const char* filename)
 }
 
 
-void processAddCharacter(GameMenu *menu)
+void processAddCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
 {
-    std::string input;
-    menu->setRequest("Add a character: ");
-    input = getUserInput(menu->window);
-    std::cout << "Added character " << input << std::endl;
+	string elementStr, name, shieldStr, maxLifeStr;
+    Character* character = 0;
+    elementStr = getCharElementFromUser(menu);
+    name = getCharNameFromUser(menu);
+    shieldStr = getCharShieldFromUser(menu);
+    maxLifeStr = getCharLifeFromUser(menu);
+    character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+    characterMap->insert(name, character);
 }
 
-void processDeleteCharacter(GameMenu *menu)
+void processDeleteCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
 {
-    std::string input;
-    menu->setRequest("Delete a character: ");
-    input = getUserInput(menu->window);
-    std::cout << "Deleted character " << input << std::endl;            
+    std::string name;
+    menu->setRequest("Delete character named: ");
+    name = getUserInput(menu->window);
+    if (characterMap->search(name))
+        characterMap->erase(name);
+    else
+        menu->setRequest("That character does not exist. Choose an option");
 }
 
-void processSearchCharacter(GameMenu *menu)
+void processSearchCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
 {
-    std::string input;
+    std::string name;
     menu->setRequest("Search character by name: ");
-    input = getUserInput(menu->window);
-    std::cout << "Searched character " << input << std::endl;            
+    name = getUserInput(menu->window);
+    Character* character = 0;
+    if (characterMap->search(name))
+    {
+        character = characterMap->getData(name);
+        // show character stats in gamestats
+    }
+    else
+        menu->setRequest("That character does not exist. Choose an option");
 }
 
-void processShowCharacters(GameMenu *menu)
+void processShowCharacters(GameMenu *menu, BST<string, Character*>* characterMap)
 {
-    std::cout << "Showing all characters" << std::endl;
+    std::vector<std::string> names = characterMap->keysInOrder();
+    menu->window->stats->setCharacterList(names);
 }
 
-void processSelectCharacter(GameMenu* menu)
+void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characterMap)
 {
-    std::string input;
-    menu->setRequest("Select a character: ");
-    input = getUserInput(menu->window);
-    std::cout << "Selected character " << input << std::endl;
-    menu->window->world->charactersSelected ++;
+    std::string name;
+    menu->setRequest("Select character by name: ");
+    name = getCharNameFromUser(menu);
+    Character* character = 0;
+    int player = menu->window->world->charactersSelected % 2;
+    if (characterMap->search(name) && !menu->window->world->characterIsInGame(name))
+    {
+        character = characterMap->getData(name);
+        menu->window->world->players[player]->addCharacter(character);
+        menu->window->world->charactersSelected ++;
+        menu->setRequest("Choose an option");
+    }
+    else
+        menu->setRequest("Either that character is already selected or it does not exist. Choose an option");
 }
 
-void processPlaceCharacters(GameMenu* menu)
+
+void processCharacterPositioning(GameMenu* menu)
 {
-    // posicionar los 6 personajes aca, pidiendo intercaladamente a los jugadores posiciones
+    int player = rand() % 1;
+    int index;
+    Character* character = 0;
+    sf::Vector2f pos;
+    for (int i = 0; i < 6; i ++)
+    {
+        if (i == 0 || i == 1)
+            index = 0;
+        else if (i == 2 || i == 3)
+            index = 1;
+        else
+            index = 2;
+
+        character = menu->window->world->players[player]->characters[index];
+
+        bool validPos = false;
+        menu->setRequest("Position character " + character->getName() +  " at: (ex.: 2,5)");
+        while (!validPos)
+        {
+            pos = getPositionFromUser(menu);
+            if (positionIsEmpty(menu->window->world, pos))
+                validPos = true;
+            else
+                menu->setRequest("That cell is occupied, choose a different one");
+        }
+        character->setPos(pos);
+        menu->window->world->tiles->getData(1 + pos.x + 8*pos.y)->data->setOccupied(true);
+        player = (player + 1) % 2;
+    }
 }
 
-void processLoadGame(GameMenu* menu)
+
+void processLoadGame(GameMenu* menu, BST<string, Character*>* characterMap)
 {
     fstream file;
     file.open(SAVE_FILE, ios::in);
 
     if (file.is_open())
     {
-        loadGameData(file, menu->window->world);
+        loadGameData(file, menu->window->world, characterMap);
         file.close();
         menu->changeCurrentMenu(gameMenu1);
     }
     else
     {
         menu->window->setWorld(new GameWorld());
-        loadNewGame(menu->window->world);
         menu->changeCurrentMenu(charSelectionMenu);
     }
 }
+
 
 void processSaveGame(GameMenu *menu)
 {
@@ -94,6 +148,7 @@ void processSaveGame(GameMenu *menu)
         menu->setRequest("Saving is only available at the beggining of the turn. Choose another option: ");
 }
 
+
 void processFeedOption(GameMenu *menu)
 {
     Character* character = menu->window->world->currentCharacter;
@@ -106,6 +161,7 @@ void processFeedOption(GameMenu *menu)
     else
         menu->setRequest("You can't feed an air character. Choose another option: ");
 }
+
 
 void processMoveOption(GameMenu *menu)
 {
@@ -131,17 +187,20 @@ void processMoveOption(GameMenu *menu)
     menu->setRequest("Choose an option");
 }
 
+
 void processAttackOption(GameMenu *menu)
 {
     Character* character = menu->window->world->currentCharacter;
     character->attack(menu->window);
 }
 
+
 void processDefenseOption(GameMenu *menu)
 {
     Character* character = menu->window->world->currentCharacter;
     character->defend(menu->window);
 }
+
 
 void endGame(GameMenu *menu)
 {

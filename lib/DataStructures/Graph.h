@@ -1,4 +1,3 @@
-
 #ifndef GRAPH_H
 #define GRAPH_H
 
@@ -7,7 +6,8 @@
 using namespace std;
 
 template <class T>
-class GraphData {
+class GraphData
+{
 public:
     T data;
     int cost;
@@ -88,7 +88,7 @@ void Graph<T>::addEdge(int A, int B)
         graphdata->adjList.push_back(B);
 
         graphdata = head->get(B);
-        graphdata->adjList.push_back(A);/* code */
+        graphdata->adjList.push_back(A);
     }
     else
         cout << "ADD EDGE ERROR" << endl;

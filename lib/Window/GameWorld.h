@@ -23,6 +23,7 @@ public:
 	int charactersPlayed = 0;			// Cuántos personajes ya jugaron en el turno actual (para saber cuando le toca al otro jugador)
 
 	void addCharacter(Character* character, int player);
+	bool characterIsInGame(string name);
 
 	void setMap();
 	void connectVertices();
@@ -30,7 +31,6 @@ public:
 
 	void advanceState();
 	void updateOccupiedStates();
-	void reset();
 
 	bool gameOver();
 	bool canSave = true;

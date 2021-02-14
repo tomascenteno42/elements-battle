@@ -1,15 +1,17 @@
 #include "../../src/main.h"
 
+
 GameMenu::GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window)
     :Cell(xPos, yPos, ySize, xSize, color)
-    {
-        font.loadFromFile(FONT_FILE);
-        textbox = new Textbox(14, sf::Color::White, true, font);
-        menuList = new GenericList<Menu*>;
-        this -> window = window;
-        fillMenuList();
-        setRequest("Choose an option");
-    };
+{
+    font.loadFromFile(FONT_FILE);
+    textbox = new Textbox(14, sf::Color::White, true, font);
+    menuList = new GenericList<Menu*>;
+    this -> window = window;
+    fillMenuList();
+    setRequest("Choose an option");
+}
+
 
 void GameMenu::fillMenuList()
 {
@@ -26,11 +28,13 @@ void GameMenu::fillMenuList()
     changeCurrentMenu(mainMenu);
 }
 
+
 void GameMenu::changeCurrentMenu(menus menu)
 {
     currentMenu = menuList->get(static_cast<int>(menu));
     currentMenuIndex = menu;
 }
+
 
 void GameMenu::setRequest(std::string req)
 {
@@ -38,15 +42,18 @@ void GameMenu::setRequest(std::string req)
     request.setPosition({10, 600});
 }
 
+
 Menu* GameMenu::getCurrentMenu()
 {
     return currentMenu;
 }
 
+
 menus GameMenu::getCurrentMenuIndex()
 {
     return currentMenuIndex;
 }
+
 
 void GameMenu::drawCurrentMenu()
 {
@@ -64,7 +71,8 @@ void GameMenu::drawCurrentMenu()
     window->draw(request);
 }
 
-void GameMenu::render()
+
+void GameMenu::render(BST<string, Character*>* characterMap)
 {
     std::string input = textbox->getText();
     textbox->setText("");
@@ -72,18 +80,19 @@ void GameMenu::render()
     if (input == "" || !stringIsNumeric(input) || stoi(input) < 1 || stoi(input) > currentMenu->getLength())
        setRequest("Enter a valid choice: ");
     else
-        processOptionChoice(stoi(input));
+        processOptionChoice(stoi(input), characterMap);
 }
 
-void GameMenu::processOptionChoice(int option)
+
+void GameMenu::processOptionChoice(int option, BST<string, Character*>* characterMap)
 {
     switch (getCurrentMenuIndex())
     {
         case mainMenu:
-            processMainMenuOption(option);
+            processMainMenuOption(option, characterMap);
             break;
         case charSelectionMenu:
-            processCharMenuOption(option);
+            processCharMenuOption(option, characterMap);
             break;
         case gameMenu1:
             processGameMenu1Option(option);
@@ -94,24 +103,25 @@ void GameMenu::processOptionChoice(int option)
     }
 }
 
-void GameMenu::processMainMenuOption(int option)
+
+void GameMenu::processMainMenuOption(int option, BST<string, Character*>* characterMap)
 {
     switch (option)
     {
         case 1:     // Agregar pj
-            processAddCharacter(this);
+            processAddCharacter(this, characterMap);
             break;
         case 2:     // Eliminar pj
-            processDeleteCharacter(this);
+            processDeleteCharacter(this, characterMap);
             break;
         case 3:     // Mostrar pjs
-            processShowCharacters(this);
+            processShowCharacters(this, characterMap);
             break;
         case 4:     // Buscar pj
-            processSearchCharacter(this);
+            processSearchCharacter(this, characterMap);
             break;
         case 5:     // Empezar juego
-            processLoadGame(this);
+            processLoadGame(this, characterMap);
             break;
         case 6:     // Cerrar
             window->close();
@@ -122,34 +132,38 @@ void GameMenu::processMainMenuOption(int option)
     setRequest("Choose an option");
 }
 
-void GameMenu::processCharMenuOption(int option)
+
+void GameMenu::processCharMenuOption(int option, BST<string, Character*>* characterMap)
 {
     switch (option)
     {
         case 1:     // Buscar pj
-            processSearchCharacter(this);
+            processSearchCharacter(this, characterMap);
+            setRequest("Choose an option");
             break;
         case 2:     // Mostrar pjs
-            processShowCharacters(this);
+            processShowCharacters(this, characterMap);
+            setRequest("Choose an option");
             break;
         case 3:     // Seleccionar pj // Posicionar pj
-            if (window->world->charactersSelected < 5)
-                processSelectCharacter(this);
+            if (window->world->charactersSelected < 6)
+                processCharacterSelection(this, characterMap);
             else
             {
-                processSelectCharacter(this);
-                processPlaceCharacters(this);
+                processCharacterPositioning(this);
                 changeCurrentMenu(gameMenu1);
+                setRequest("Choose an option");
             }
             break;
         case 4:     // Salir
             changeCurrentMenu(mainMenu);
+            setRequest("Choose an option");
             break;
         default:
             break;
     }
-    setRequest("Choose an option");
 }
+
 
 void GameMenu::processGameMenu1Option(int option)
 {
@@ -173,6 +187,7 @@ void GameMenu::processGameMenu1Option(int option)
             
     }
 }
+
 
 void GameMenu::processGameMenu2Option(int option)
 {
@@ -200,6 +215,7 @@ void GameMenu::processGameMenu2Option(int option)
     if (window->world->gameOver())
         endGame(this);
 }
+
 
 GameMenu::~GameMenu()
 {

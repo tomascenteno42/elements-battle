@@ -8,8 +8,8 @@ GameWorld::GameWorld()
 	players[1] = player2;
 
 	tiles = new Graph<GameCell*>(64);
-	setMap();
 	movStack = new Stack<sf::Vector2f>();
+	setMap();
 }
 
 void GameWorld::setMap()
@@ -38,6 +38,19 @@ void GameWorld::addCharacter(Character *character, int player)
 {
 	players[player - 1]->addCharacter(character);
 	tiles->getData(1 + character->getPos().x + 8 * character->getPos().y)->data->setOccupied(true);
+}
+
+bool GameWorld::characterIsInGame(std::string name)
+{
+	for (int p = 0; p < 2; p ++)
+	{
+		for (int i = 0; i < players[p]->characters.size(); i ++)
+		{
+			if (players[p]->characters[i]->getName() == name)
+				return true;
+		}
+	}
+	return false;
 }
 
 void GameWorld::setFWMatrixes()
