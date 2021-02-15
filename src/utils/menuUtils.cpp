@@ -47,11 +47,12 @@ void processSearchCharacter(GameMenu *menu, BST<string, Character*>* characterMa
     std::string name;
     menu->setRequest("Search character by name: ");
     name = getUserInput(menu->window);
-    Character* character = 0;
+    Character *character = 0;
     if (characterMap->search(name))
     {
         character = characterMap->getData(name);
-        // show character stats in gamestats
+        menu->window->stats->setCharacterDetails(character);
+        menu->window->stats->showCharacterDetails = true;
     }
     else
         menu->setRequest("That character does not exist. Choose an option");
@@ -61,6 +62,7 @@ void processShowCharacters(GameMenu *menu, BST<string, Character*>* characterMap
 {
     std::vector<std::string> names = characterMap->keysInOrder();
     menu->window->stats->setCharacterList(names);
+    menu->window->stats->showCharacterList = true;
 }
 
 void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characterMap)

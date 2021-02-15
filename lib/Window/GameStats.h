@@ -13,15 +13,20 @@ public:
     void clearCharacterStats(Character* character, int player, int characterIndex);
 
     void setCharacterList(std::vector<std::string> names);
+    void setCharacterDetails(Character* character);
 
     void setInfoText(std::string info);
     void setCurrentCharacterMark(int player, int character);
 
     sf::Font font;
 
+    bool showCharacterList;
     sf::Text characterList [20]; 
-    sf::Text characterDetails [4];
 
+    bool showCharacterDetails;
+    sf::Text characterDetails [5];
+
+    bool showCharacterStats;
     sf::Text playerText [2];
     sf::Text playerStats [2][3][4];     // 2 jugadores, cada uno con 3 pj, cada uno con 4 stats
 

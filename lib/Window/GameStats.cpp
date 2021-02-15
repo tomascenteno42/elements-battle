@@ -18,6 +18,10 @@ GameStats::GameStats(float xPos, float yPos, float ySize, float xSize, sf::Color
 
     currentCharacterMark = sf::Text("<--", font, 14);
     currentCharacterMark.setFillColor(sf::Color::Yellow);
+
+    showCharacterList = false;
+    showCharacterDetails = false;
+    showCharacterStats = false;
 }
 
 void GameStats::setCharacterList(std::vector<std::string> names)
@@ -27,6 +31,20 @@ void GameStats::setCharacterList(std::vector<std::string> names)
         characterList[i] = sf::Text(names[i], font, 16);
         characterList[i].setFillColor(sf::Color::White);
         characterList[i].setPosition(sf::Vector2f(410, 10 + 20*i));
+    }
+}
+
+void GameStats::setCharacterDetails(Character* character)
+{
+    characterDetails[0] = sf::Text(character->getName(), font, 16);
+    characterDetails[1] = sf::Text("Element: " + to_string(character->getElement()), font, 16);
+    characterDetails[2] = sf::Text("Life: " + to_string(character->getLife()), font, 16);
+    characterDetails[3] = sf::Text("Shield: " + to_string(character->getShield()), font, 16);
+    characterDetails[4] = sf::Text("Energy: " + to_string(character->getEnergy()), font, 16);
+    for (int i = 0; i < 5; i++)
+    {
+        characterDetails[i].setFillColor(sf::Color::White);
+        characterDetails[i].setPosition(sf::Vector2f(410, 10 + 20*i));
     }
 }
 

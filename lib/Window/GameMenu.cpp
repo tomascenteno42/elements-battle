@@ -106,8 +106,10 @@ void GameMenu::processOptionChoice(int option, BST<string, Character*>* characte
 
 void GameMenu::processMainMenuOption(int option, BST<string, Character*>* characterMap)
 {
+    window->stats->showCharacterList = false;
+    window->stats->showCharacterDetails = false;
     switch (option)
-    {
+    {   
         case 1:     // Agregar pj
             processAddCharacter(this, characterMap);
             break;
