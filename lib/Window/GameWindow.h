@@ -6,11 +6,12 @@
 class GameWindow : public sf::RenderWindow
 {
 public:
-    GameWorld *world;
-    GameMenu *menu;
-    GameStats *stats;
+    GameWorld* world;
+    GameMenu* menu;
+    GameStats* stats;
     
     GameWindow(sf::VideoMode window, string title);
+
     void setWorld(GameWorld* world);
 
     ~GameWindow();

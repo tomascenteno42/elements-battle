@@ -2,7 +2,7 @@
 
 // MENU UTILS
 
-void fillMenu(Menu *m, const char* filename)
+void fillMenu(Menu* menu, const char* filename)
 {
     ifstream optionsFile;
     string option;
@@ -11,15 +11,14 @@ void fillMenu(Menu *m, const char* filename)
     if (optionsFile.is_open())
     {
         while (getline(optionsFile, option, '\n'))
-        {
-            m->addOption(option);
-        }
+            menu->addOption(option);
+
+        optionsFile.close();
     }
-    optionsFile.close();
 }
 
 
-void processAddCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
+void processAddCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
 {
 	string elementStr, name, shieldStr, maxLifeStr;
     Character* character = 0;
@@ -27,11 +26,11 @@ void processAddCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
     name = getCharNameFromUser(menu);
     shieldStr = getCharShieldFromUser(menu);
     maxLifeStr = getCharLifeFromUser(menu);
-    character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+    character = createNewCharacter(parseStringToElement(elementStr), name, stof(maxLifeStr), stoi(shieldStr));
     characterMap->insert(name, character);
 }
 
-void processDeleteCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
+void processDeleteCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
 {
     std::string name;
     menu->setRequest("Delete character named: ");
@@ -42,7 +41,7 @@ void processDeleteCharacter(GameMenu *menu, BST<string, Character*>* characterMa
         menu->setRequest("That character does not exist. Choose an option");
 }
 
-void processSearchCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
+void processSearchCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
 {
     std::string name;
     menu->setRequest("Search character by name: ");
@@ -57,7 +56,7 @@ void processSearchCharacter(GameMenu *menu, BST<string, Character*>* characterMa
         menu->setRequest("That character does not exist. Choose an option");
 }
 
-void processShowCharacters(GameMenu *menu, BST<string, Character*>* characterMap)
+void processShowCharacters(GameMenu* menu, BST<string, Character*>* characterMap)
 {
     std::vector<std::string> names = characterMap->keysInOrder();
     menu->window->stats->setCharacterList(names);
@@ -135,7 +134,7 @@ void processLoadGame(GameMenu* menu, BST<string, Character*>* characterMap)
 }
 
 
-void processSaveGame(GameMenu *menu)
+void processSaveGame(GameMenu* menu)
 {
     if (menu->window->world->canSave)
     {
@@ -149,7 +148,7 @@ void processSaveGame(GameMenu *menu)
 }
 
 
-void processFeedOption(GameMenu *menu)
+void processFeedOption(GameMenu* menu)
 {
     Character* character = menu->window->world->currentCharacter;
     character->feed(menu->window);
@@ -163,7 +162,7 @@ void processFeedOption(GameMenu *menu)
 }
 
 
-void processMoveOption(GameMenu *menu)
+void processMoveOption(GameMenu* menu)
 {
     Character* character = menu->window->world->currentCharacter;
     sf::Vector2f destination = getDestinationFromUser(menu);
@@ -188,21 +187,21 @@ void processMoveOption(GameMenu *menu)
 }
 
 
-void processAttackOption(GameMenu *menu)
+void processAttackOption(GameMenu* menu)
 {
     Character* character = menu->window->world->currentCharacter;
     character->attack(menu->window);
 }
 
 
-void processDefenseOption(GameMenu *menu)
+void processDefenseOption(GameMenu* menu)
 {
     Character* character = menu->window->world->currentCharacter;
     character->defend(menu->window);
 }
 
 
-void endGame(GameMenu *menu)
+void endGame(GameMenu* menu)
 {
     remove(SAVE_FILE);
 

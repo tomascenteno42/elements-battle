@@ -12,6 +12,7 @@ GameWorld::GameWorld()
 	setMap();
 }
 
+
 void GameWorld::setMap()
 {
 	loadMapData(this);
@@ -19,26 +20,29 @@ void GameWorld::setMap()
 	setFWMatrixes();
 }
 
+
 void GameWorld::connectVertices()
 {
 	for (int v = 1; v <= 64; v ++)
 	{
-		if (v - 8 > 0)			// Conecta con la celda de arriba
+		if (v - 8 > 0)			// Connects to cell above
 			tiles->addEdge(v, v-8);
-		if (v + 8 <= 64)		// Conecta con la celda de abajo
+		if (v + 8 <= 64)		// Connects to cell below
 			tiles->addEdge(v, v+8);
-		if ((v-1) % 8)			// Conecta con la celda de la izquierda
+		if ((v-1) % 8)			// Connects to cell on the left
 			tiles->addEdge(v, v-1);
-		if (v % 8 || v == 0)	// Conecta con la celda de la derecha
+		if (v % 8 || v == 0)	// Connects to cell on the right
 			tiles->addEdge(v, v+1);
 	}
 }
 
-void GameWorld::addCharacter(Character *character, int player)
+
+void GameWorld::addCharacter(Character* character, int player)
 {
 	players[player - 1]->addCharacter(character);
-	tiles->getData(1 + character->getPos().x + 8 * character->getPos().y)->data->setOccupied(true);
+	tiles->getData(1 + character->getPos().x + 8*character->getPos().y)->data->setOccupied(true);
 }
+
 
 bool GameWorld::characterIsInGame(std::string name)
 {
@@ -53,31 +57,19 @@ bool GameWorld::characterIsInGame(std::string name)
 	return false;
 }
 
+
 void GameWorld::setFWMatrixes()
 {
 	for (int i = 0; i < 4; i++)
-	{
-		elements element = static_cast<elements>(i + 1);
-		int distances_aux[64][64];
-		sf::Vector2f paths_aux[64][64];
-		shortestPathsFW(this, distances_aux, paths_aux, element);
-		for (int j = 0; j < 64; j++)
-		{
-			for (int k = 0; k < 64; k++)
-			{
-				distances[i][j][k] = distances_aux[j][k];
-				paths[i][j][k] = paths_aux[j][k];
-			}
-		}
-	}
+		shortestPathsFW(this, distances[i], paths[i], static_cast<elements>(i + 1));
 }
 
-// se llama siempre que termina el gameMenu2
+
 void GameWorld::advanceState()
 {
     charactersPlayed ++;
 
-    if (charactersPlayed == 3)	// Ya jugaron todos los personajes en el turno
+    if (charactersPlayed == 3)
     {
 		canSave = true;
         charactersPlayed = 0;
@@ -93,7 +85,7 @@ void GameWorld::advanceState()
 		advanceState();
 }
 
-// se llama siempre que termina el gameMenu1 o el gameMenu2, se llama despues de advanceState
+
 void GameWorld::updateOccupiedStates() {
 	for (int i = 0; i < 64; i ++)
 		tiles->getData(i+1)->data->setOccupied(false);
@@ -111,10 +103,12 @@ void GameWorld::updateOccupiedStates() {
 	}
 }
 
+
 bool GameWorld::gameOver()
 {
 	return (players[0]->lost() || players[1]->lost());
 }
+
 
 GameWorld::~GameWorld()
 {

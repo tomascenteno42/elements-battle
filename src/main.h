@@ -1,10 +1,3 @@
-/*
- * main.h
- *
- *  Created on: Jan 18, 2021
- *      Author: kurepa
- */
-
 #ifndef MAIN_H_
 #define MAIN_H_
 
@@ -44,30 +37,37 @@ enum terrains
 	empty
 };
 enum elements
+
 {
 	EARTH = 1,
-	FIRE = 2,
-	WATER = 3,
-	AIR = 4
+	FIRE,
+	WATER,
+	AIR
 };
 
 using namespace std;
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
-#include <fstream>
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 #include <sstream>
 #include <regex>
 #include <vector>
+#include <math.h>
+
+#ifdef _WINDOWS
+#include <windows.h>
+#else
 #include <unistd.h>
-#include <chrono>
-#include <thread>
+#define Sleep(x) usleep((x)*1000)
+#endif
+
 #include <algorithm>
 #include <cctype>
+
 
 #include "../lib/Characters/Character.h"
 
