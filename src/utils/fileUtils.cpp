@@ -172,17 +172,18 @@ void saveGameData(GameWorld* world)
 	}
 }
 
-/*
+
 void saveChangesToCharFile(BST<string, Character*>* characterMap)
 {
     ofstream file(CHARACTERS_FILE);
 	vector<string> names = characterMap->keysInOrder();
-    lista_personajes -> reiniciar();
-    while (lista_personajes -> hay_siguiente()) {
-    	Character* character = lista_personajes -> siguiente();
-        file << character -> getElement() << ","
-        		<< character -> getName()    << ","
-				<< character -> getShield()  << ","
-				<< character -> getMaxLife() << "\n";
-    }
-}*/
+	Character* character = 0;
+	for (int i = 0; i < names.size(); i ++)
+	{
+		character = characterMap->getData(names[i]);
+        file << parseElementToString(character->getElement()) << ","
+        	 << character->getName() << ","
+			 << character->getShield() << ","
+			 << character->getMaxLife() << "\n";
+	}
+}

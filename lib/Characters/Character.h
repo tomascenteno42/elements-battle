@@ -32,8 +32,6 @@ public:
     sf::Vector2f getPos();
     sf::RectangleShape getCell();
 
-    bool isDead();
-
     void setName(string n);
     void setLife(float l);
     void setShield(int s);
@@ -41,20 +39,42 @@ public:
     void setPos(sf::Vector2f pos);
     void setCell();
 
-    void move(GameWindow* window, sf::Vector2f destination, int energyRequired);
+    /*
+     * Returns true if character's life is 0
+     */
+    bool isDead();
 
-    void shieldDamage(float &damage);
+    /*
+     * Recieves a destination that has been validated, and the energy required to
+     * move to that destination, both have been asked/calculated beforehand
+     * Moves the character to the destination cell step by step, drawing on the
+     * screen on every step
+     */
+    void move(GameWindow* window, sf::Vector2f destination, int energyRequired);
 
     virtual void feed(GameWindow* window) = 0;
     virtual void attack(GameWindow* window) = 0;
-    virtual void adjustDamageTaken(float &damage, elements attackerElement) = 0;
     virtual void defend(GameWindow* window) = 0;
     virtual void update() = 0;
+
+    /*
+     * Modifies a damage value based on the attacker character and the
+     * attacked character's elements
+     */
+    virtual void adjustDamageTaken(float &damage, elements attackerElement) = 0;
 
     virtual ~Character();
 
 protected:
+    /*
+     * Checks whether the character can be fed
+     */
     bool canBeFed();
+
+    /*
+     * Modifies a damage value according to the character's shield value
+     */
+    void shieldDamage(float &damage);
 };
 
 #endif

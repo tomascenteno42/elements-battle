@@ -96,12 +96,12 @@ void loadMovementsStack(Stack<sf::Vector2f>* movStack, sf::Vector2f startingPos,
 void drawStats(GameWindow* win)
 {
     win->draw(win->stats->getCell());
-
-    for (int i = 0; i < 20; i ++)  // por algun motivo no se dibuja
+/*
+    for (int i = 0; i < 20; i ++)
     {
         win->draw(win->stats->characterList[i]);
     }
-
+*/
     for (int p = 0; p < 2; p ++)
     {
         win->draw(win->stats->playerText[p]);

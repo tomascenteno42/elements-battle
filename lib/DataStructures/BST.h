@@ -135,8 +135,8 @@ BSTNode<K,T>* BST<K,T>::erase(K key, BSTNode<K,T>* node)
 				replacement = search(successor(key), root)->getKey();
 			else
 				replacement = search(predecessor(key), root)->getKey();
-			root = erase(replacement, root);
 			T newData = getData(replacement);
+			root = erase(replacement, root);
 			node->setData(newData);
 			node->setKey(replacement);
 		}
