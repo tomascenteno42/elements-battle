@@ -157,6 +157,10 @@ void drawScreen(GameWindow *win)
             win->draw(win->stats->characterDetails[i]);
     }
 
+    if(win->stats->showChosenChar){
+        for (size_t i = 0; i < 8; i++)
+            win->draw(win->stats->chosenCharacters[i]);
+    }
 
     if (win->menu->getCurrentMenuIndex() == gameMenu1 || win->menu->getCurrentMenuIndex() == gameMenu2)
     {

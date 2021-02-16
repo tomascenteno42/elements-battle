@@ -102,11 +102,13 @@ void GameMenu::processOptionChoice(int option, BST<string, Character*>* characte
             break;
     }
 }
-
-
+/* 
+window->stats->showCharacterDetails = false;
+window->stats->showCharacterList = false;
+window->stats->showChosenChar = false;
+ */
 void GameMenu::processMainMenuOption(int option, BST<string, Character*>* characterMap)
 {
-    window->stats->showCharacterList = false;
     window->stats->showCharacterDetails = false;
     switch (option)
     {   
@@ -121,8 +123,10 @@ void GameMenu::processMainMenuOption(int option, BST<string, Character*>* charac
             break;
         case 4:     // Buscar pj
             processSearchCharacter(this, characterMap);
+            window->stats->showCharacterList = false;
             break;
         case 5:     // Empezar juego
+            window->stats->showCharacterList = false;
             processLoadGame(this, characterMap);
             break;
         case 6:     // Cerrar
@@ -140,14 +144,18 @@ void GameMenu::processCharMenuOption(int option, BST<string, Character*>* charac
     switch (option)
     {
         case 1:     // Buscar pj
+            window->stats->showCharacterList = false;
+            window->stats->showChosenChar = false;
             processSearchCharacter(this, characterMap);
             setRequest("Choose an option");
             break;
         case 2:     // Mostrar pjs
+            window->stats->showCharacterDetails = false;
             processShowCharacters(this, characterMap);
             setRequest("Choose an option");
             break;
         case 3:     // Seleccionar pj // Posicionar pj
+            window->stats->showCharacterDetails = false;
             if (window->world->charactersSelected < 6)
                 processCharacterSelection(this, characterMap);
             else
@@ -158,6 +166,8 @@ void GameMenu::processCharMenuOption(int option, BST<string, Character*>* charac
             }
             break;
         case 4:     // Salir
+            window->stats->showCharacterList = false;
+            window->stats->showChosenChar = false;
             changeCurrentMenu(mainMenu);
             setRequest("Choose an option");
             break;

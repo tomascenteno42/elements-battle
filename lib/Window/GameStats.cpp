@@ -24,27 +24,73 @@ GameStats::GameStats(float xPos, float yPos, float ySize, float xSize, sf::Color
     showCharacterStats = false;
 }
 
+void GameStats::clearCharactersList(sf::Text texts[CHARACTERS_LIMIT])
+{
+    for (size_t i = 0; i < CHARACTERS_LIMIT; i++)
+    {
+        texts[i] = sf::Text("", font, 0);
+    }   
+}
+
 void GameStats::setCharacterList(std::vector<std::string> names)
 {
-    for (int i = 0; i < names.size(); i ++)
+    clearCharactersList(characterList);
+    characterList[0] = sf::Text("CHARACTERS LIST", font, 20);
+    characterList[0].setFillColor(sf::Color::White);
+    characterList[0].setPosition(sf::Vector2f(415, 50));
+    for (int i = 1; i < names.size() + 1; i ++)
     {
-        characterList[i] = sf::Text(names[i], font, 16);
+        characterList[i] = sf::Text(names[i-1], font, 20);
         characterList[i].setFillColor(sf::Color::White);
-        characterList[i].setPosition(sf::Vector2f(410, 10 + 20*i));
+        characterList[i].setPosition(sf::Vector2f(415, 60 + 30*i));
     }
 }
 
 void GameStats::setCharacterDetails(Character* character)
 {
-    characterDetails[0] = sf::Text(character->getName(), font, 16);
-    characterDetails[1] = sf::Text("Element: " + to_string(character->getElement()), font, 16);
-    characterDetails[2] = sf::Text("Life: " + to_string(character->getLife()), font, 16);
-    characterDetails[3] = sf::Text("Shield: " + to_string(character->getShield()), font, 16);
-    characterDetails[4] = sf::Text("Energy: " + to_string(character->getEnergy()), font, 16);
-    for (int i = 0; i < 5; i++)
+    characterDetails[0] = sf::Text(character->getName(), font, 50);
+    characterDetails[1] = sf::Text("Element: " + parseElementToString(character->getElement()), font, 20);
+    characterDetails[2] = sf::Text("Life: " + to_string(character->getLife()), font, 20);
+    characterDetails[3] = sf::Text("Shield: " + to_string(character->getShield()), font, 20);
+    characterDetails[4] = sf::Text("Energy: " + to_string(character->getEnergy()), font, 20);
+
+    characterDetails[0].setFillColor(sf::Color::White);
+    characterDetails[0].setPosition(sf::Vector2f(500, 70));
+
+    for (int i = 1; i < 5; i++)
     {
         characterDetails[i].setFillColor(sf::Color::White);
-        characterDetails[i].setPosition(sf::Vector2f(410, 10 + 20*i));
+        characterDetails[i].setPosition(sf::Vector2f(500, 130 + 30*i));
+    }
+}
+
+void GameStats::setChosenCharacters(string character, int selectedPlayers)
+{   
+    int pos;
+    switch (selectedPlayers)
+    {
+    case 0: pos = 1;
+        break;
+    case 1: pos = 5;
+        break;
+    case 2: pos = 2;
+        break;
+    case 3: pos = 6;
+        break;
+    case 4: pos = 3;
+        break;    
+    case 5: pos = 7;
+        break;
+    }
+
+    chosenCharacters[0] = sf::Text("PLAYER 1", font, 20);
+    chosenCharacters[4] = sf::Text("PLAYER 2", font, 20);
+    chosenCharacters[pos] = sf::Text(character, font, 20);
+
+    for (size_t i = 0; i < 8; i++)
+    {
+        chosenCharacters[i].setFillColor(sf::Color::White);
+        chosenCharacters[i].setPosition(sf::Vector2f(650, 50 + 30*i));
     }
 }
 

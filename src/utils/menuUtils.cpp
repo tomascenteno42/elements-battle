@@ -29,6 +29,7 @@ void processAddCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
     maxLifeStr = getCharLifeFromUser(menu);
     character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
     characterMap->insert(name, character);
+    menu->window->stats->setCharacterList(characterMap->keysInOrder());
 }
 
 void processDeleteCharacter(GameMenu *menu, BST<string, Character*>* characterMap)
@@ -36,8 +37,10 @@ void processDeleteCharacter(GameMenu *menu, BST<string, Character*>* characterMa
     std::string name;
     menu->setRequest("Delete character named: ");
     name = getUserInput(menu->window);
-    if (characterMap->search(name))
+    if (characterMap->search(name)){
         characterMap->erase(name);
+        menu->window->stats->setCharacterList(characterMap->keysInOrder());
+    }
     else
         menu->setRequest("That character does not exist. Choose an option");
 }
@@ -67,6 +70,8 @@ void processShowCharacters(GameMenu *menu, BST<string, Character*>* characterMap
 
 void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characterMap)
 {
+    menu->window->stats->showChosenChar = true;
+
     std::string name;
     menu->setRequest("Select character by name: ");
     name = getCharNameFromUser(menu);
@@ -76,6 +81,7 @@ void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characte
     {
         character = characterMap->getData(name);
         menu->window->world->players[player]->addCharacter(character);
+        menu->window->stats->setChosenCharacters(character->getName(), menu->window->world->charactersSelected);
         menu->window->world->charactersSelected ++;
         menu->setRequest("Choose an option");
     }
