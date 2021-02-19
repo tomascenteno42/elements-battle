@@ -2,23 +2,41 @@
 
 void openFile(string path, fstream& file)
 {
-	file.open(path, ios::in);		// ios::in => si el file no existe, no crea nada y no abre nada
+	file.open(path, ios::in);
 
 	if (!file.is_open()) {
-		cout << "No se encontró un archivo con nombre " << path << ".\n"
-			 << "Se creará automáticamente ahora un archivo en blanco de nombre "
-			 << path << "." << endl;
-		file.open(path, ios::out);	// ios::out => si el file no existe, lo crea y lo abre
+		cout << "Couldn't find a file with path " << path << ".\n"
+			 << "A blank file will now be created at " << path << endl;
+		file.open(path, ios::out);
 		file.close();
 		file.open(path, ios::in);
 	}
 }
 
 
+void loadCharacterData(BST<string, Character*>* characterMap)
+{ 
+	fstream file;
+	openFile(CHARACTERS_FILE, file);
+
+	string elementStr, name, shieldStr, maxLifeStr;
+	Character* character = 0;
+	while (getline(file, elementStr, ',')) {
+		getline(file, name, ',');
+		getline(file, shieldStr, ',');
+		getline(file, maxLifeStr);
+		character = createNewCharacter(parseStringToElement(elementStr), name, stof(maxLifeStr), stoi(shieldStr));
+		characterMap->insert(name, character);
+	}
+
+	file.close();
+}
+
+
 void loadMapData(GameWorld* world)
 {
     fstream file;
-    openFile(MAPSTATS_FILE, file);
+    file.open(MAPSTATS_FILE, ios::in);
 
 	GameCell *cell;
 	string color;
@@ -74,25 +92,6 @@ void loadMapData(GameWorld* world)
 }
 
 
-void loadCharacterData(BST<string, Character*>* characterMap)
-{ 
-	fstream file;
-	openFile(CHARACTERS_FILE, file);
-
-	string elementStr, name, shieldStr, maxLifeStr;
-	Character* character = 0;
-	while (getline(file, elementStr, ',')) {
-		getline(file, name, ',');
-		getline(file, shieldStr, ',');
-		getline(file, maxLifeStr);
-		character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
-		characterMap->insert(name, character);
-	}
-
-	file.close();
-}
-
-
 void loadGameData(fstream& file, GameWorld* world, BST<string, Character*>* characterMap)
 {
     string playerStr, elementStr, name, shieldStr, lifeStr, maxLifeStr, energyStr, rowStr, colStr;
@@ -119,7 +118,7 @@ void loadGameData(fstream& file, GameWorld* world, BST<string, Character*>* char
 
 		if (!characterMap->search(name))  // si no esta en el arbol, lo crea y agrega
 		{
-        	character = createNewCharacterFromStrings(elementStr, name, maxLifeStr, shieldStr);
+        	character = createNewCharacter(parseStringToElement(elementStr), name, stof(maxLifeStr), stoi(shieldStr));
 			characterMap->insert(name, character);
 		}
 		else
@@ -173,41 +172,18 @@ void saveGameData(GameWorld* world)
 	}
 }
 
-/*
+
 void saveChangesToCharFile(BST<string, Character*>* characterMap)
 {
     ofstream file(CHARACTERS_FILE);
 	vector<string> names = characterMap->keysInOrder();
-    lista_personajes -> reiniciar();
-    while (lista_personajes -> hay_siguiente()) {
-    	Character* character = lista_personajes -> siguiente();
-        file << character -> getElement() << ","
-        		<< character -> getName()    << ","
-				<< character -> getShield()  << ","
-				<< character -> getMaxLife() << "\n";
-    }
-}*/
-
-Character* createNewCharacterFromStrings(std::string elementStr, std::string name, std::string maxLifeStr, std::string shieldStr)
-{
-    Character* character = 0;
-    elements element = parseStringToElement(elementStr);
-    switch (element)
-    {
-        case AIR:
-            character = new AirCharacter(name, stof(maxLifeStr), stoi(shieldStr));
-            break;
-        case EARTH:
-            character = new EarthCharacter(name, stof(maxLifeStr), stoi(shieldStr));
-            break;
-        case FIRE:
-            character = new FireCharacter(name, stof(maxLifeStr), stoi(shieldStr));
-            break;
-        case WATER:
-            character = new WaterCharacter(name, stof(maxLifeStr), stoi(shieldStr));
-            break;
-        default:
-            break;                                                                
-    }
-    return character;
+	Character* character = 0;
+	for (int i = 0; i < names.size(); i ++)
+	{
+		character = characterMap->getData(names[i]);
+        file << parseElementToString(character->getElement()) << ","
+        	 << character->getName() << ","
+			 << character->getShield() << ","
+			 << character->getMaxLife() << "\n";
+	}
 }

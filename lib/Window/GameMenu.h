@@ -10,36 +10,64 @@ class GameMenu : public Cell
 private:
     GenericList<Menu*>* menuList;
     Menu* currentMenu;
+
     menus currentMenuIndex;
     sf::Font font;
+    sf::Text request;
+
+    /*
+     * Fills all four menus with their options, retrieved from files
+     */
+    void fillMenuList();
+
+    /*
+     * Calls option processor of current menu
+     */
+    void processOptionChoice(int option, BST<string, Character*>* characterMap);
+    
+    /*
+     * Processes chosen option in main menu
+     */
+    void processMainMenuOption(int option, BST<string, Character*>* characterMap);
+    
+    /*
+     * Processes chosen option in character selection menu
+     */
+    void processCharMenuOption(int option, BST<string, Character*>* characterMap);
+    
+    /*
+     * Processes chosen option in game menu 1
+     */
+    void processGameMenu1Option(int option);
+    
+    /*
+     * Processes chosen option in game menu 2
+     */
+    void processGameMenu2Option(int option);
 
 public:
     GameWindow* window;
     Textbox *textbox;
-    sf::Text request;
 
     GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window);
 
-    void fillMenuList();
-    void changeCurrentMenu(menus menu);
-    void setRequest(std::string req);
-
-    Menu* getCurrentMenu();
-    menus getCurrentMenuIndex();
-
-    /**
-        Nucleus of menu logic, it renders menu options.
-    */
+    /*
+     * Nucleus of menu logic, it renders menu options.
+     */
     void render(BST<string, Character*>* characterMap);
 
-    void processOptionChoice(int option, BST<string, Character*>* characterMap);
+    menus getCurrentMenuIndex();
 
-    void processMainMenuOption(int option, BST<string, Character*>* characterMap);
-    void processCharMenuOption(int option, BST<string, Character*>* characterMap);
-    void processGameMenu1Option(int option);
-    void processGameMenu2Option(int option);
-    
+    /*
+     * Sets currentMenu and currentMenuIndex to the specified menu
+     */
+    void changeCurrentMenu(menus menu);
 
+    void setRequest(std::string req);
+
+    /*
+     * Draws menu elements on window
+     */
     void drawCurrentMenu();
 
     ~GameMenu();

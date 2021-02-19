@@ -12,7 +12,7 @@ bool validPosition(std::string input)
     return (stof(s1) >= 0 && stof(s1) <= 7 && stof(s2) >= 0 && stof(s2) <= 7);
 }
 
-bool validDestinationEnergy(GameWorld *world, Character *character, sf::Vector2f destination)
+bool validDestinationEnergy(GameWorld* world, Character* character, sf::Vector2f destination)
 {
     int energyRequired = world->distances
                             [static_cast<int>(character->getElement()) - 1]
@@ -38,6 +38,16 @@ bool validMoveDestination(GameMenu* menu, Character* character, sf::Vector2f des
     {
         menu->setRequest("You can't move there, you lack energy. Try a different one");
         return false;
+    }
+    return true;
+}
+
+bool stringIsNumeric(std::string s)
+{
+    for (int i = 0; i < s.length(); i ++)
+    {
+        if ((int)s[i] < 48 || (int)s[i] > 57)
+            return false;
     }
     return true;
 }

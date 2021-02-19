@@ -33,7 +33,7 @@ int main()
 		window->display();
 	}
 
-	//saveChangesToCharFile(characterMap);
+	saveChangesToCharFile(characterMap);
 
 	delete window;
 	delete characterMap;

@@ -15,9 +15,13 @@ public:
 	terrains getTerrain();
 	bool isOccupied();
 
-	virtual void adjustCost(int &cost, elements element) = 0;
 	void setOccupied(bool occupied);
 	void setTerrain(terrains t);
+
+	/*
+	 * It modifies a cost value based on the GameCell's terrain and the element passed by parameter
+	 */
+	virtual void adjustCost(int &cost, elements element) = 0;
 
 	virtual ~GameCell();
 };

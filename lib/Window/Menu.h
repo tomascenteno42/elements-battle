@@ -19,17 +19,10 @@ public:
     string getOption(int i);
     int getLength();
 
-    /**
+    /*
      * Adds an option to Menu.
-     * @param option Option string to be added to the menu options.
-    */
+     */
     void addOption(string option);
-
-    /**
-     * Prints all menu options.
-    */
-
-    //void showAllOptions(GameWindow *window);
 
     ~Menu();
 };

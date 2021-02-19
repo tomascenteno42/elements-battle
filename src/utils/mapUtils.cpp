@@ -1,15 +1,6 @@
 #include "../main.h"
 
-bool intersects(GameCell *cell1, GameCell *cell2)
-{
-    float cell1x = (cell1->getPos()).x;
-    float cell1y = (cell1->getPos()).y;
-    float cell2x = (cell2->getPos()).x;
-    float cell2y = (cell2->getPos()).y;
-    return ((abs(cell1x - cell2x) + abs(cell1y - cell2y)) <= 50);
-}
-
-void setInitialMatrixes(Graph<GameCell*> *tilesGraph, int distances[64][64], sf::Vector2f paths[64][64], elements element)
+void setInitialMatrixes(Graph<GameCell*>* tilesGraph, int distances[64][64], sf::Vector2f paths[64][64], elements element)
 {
     GraphData<GameCell*>* vertex = 0;
     GameCell* cell = 0;
@@ -41,7 +32,7 @@ void setInitialMatrixes(Graph<GameCell*> *tilesGraph, int distances[64][64], sf:
 }
 
 
-void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element)
+void shortestPathsFW(GameWorld* world, int distances[64][64], sf::Vector2f paths[64][64], elements element)
 {
     setInitialMatrixes(world->tiles, distances, paths, element);
     GameCell *node;
@@ -63,7 +54,7 @@ void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths
     }
 }
 
-void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths[4][64][64])
+void loadFWMatrixes(GameWorld* world, int distances[4][64][64], sf::Vector2f paths[4][64][64])
 {
     for (int i = 0; i < 4; i++)
     {
@@ -82,7 +73,7 @@ void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f pat
     }
 }
 
-void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64])
+void loadMovementsStack(Stack<sf::Vector2f>* movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64])
 {
     if (movStack->isEmpty() || movStack->peek() != endingPos)
         movStack->push(endingPos);
@@ -102,15 +93,15 @@ void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos,
     loadMovementsStack(movStack, startingPos, intPos, paths);
 }
 
-void drawStats(GameWindow *win)
+void drawStats(GameWindow* win)
 {
     win->draw(win->stats->getCell());
-
-    for (int i = 0; i < 20; i ++)  // por algun motivo no se dibuja
+/*
+    for (int i = 0; i < 20; i ++)
     {
         win->draw(win->stats->characterList[i]);
     }
-
+*/
     for (int p = 0; p < 2; p ++)
     {
         win->draw(win->stats->playerText[p]);
