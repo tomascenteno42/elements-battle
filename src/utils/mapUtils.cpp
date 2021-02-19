@@ -137,6 +137,21 @@ void drawScreen(GameWindow *win)
 
     // Game stats & info
     win->draw(win->stats->getCell());
+    
+    if(win->stats->showCharacterList){
+        for (size_t i = 0; i < CHARACTERS_LIMIT; i++)
+            win->draw(win->stats->characterList[i]);
+    }
+
+    if(win->stats->showCharacterDetails){
+        for (size_t i = 0; i < 5; i++)
+            win->draw(win->stats->characterDetails[i]);
+    }
+
+    if(win->stats->showChosenChar){
+        for (size_t i = 0; i < 8; i++)
+            win->draw(win->stats->chosenCharacters[i]);
+    }
 
     if (win->menu->getCurrentMenuIndex() == gameMenu1 || win->menu->getCurrentMenuIndex() == gameMenu2)
     {

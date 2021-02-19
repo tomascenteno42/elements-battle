@@ -10,6 +10,7 @@ class BST
 {
 private:
 	BSTNode<K,T>* root;
+	int quantity;
 
 	BSTNode<K,T>* insert(K key, T data, BSTNode<K,T>* node);
 	BSTNode<K,T>* search(K key, BSTNode<K,T>* node);
@@ -33,6 +34,7 @@ public:
 	bool search(K key);
 	void erase(K key);
 
+	int getQuantity();
 	K findMin();
 	K findMax();
 	K successor(K key);
@@ -54,6 +56,7 @@ template <class K, class T>
 BST<K,T>::BST()
 {
 	root = 0;
+	quantity = 0;
 }
 
 
@@ -74,8 +77,10 @@ BSTNode<K,T>* BST<K,T>::insert(K key, T data, BSTNode<K,T>* node)
 template <class K, class T>
 void BST<K,T>::insert(K key, T data)
 {
-	if (!search(key))
+	if (!search(key)){
 		root = insert(key, data, root);
+		quantity++;
+	}
 }
 
 
@@ -101,12 +106,16 @@ bool BST<K,T>::search(K key)
 template <class K, class T>
 BSTNode<K,T>* BST<K,T>::erase(K key, BSTNode<K,T>* node)
 {
-	if (!node)
-	{}
-	else if (key < node->getKey())
+	if (!node) {}
+
+	else if (key < node->getKey()){
 		node->setLeft(erase(key, node->getLeft()));
-	else if (key > node->getKey())
+		quantity--;
+	}
+	else if (key > node->getKey()){
 		node->setRight(erase(key, node->getRight()));
+		quantity--;
+	}
 	else
 	{
 		if (node->isLeaf())
@@ -140,6 +149,7 @@ BSTNode<K,T>* BST<K,T>::erase(K key, BSTNode<K,T>* node)
 			node->setData(newData);
 			node->setKey(replacement);
 		}
+		quantity--;
 	}
 	return node;
 }
@@ -154,6 +164,10 @@ void BST<K,T>::erase(K key)
 		cout << "The tree does not contain specified data" << endl;
 }
 
+template <class K, class T>
+int BST<K,T>::getQuantity(){
+	return quantity;
+}
 
 template <class K, class T>
 K BST<K,T>::findMin(BSTNode<K,T>* node)

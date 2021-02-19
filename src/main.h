@@ -17,6 +17,7 @@
 const int VALOR_ALIMENTO_FUEGO = 5;
 const int VALOR_ALIMENTO_TIERRA = 8;
 const int VALOR_ALIMENTO_AGUA = 10;
+const int CHARACTERS_LIMIT = 20;
 
 enum menus
 {

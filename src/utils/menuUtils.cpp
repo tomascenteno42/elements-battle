@@ -28,6 +28,7 @@ void processAddCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
     maxLifeStr = getCharLifeFromUser(menu);
     character = createNewCharacter(parseStringToElement(elementStr), name, stof(maxLifeStr), stoi(shieldStr));
     characterMap->insert(name, character);
+    menu->window->stats->setCharacterList(characterMap->keysInOrder());
 }
 
 void processDeleteCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
@@ -35,8 +36,10 @@ void processDeleteCharacter(GameMenu* menu, BST<string, Character*>* characterMa
     std::string name;
     menu->setRequest("Delete character named: ");
     name = getUserInput(menu->window);
-    if (characterMap->search(name))
+    if (characterMap->search(name)){
         characterMap->erase(name);
+        menu->window->stats->setCharacterList(characterMap->keysInOrder());
+    }
     else
         menu->setRequest("That character does not exist. Choose an option");
 }
@@ -46,11 +49,12 @@ void processSearchCharacter(GameMenu* menu, BST<string, Character*>* characterMa
     std::string name;
     menu->setRequest("Search character by name: ");
     name = getUserInput(menu->window);
-    Character* character = 0;
+    Character *character = 0;
     if (characterMap->search(name))
     {
         character = characterMap->getData(name);
-        // show character stats in gamestats
+        menu->window->stats->setCharacterDetails(character);
+        menu->window->stats->showCharacterDetails = true;
     }
     else
         menu->setRequest("That character does not exist. Choose an option");
@@ -60,10 +64,13 @@ void processShowCharacters(GameMenu* menu, BST<string, Character*>* characterMap
 {
     std::vector<std::string> names = characterMap->keysInOrder();
     menu->window->stats->setCharacterList(names);
+    menu->window->stats->showCharacterList = true;
 }
 
 void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characterMap)
 {
+    menu->window->stats->showChosenChar = true;
+
     std::string name;
     menu->setRequest("Select character by name: ");
     name = getCharNameFromUser(menu);
@@ -73,6 +80,7 @@ void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characte
     {
         character = characterMap->getData(name);
         menu->window->world->players[player]->addCharacter(character);
+        menu->window->stats->setChosenCharacters(character->getName(), menu->window->world->charactersSelected);
         menu->window->world->charactersSelected ++;
         menu->setRequest("Choose an option");
     }
@@ -117,6 +125,7 @@ void processCharacterPositioning(GameMenu* menu)
         player = (player + 1) % 2;
     }
 
+    menu->window->stats->showCharacterList = false;
     player = rand() % 2;
     menu->window->world->currentPlayer = player;
     menu->window->world->currentCharacter = menu->window->world->players[player]->characters[0];
