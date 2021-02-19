@@ -10,7 +10,7 @@ make all
 ```
 ## Running the executable.
 ```
-./boat
+./bote
 ```
 
 ## Things to consider.
