@@ -65,22 +65,22 @@ void GameMenu::processMainMenuOption(int option, BST<string, Character*>* charac
 {
     switch (option)
     {
-        case 1:     // Agregar pj
+        case 1:
             processAddCharacter(this, characterMap);
             break;
-        case 2:     // Eliminar pj
+        case 2:
             processDeleteCharacter(this, characterMap);
             break;
-        case 3:     // Mostrar pjs
+        case 3:
             processShowCharacters(this, characterMap);
             break;
-        case 4:     // Buscar pj
+        case 4:
             processSearchCharacter(this, characterMap);
             break;
-        case 5:     // Empezar juego
+        case 5:
             processLoadGame(this, characterMap);
             break;
-        case 6:     // Cerrar
+        case 6:
             window->close();
             break;
         default:
@@ -94,31 +94,29 @@ void GameMenu::processCharMenuOption(int option, BST<string, Character*>* charac
 {
     switch (option)
     {
-        case 1:     // Buscar pj
+        case 1:
             processSearchCharacter(this, characterMap);
-            setRequest("Choose an option");
             break;
-        case 2:     // Mostrar pjs
+        case 2:
             processShowCharacters(this, characterMap);
-            setRequest("Choose an option");
             break;
-        case 3:     // Seleccionar pj // Posicionar pj
-            if (window->world->charactersSelected < 6)
-                processCharacterSelection(this, characterMap);
-            else
+        case 3:
+            processCharacterSelection(this, characterMap);
+            if (window->world->charactersSelected == 6)
             {
-                processCharacterPositioning(this);
                 changeCurrentMenu(gameMenu1);
                 setRequest("Choose an option");
             }
             break;
-        case 4:     // Salir
+        case 4:
             changeCurrentMenu(mainMenu);
-            setRequest("Choose an option");
             break;
         default:
             break;
     }
+
+    if (option != 3)
+        setRequest("Choose an option");
 }
 
 
@@ -126,22 +124,21 @@ void GameMenu::processGameMenu1Option(int option)
 {
     switch (option)
     {
-        case 1:     // Guardar
+        case 1:
             processSaveGame(this);
             break;
-        case 2:     // Alimentar
+        case 2:
             processFeedOption(this);
             break;
-        case 3:      // Mover
+        case 3:
             processMoveOption(this);
             break;
-        case 4:     // Pasar
+        case 4:
             changeCurrentMenu(gameMenu2);
             setRequest("Choose an option");
             break;
         default:
-            break;
-            
+            break;     
     }
 }
 
@@ -150,13 +147,13 @@ void GameMenu::processGameMenu2Option(int option)
 {
     switch (option)
     {
-        case 1:     // Attack
+        case 1:
             processAttackOption(this);
             break;
-        case 2:     // Defend
+        case 2:
             processDefenseOption(this);
             break;
-        case 3:     // Pasar
+        case 3:
             break;
         default:
             break;

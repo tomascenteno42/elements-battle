@@ -78,12 +78,16 @@ void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characte
     }
     else
         menu->setRequest("Either that character is already selected or it does not exist. Choose an option");
+
+    if (menu->window->world->charactersSelected == 6)
+        processCharacterPositioning(menu);
 }
 
 
 void processCharacterPositioning(GameMenu* menu)
 {
-    int player = rand() % 1;
+    srand(time(NULL));
+    int player = rand() % 2;
     int index;
     Character* character = 0;
     sf::Vector2f pos;
@@ -112,6 +116,10 @@ void processCharacterPositioning(GameMenu* menu)
         menu->window->world->tiles->getData(1 + pos.x + 8*pos.y)->data->setOccupied(true);
         player = (player + 1) % 2;
     }
+
+    player = rand() % 2;
+    menu->window->world->currentPlayer = player;
+    menu->window->world->currentCharacter = menu->window->world->players[player]->characters[0];
 }
 
 
