@@ -121,6 +121,7 @@ void processCharacterPositioning(GameMenu* menu)
         menu->window->world->tiles->getData(1 + pos.x + 8*pos.y)->data->setOccupied(true);
         player = (player + 1) % 2;
     }
+    menu->window->stats->showCharacterList = false;
 }
 
 

@@ -126,8 +126,11 @@ void GameMenu::processMainMenuOption(int option, BST<string, Character*>* charac
             window->stats->showCharacterList = false;
             break;
         case 5:     // Empezar juego
-            window->stats->showCharacterList = false;
-            processLoadGame(this, characterMap);
+            if (characterMap->getQuantity() >= 6){
+                window->stats->showCharacterList = false;
+                processLoadGame(this, characterMap);
+            } else setRequest("Not enough characters to begin the game, pleas add " + to_string(6 - characterMap->getQuantity()) + " more characters.");
+            
             break;
         case 6:     // Cerrar
             window->close();
@@ -135,7 +138,7 @@ void GameMenu::processMainMenuOption(int option, BST<string, Character*>* charac
         default:
             break;
     }
-    setRequest("Choose an option");
+    if(option != 5) setRequest("Choose an option");
 }
 
 
@@ -144,10 +147,10 @@ void GameMenu::processCharMenuOption(int option, BST<string, Character*>* charac
     switch (option)
     {
         case 1:     // Buscar pj
-            window->stats->showCharacterList = false;
             window->stats->showChosenChar = false;
             processSearchCharacter(this, characterMap);
             setRequest("Choose an option");
+            window->stats->showCharacterList = false;
             break;
         case 2:     // Mostrar pjs
             window->stats->showCharacterDetails = false;
