@@ -121,3 +121,11 @@ void WaterCharacter::defend(GameWindow* window)
 void WaterCharacter::update()
 {
 }
+
+void WaterCharacter::reset()
+{
+	setPos(sf::Vector2f(-1, -1));
+	energy = rand() % 20;
+	timesFed = 0;
+	life = maxLife;
+}

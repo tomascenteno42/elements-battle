@@ -35,6 +35,8 @@ public:
      * and turns isDefending boolean to false
      */
     void update();
+
+    void reset();
 };
 
 #endif

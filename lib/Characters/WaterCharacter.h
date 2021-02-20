@@ -36,6 +36,8 @@ public:
      * -
      */
     void update();
+
+    void reset();
 };
 
 #endif

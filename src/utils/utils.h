@@ -69,7 +69,7 @@ std::string getCharElementFromUser(GameMenu* menu);
  * Asks for user input until they enter a valid character name
  * Returns a string representing said name
  */
-std::string getCharNameFromUser(GameMenu* menu);
+std::string getCharNameFromUser(GameMenu* menu, BST<string, Character*>* characterMap);
 
 /*
  * Asks for user input until they enter a valid character life

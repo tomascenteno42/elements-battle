@@ -2,7 +2,6 @@
 
 Character::Character(string n, float l, int s)
 {
-	srand(time(NULL));
 	energy = rand() % 20;
 
 	name = n;

@@ -95,3 +95,10 @@ void AirCharacter::update()
 {
 	energy = min(20, 5 + energy);
 }
+
+void AirCharacter::reset()
+{
+	setPos(sf::Vector2f(-1, -1));
+	energy = rand() % 20;
+	life = maxLife;
+}

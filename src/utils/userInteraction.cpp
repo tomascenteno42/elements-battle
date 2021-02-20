@@ -55,7 +55,7 @@ std::string getCharElementFromUser(GameMenu* menu)
 }
 
 
-std::string getCharNameFromUser(GameMenu* menu)
+std::string getCharNameFromUser(GameMenu* menu, BST<string, Character*>* characterMap)
 {
     menu->setRequest("Enter name of character to add");
     std::string name;
@@ -63,10 +63,10 @@ std::string getCharNameFromUser(GameMenu* menu)
     while (!validName)
     {
         name = getUserInput(menu->window);
-        if (name != "")
-            validName = true;
+        if (name == "" || characterMap->search(name))
+            menu->setRequest("Either this name is already taken or it is not valid. Enter a different one");
         else
-            menu->setRequest("Character must have a name");
+            validName = true;
     }
     return name;
 }

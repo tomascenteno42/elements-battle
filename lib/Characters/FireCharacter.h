@@ -33,6 +33,8 @@ public:
      * If the character's energy reaches 0, it takes 5 points of damage
      */
     void update();
+
+    void reset();
 };
 
 #endif

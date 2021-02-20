@@ -34,6 +34,8 @@ public:
      * Recovers 5 energy
      */
     void update();
+
+    void reset();
 };
 
 #endif

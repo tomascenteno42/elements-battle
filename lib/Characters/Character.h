@@ -63,6 +63,11 @@ public:
      */
     virtual void adjustDamageTaken(float &damage, elements attackerElement) = 0;
 
+    /*
+     * Resets character's state so it is clean once a new game starts
+     */
+    virtual void reset() = 0;
+
     virtual ~Character();
 
 protected:

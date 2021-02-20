@@ -23,12 +23,15 @@ void processAddCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
 	string elementStr, name, shieldStr, maxLifeStr;
     Character* character = 0;
     elementStr = getCharElementFromUser(menu);
-    name = getCharNameFromUser(menu);
+    bool nameTaken = true;
+    name = getCharNameFromUser(menu, characterMap);
     shieldStr = getCharShieldFromUser(menu);
     maxLifeStr = getCharLifeFromUser(menu);
     character = createNewCharacter(parseStringToElement(elementStr), name, stof(maxLifeStr), stoi(shieldStr));
     characterMap->insert(name, character);
+
     menu->window->stats->setCharacterList(characterMap->keysInOrder());
+    menu->setRequest("Choose an option");
 }
 
 void processDeleteCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
@@ -39,6 +42,7 @@ void processDeleteCharacter(GameMenu* menu, BST<string, Character*>* characterMa
     if (characterMap->search(name)){
         characterMap->erase(name);
         menu->window->stats->setCharacterList(characterMap->keysInOrder());
+        menu->setRequest("Choose an option");
     }
     else
         menu->setRequest("That character does not exist. Choose an option");
@@ -54,7 +58,10 @@ void processSearchCharacter(GameMenu* menu, BST<string, Character*>* characterMa
     {
         character = characterMap->getData(name);
         menu->window->stats->setCharacterDetails(character);
+        menu->window->stats->showCharacterList = false;
         menu->window->stats->showCharacterDetails = true;
+        menu->window->stats->showChosenChar = false;
+        menu->setRequest("Choose an option");
     }
     else
         menu->setRequest("That character does not exist. Choose an option");
@@ -65,15 +72,18 @@ void processShowCharacters(GameMenu* menu, BST<string, Character*>* characterMap
     std::vector<std::string> names = characterMap->keysInOrder();
     menu->window->stats->setCharacterList(names);
     menu->window->stats->showCharacterList = true;
+    menu->window->stats->showCharacterDetails = false;
 }
 
 void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characterMap)
 {
+    menu->window->stats->showCharacterList = true;
+    menu->window->stats->showCharacterDetails = false;
     menu->window->stats->showChosenChar = true;
 
     std::string name;
     menu->setRequest("Select character by name: ");
-    name = getCharNameFromUser(menu);
+    name = getUserInput(menu->window);
     Character* character = 0;
     int player = menu->window->world->charactersSelected % 2;
     if (characterMap->search(name) && !menu->window->world->characterIsInGame(name))
@@ -88,13 +98,17 @@ void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characte
         menu->setRequest("Either that character is already selected or it does not exist. Choose an option");
 
     if (menu->window->world->charactersSelected == 6)
+    {
+        menu->window->stats->showCharacterList = false;
+        menu->window->stats->showChosenChar = false;
+        menu->window->stats->showCharacterDetails = false;
         processCharacterPositioning(menu);
+    }
 }
 
 
 void processCharacterPositioning(GameMenu* menu)
 {
-    srand(time(NULL));
     int player = rand() % 2;
     int index;
     Character* character = 0;
@@ -125,7 +139,6 @@ void processCharacterPositioning(GameMenu* menu)
         player = (player + 1) % 2;
     }
 
-    menu->window->stats->showCharacterList = false;
     player = rand() % 2;
     menu->window->world->currentPlayer = player;
     menu->window->world->currentCharacter = menu->window->world->players[player]->characters[0];
@@ -141,13 +154,15 @@ void processLoadGame(GameMenu* menu, BST<string, Character*>* characterMap)
     {
         loadGameData(file, menu->window->world, characterMap);
         file.close();
+        menu->window->stats->showCharacterList = false;
+        menu->window->stats->showChosenChar = false;
+        menu->window->stats->showCharacterDetails = false;
         menu->changeCurrentMenu(gameMenu1);
     }
     else
-    {
-        menu->window->setWorld(new GameWorld());
         menu->changeCurrentMenu(charSelectionMenu);
-    }
+
+    menu->setRequest("Choose an option");
 }
 
 
@@ -229,7 +244,11 @@ void endGame(GameMenu* menu)
 
     menu->setRequest("Enter any text to return to main menu");
     getUserInput(menu->window);
+    menu->window->setWorld(new GameWorld());
+    menu->window->stats->setInfoText("");
+    menu->window->stats->clearChosenChars();
     menu->changeCurrentMenu(mainMenu);
+    menu->setRequest("Choose an option");
 }
 
 

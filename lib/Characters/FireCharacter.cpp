@@ -103,3 +103,10 @@ void FireCharacter::update()
 	if (energy == 0)
 		life = max((float)0, life - 5);
 }
+
+void FireCharacter::reset()
+{
+	setPos(sf::Vector2f(-1, -1));
+	energy = rand() % 20;
+	life = maxLife;
+}

@@ -8,7 +8,8 @@ class GameStats : public Cell
 public:
     GameStats(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWorld* world);
 
-    void clearCharactersList(sf::Text list[CHARACTERS_LIMIT]);
+    void clearCharactersList();
+    void clearChosenChars();
 
     void updateStats(GameWorld* world);
     void updateCharacterStats(Character* character, int player, int characterIndex);
@@ -16,7 +17,7 @@ public:
 
     void setCharacterList(std::vector<std::string> names);
     void setCharacterDetails(Character* character);
-    void setChosenCharacters(string character, int index);
+    void setChosenCharacters(string character, int charactersSelected);
 
     void setInfoText(std::string info);
     void setCurrentCharacterMark(int player, int character);

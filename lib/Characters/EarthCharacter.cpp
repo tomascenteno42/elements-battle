@@ -103,3 +103,15 @@ void EarthCharacter::update()
 		isDefending = false;
 	}
 }
+
+void EarthCharacter::reset()
+{
+	setPos(sf::Vector2f(-1, -1));
+	energy = rand() % 20;
+	if (isDefending)
+	{
+		shield -= 2;
+		isDefending = false;
+	}
+	life = maxLife;
+}
