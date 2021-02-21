@@ -30,7 +30,6 @@ void processAddCharacter(GameMenu* menu, BST<string, Character*>* characterMap)
     character = createNewCharacter(parseStringToElement(elementStr), name, stof(maxLifeStr), stoi(shieldStr));
     characterMap->insert(name, character);
 
-    menu->window->stats->setCharacterList(characterMap->keysInOrder());
     menu->setRequest("Choose an option");
 }
 
@@ -41,7 +40,6 @@ void processDeleteCharacter(GameMenu* menu, BST<string, Character*>* characterMa
     name = getUserInput(menu->window);
     if (characterMap->search(name)){
         characterMap->erase(name);
-        menu->window->stats->setCharacterList(characterMap->keysInOrder());
         menu->setRequest("Choose an option");
     }
     else
@@ -70,9 +68,26 @@ void processSearchCharacter(GameMenu* menu, BST<string, Character*>* characterMa
 void processShowCharacters(GameMenu* menu, BST<string, Character*>* characterMap)
 {
     std::vector<std::string> names = characterMap->keysInOrder();
-    menu->window->stats->setCharacterList(names);
+    std::vector<std::string> namesAux;
     menu->window->stats->showCharacterList = true;
     menu->window->stats->showCharacterDetails = false;
+    for (int i = 0; i < names.size(); i ++)
+    {
+        namesAux.push_back(names[i]);
+        if (i == names.size() - 1)
+        {
+            menu->window->stats->setCharacterList(namesAux);
+            namesAux.clear();
+        }
+        else if ((i+1) % 12 == 0)
+        {
+            menu->window->stats->setCharacterList(namesAux);
+            namesAux.clear();
+            menu->setRequest("Too many characters to show at once! Press enter to show the next page");
+            getUserInput(menu->window);
+        }
+    }
+    menu->setRequest("Choose an option");
 }
 
 void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characterMap)
@@ -110,17 +125,13 @@ void processCharacterSelection(GameMenu* menu, BST<string, Character*>* characte
 void processCharacterPositioning(GameMenu* menu)
 {
     int player = rand() % 2;
-    int index;
+    int index = 0;
     Character* character = 0;
     sf::Vector2f pos;
     for (int i = 0; i < 6; i ++)
     {
-        if (i == 0 || i == 1)
-            index = 0;
-        else if (i == 2 || i == 3)
-            index = 1;
-        else
-            index = 2;
+        if (i == 2 || i == 4)
+            index ++;
 
         character = menu->window->world->players[player]->characters[index];
 
@@ -149,6 +160,7 @@ void processLoadGame(GameMenu* menu, BST<string, Character*>* characterMap)
 {
     fstream file;
     file.open(SAVE_FILE, ios::in);
+    menu->window->setWorld(new GameWorld());
 
     if (file.is_open())
     {

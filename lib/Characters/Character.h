@@ -22,6 +22,7 @@ public:
     Character(string n, float l, int s);
 
     bool isDefending = false;
+    int timesFed = 0;
 
     string getName();
     float getLife();

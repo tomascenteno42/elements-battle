@@ -63,13 +63,11 @@ void loadFWMatrixes(GameWorld* world, int distances[4][64][64], sf::Vector2f pat
         sf::Vector2f paths_aux[64][64];
         shortestPathsFW(world, distances_aux, paths_aux, element);
         for (int j = 0; j < 64; j++)
-        {
             for (int k = 0; k < 64; k++)
             {
                 distances[i][j][k] = distances_aux[j][k];
                 paths[i][j][k] = paths_aux[j][k];
             }
-        }
     }
 }
 
@@ -96,22 +94,13 @@ void loadMovementsStack(Stack<sf::Vector2f>* movStack, sf::Vector2f startingPos,
 void drawStats(GameWindow* win)
 {
     win->draw(win->stats->getCell());
-/*
-    for (int i = 0; i < 20; i ++)
-    {
-        win->draw(win->stats->characterList[i]);
-    }
-*/
+
     for (int p = 0; p < 2; p ++)
     {
         win->draw(win->stats->playerText[p]);
         for (int i = 0; i < 3; i ++)
-        {
             for (int j = 0; j < 4; j ++)
-            {
                 win->draw(win->stats->playerStats[p][i][j]);
-            }
-        }
     }
 
     win->draw(win->stats->infoText);
@@ -123,35 +112,28 @@ void drawScreen(GameWindow *win)
 {
     // Game board
     for (size_t i = 0; i < win->world->tiles->getVertices(); i++)
-    {
         win->draw(win->world->tiles->getData(i+1)->data->getCell());
-    }
 
     // Characters
     for (int p = 0; p < 2; p ++)
-    {
         for (int i = 0; i < win->world->players[p]->characters.size(); i++)
             if (!win->world->players[p]->characters[i]->isDead())
                 win->draw(win->world->players[p]->characters[i]->getCell());
-    }
 
     // Game stats & info
     win->draw(win->stats->getCell());
     
-    if(win->stats->showCharacterList){
-        for (size_t i = 0; i < CHARACTERS_LIMIT; i++)
+    if (win->stats->showCharacterList)
+        for (size_t i = 0; i < 13; i++)
             win->draw(win->stats->characterList[i]);
-    }
 
-    if(win->stats->showCharacterDetails){
+    if (win->stats->showCharacterDetails)
         for (size_t i = 0; i < 5; i++)
             win->draw(win->stats->characterDetails[i]);
-    }
 
-    if(win->stats->showChosenChar){
+    if (win->stats->showChosenChar)
         for (size_t i = 0; i < 8; i++)
             win->draw(win->stats->chosenCharacters[i]);
-    }
 
     if (win->menu->getCurrentMenuIndex() == gameMenu1 || win->menu->getCurrentMenuIndex() == gameMenu2)
     {

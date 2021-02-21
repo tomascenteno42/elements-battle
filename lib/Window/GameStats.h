@@ -25,7 +25,7 @@ public:
     sf::Font font;
 
     bool showCharacterList;
-    sf::Text characterList [20]; 
+    sf::Text characterList [13]; 
 
     bool showCharacterDetails;
     sf::Text characterDetails [5];

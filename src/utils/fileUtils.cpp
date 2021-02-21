@@ -94,7 +94,7 @@ void loadMapData(GameWorld* world)
 
 void loadGameData(fstream& file, GameWorld* world, BST<string, Character*>* characterMap)
 {
-    string playerStr, elementStr, name, shieldStr, lifeStr, maxLifeStr, energyStr, rowStr, colStr;
+    string playerStr, elementStr, name, shieldStr, lifeStr, maxLifeStr, energyStr, isDefendingStr, timesFedStr, rowStr, colStr;
 
 	getline(file, playerStr);
 
@@ -113,6 +113,8 @@ void loadGameData(fstream& file, GameWorld* world, BST<string, Character*>* char
 		getline(file, lifeStr, ',');
         getline(file, maxLifeStr, ',');
         getline(file, energyStr, ',');
+		getline(file, isDefendingStr, ',');
+		getline(file, timesFedStr, ',');
         getline(file, rowStr, ',');
         getline(file, colStr);
 
@@ -122,14 +124,19 @@ void loadGameData(fstream& file, GameWorld* world, BST<string, Character*>* char
 			characterMap->insert(name, character);
 		}
 		else
+		{
 			character = characterMap->getData(name);
+			character->setShield(stoi(shieldStr));
+		}
 
         character->setLife(stof(lifeStr));
         character->setEnergy(stoi(energyStr));
         character->setPos(sf::Vector2f(stof(colStr), stof(rowStr)));
-        world->addCharacter(character, player);
+		character->isDefending = stoi(isDefendingStr);
+		character->timesFed = stoi(timesFedStr);
+		world->addCharacter(character, player);
 
-        counter ++;
+		counter ++;
 	}
 
 
@@ -166,6 +173,8 @@ void saveGameData(GameWorld* world)
 			file << character->getLife() << ",";
 			file << character->getMaxLife() << ",";
 			file << character->getEnergy() << ",";
+			file << character->isDefending << ",";
+			file << character->timesFed << ",";			
 			file << character->getPos().y << ",";
 			file << character->getPos().x << "\n";
 		}

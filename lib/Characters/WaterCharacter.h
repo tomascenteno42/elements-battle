@@ -6,11 +6,10 @@
 class WaterCharacter : public Character
 {
 private:
-    int timesFed = 0;
     bool canBeFed();
     void adjustDamageTaken(float &damage, elements attackerElement);
 
-public:
+public:    
     WaterCharacter(string name, float life, int shield);
 
     elements getElement();
