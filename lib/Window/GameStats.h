@@ -17,7 +17,7 @@ public:
 
     void setCharacterList(std::vector<std::string> names);
     void setCharacterDetails(Character* character);
-    void setChosenCharacters(string character, int charactersSelected);
+    void setChosenCharacters(string characterName, int charactersSelected);
 
     void setInfoText(std::string info);
     void setCurrentCharacterMark(int player, int character);
