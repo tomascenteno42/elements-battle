@@ -21,9 +21,9 @@ Be free to edit Makefile conditions for multiplatform compilation. Modify this `
 ```Makefile
 ifeq ($(OS),Windows_NT)
 $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/*.cpp  src/utils/*.cpp  src/*.cpp  *.dll
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/Characters/*.cpp  lib/GameCells/*.cpp  lib/Window/*.cpp  src/utils/*.cpp  src/*.cpp  *.dll
 else
 $(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/*.cpp  src/utils/*.cpp  src/*.cpp  -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)  lib/Characters/*.cpp  lib/GameCells/*.cpp  lib/Window/*.cpp  src/utils/*.cpp  src/*.cpp  -L/usr/include/SFML/ -lsfml-graphics -lsfml-window -lsfml-system
 endif
 ```
