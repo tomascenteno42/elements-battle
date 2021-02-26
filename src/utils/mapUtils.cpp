@@ -35,7 +35,7 @@ void setInitialMatrixes(Graph<GameCell*>* tilesGraph, int distances[64][64], sf:
 void shortestPathsFW(GameWorld* world, int distances[64][64], sf::Vector2f paths[64][64], elements element)
 {
     setInitialMatrixes(world->tiles, distances, paths, element);
-    GameCell *node;
+    GameCell* node;
     for (int k = 0; k < 64; k++)
     {
         node = world->tiles->getData(k+1)->data;
@@ -91,58 +91,58 @@ void loadMovementsStack(Stack<sf::Vector2f>* movStack, sf::Vector2f startingPos,
     loadMovementsStack(movStack, startingPos, intPos, paths);
 }
 
-void drawStats(GameWindow* win)
+void drawStats(GameWindow* window)
 {
-    win->draw(win->stats->getCell());
+    window->draw(window->stats->getCell());
 
     for (int p = 0; p < 2; p ++)
     {
-        win->draw(win->stats->playerText[p]);
+        window->draw(window->stats->playerText[p]);
         for (int i = 0; i < 3; i ++)
             for (int j = 0; j < 4; j ++)
-                win->draw(win->stats->playerStats[p][i][j]);
+                window->draw(window->stats->playerStats[p][i][j]);
     }
 
-    win->draw(win->stats->infoText);
-    if (!win->world->gameOver())
-        win->draw(win->stats->currentCharacterMark);
+    window->draw(window->stats->infoText);
+    if (!window->world->gameOver())
+        window->draw(window->stats->currentCharacterMark);
 }
 
-void drawScreen(GameWindow *win)
+void drawScreen(GameWindow* window)
 {
     // Game board
-    for (size_t i = 0; i < win->world->tiles->getVertices(); i++)
-        win->draw(win->world->tiles->getData(i+1)->data->getCell());
+    for (size_t i = 0; i < window->world->tiles->getVertices(); i++)
+        window->draw(window->world->tiles->getData(i+1)->data->getCell());
 
     // Characters
     for (int p = 0; p < 2; p ++)
-        for (int i = 0; i < win->world->players[p]->characters.size(); i++)
-            if (!win->world->players[p]->characters[i]->isDead())
-                win->draw(win->world->players[p]->characters[i]->getCell());
+        for (int i = 0; i < window->world->players[p]->characters.size(); i++)
+            if (!window->world->players[p]->characters[i]->isDead())
+                window->draw(window->world->players[p]->characters[i]->getCell());
 
     // Game stats & info
-    win->draw(win->stats->getCell());
+    window->draw(window->stats->getCell());
     
-    if (win->stats->showCharacterList)
+    if (window->stats->showCharacterList)
         for (size_t i = 0; i < 13; i++)
-            win->draw(win->stats->characterList[i]);
+            window->draw(window->stats->characterList[i]);
 
-    if (win->stats->showCharacterDetails)
+    if (window->stats->showCharacterDetails)
         for (size_t i = 0; i < 5; i++)
-            win->draw(win->stats->characterDetails[i]);
+            window->draw(window->stats->characterDetails[i]);
 
-    if (win->stats->showChosenChar)
+    if (window->stats->showChosenChar)
         for (size_t i = 0; i < 8; i++)
-            win->draw(win->stats->chosenCharacters[i]);
+            window->draw(window->stats->chosenCharacters[i]);
 
-    if (win->menu->getCurrentMenuIndex() == gameMenu1 || win->menu->getCurrentMenuIndex() == gameMenu2)
+    if (window->menu->getCurrentMenuIndex() == gameMenu1 || window->menu->getCurrentMenuIndex() == gameMenu2)
     {
-        win->stats->updateStats(win->world);
-        drawStats(win);
+        window->stats->updateStats(window->world);
+        drawStats(window);
     }
 
     // Game menu & user interaction
-    win->draw(win->menu->getCell());
-    win->menu->drawCurrentMenu();
-    win->menu->textbox->drawTextbox(win);
+    window->draw(window->menu->getCell());
+    window->menu->drawCurrentMenu();
+    window->menu->textbox->drawTextbox(window);
 }

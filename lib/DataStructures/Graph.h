@@ -19,8 +19,8 @@ class Graph
 {
 private:
     int vertices;
-    GenericList<GraphData<T>*> *head;      // GenericList<GraphData>
-    GenericNode<GraphData<T>*> *current;   // GenericNode<GraphData>
+    GenericList<GraphData<T>*>* head;      // GenericList<GraphData>
+    GenericNode<GraphData<T>*>* current;   // GenericNode<GraphData>
 
 public:
     // CONSTRUCTOR
@@ -55,7 +55,7 @@ Graph<T>::Graph(int v)
 
     for (size_t i = 0; i < vertices; i++)
     {
-        GraphData<T> *nodeData = new GraphData<T>();
+        GraphData<T>* nodeData = new GraphData<T>();
 
         if (head->isEmpty())
             head->add(nodeData, 1);
@@ -69,7 +69,7 @@ void Graph<T>::fillNode(T data, int cost, int index)
 {
     if (index <= vertices && index > 0 && head->get(index) != 0)
     {
-        GraphData<T> *graphdata = head->get(index);
+        GraphData<T>* graphdata = head->get(index);
         graphdata->cost = cost;
         graphdata->data = data;
     }
@@ -82,7 +82,7 @@ void Graph<T>::addEdge(int A, int B)
 {
     if (A <= vertices && A > 0 && B <= vertices && B > 0 && A != B && head->get(A) != 0 && head->get(A) != 0)
     {
-        GraphData<T> *graphdata; 
+        GraphData<T>* graphdata; 
     
         graphdata = head->get(A);
         graphdata->adjList.push_back(B);
@@ -115,7 +115,7 @@ GraphData<T>* Graph<T>::getData(int pos)
 template <class T>
 void Graph<T>::printGraph()
 {
-    GraphData<T> *graphdata;
+    GraphData<T>* graphdata;
     
     for (size_t i = 0; i < vertices; i++)
     {

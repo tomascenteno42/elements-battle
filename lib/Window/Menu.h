@@ -6,7 +6,7 @@
 class Menu
 {
 private:
-    string *options;
+    string* options;
     int index = 0;
     int length = 0;
 

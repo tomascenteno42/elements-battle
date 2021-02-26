@@ -10,8 +10,8 @@ template <class T>
 class GenericList
 {
 private:
-    GenericNode<T> *firstNode = 0;
-    GenericNode<T> *currentNode = 0;
+    GenericNode<T>* firstNode = 0;
+    GenericNode<T>* currentNode = 0;
     int quantity;
 
 public:
@@ -81,7 +81,7 @@ private:
      * @param index Position to look for a node.
      * @return Node in position pos.
     */
-    GenericNode<T> *getNode(int index);
+    GenericNode<T>* getNode(int index);
 };
 
 // IMPLEMENTATION
@@ -102,7 +102,7 @@ bool GenericList<T>::isEmpty()
 template <class T>
 void GenericList<T>::add(T d, int index)
 {
-    GenericNode<T> *newNode = new GenericNode<T>(d);
+    GenericNode<T>* newNode = new GenericNode<T>(d);
     if (index == 1)
     {
         newNode->setNextNode(firstNode);
@@ -111,8 +111,8 @@ void GenericList<T>::add(T d, int index)
     }
     else
     {
-        GenericNode<T> *anterior = getNode(index - 1);
-        GenericNode<T> *siguiente = anterior->getNextNode();
+        GenericNode<T>* anterior = getNode(index - 1);
+        GenericNode<T>* siguiente = anterior->getNextNode();
         newNode->setNextNode(siguiente);
         anterior->setNextNode(newNode);
     }
@@ -120,9 +120,9 @@ void GenericList<T>::add(T d, int index)
 }
 
 template <class T>
-GenericNode<T> *GenericList<T>::getNode(int index)
+GenericNode<T>* GenericList<T>::getNode(int index)
 {
-    GenericNode<T> *aux = firstNode;
+    GenericNode<T>* aux = firstNode;
     for (int i = 1; i < index; i++)
         aux = aux->getNextNode();
     return aux;
@@ -131,14 +131,14 @@ GenericNode<T> *GenericList<T>::getNode(int index)
 template <class T>
 T GenericList<T>::get(int index)
 {
-    GenericNode<T> *aux = getNode(index);
+    GenericNode<T>* aux = getNode(index);
     return aux->getData();
 }
 
 template <class T>
 void GenericList<T>::drop(int index)
 {
-    GenericNode<T> *aux;
+    GenericNode<T>* aux;
 
     if (index == 1)
     {
@@ -149,12 +149,12 @@ void GenericList<T>::drop(int index)
     }
     else
     {
-        GenericNode<T> *anterior = getNode(index - 1);
+        GenericNode<T>* anterior = getNode(index - 1);
         aux = anterior->getNextNode();
 
         delete get(index);
 
-        GenericNode<T> *siguiente = aux->getNextNode();
+        GenericNode<T>* siguiente = aux->getNextNode();
         anterior->setNextNode(siguiente);
     }
     reset();
@@ -187,7 +187,7 @@ bool GenericList<T>::nextNodeExist()
 template <class T>
 T GenericList<T>::getNext()
 {
-    GenericNode<T> *aux = currentNode;
+    GenericNode<T>* aux = currentNode;
     currentNode = currentNode->getNextNode();
     return aux->getData();
 }

@@ -11,7 +11,7 @@ class Stack
 {
 
 private:
-	GenericNode<T> *last;
+	GenericNode<T>* last;
 
 public:
 	Stack();
@@ -35,7 +35,7 @@ Stack<T>::Stack()
 template <class T>
 void Stack<T>::push(T d)
 {
-	GenericNode<T> *aux = new GenericNode<T>(d);
+	GenericNode<T>* aux = new GenericNode<T>(d);
 	aux->setNextNode(this->last);
 	this->last = aux;
 }
@@ -43,9 +43,9 @@ void Stack<T>::push(T d)
 template <class T>
 void Stack<T>::pop()
 {
-	GenericNode<T> *borrar = this->last;
-	this->last = borrar->getNextNode();
-	delete borrar;
+	GenericNode<T>* aux = this->last;
+	this->last = aux->getNextNode();
+	delete aux;
 }
 
 template <class T>

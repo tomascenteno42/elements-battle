@@ -90,10 +90,10 @@ void Character::setCell()
 	cell.setOutlineColor(sf::Color::Black);
 }
 
-void Character::move(GameWindow *window, sf::Vector2f destination, int energyRequired)
+void Character::move(GameWindow* window, sf::Vector2f destination, int energyRequired)
 {
 	energy -= energyRequired;
-	Stack<sf::Vector2f> *movStack = window->world->movStack;
+	Stack<sf::Vector2f>* movStack = window->world->movStack;
 	loadMovementsStack(movStack, pos, destination, window->world->paths[static_cast<int>(getElement()) - 1]);
 	movStack->push(pos);
 	while (!movStack->isEmpty())

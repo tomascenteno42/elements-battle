@@ -107,24 +107,24 @@ void fillMenu(Menu* menu, const char* filename);
  * Requests character data from the user, creates a new character from said data,
  * and adds the character to characterMap
  */
-void processAddCharacter(GameMenu *menu, BST<string, Character*>* characterMap);
+void processAddCharacter(GameMenu* menu, BST<string, Character*>* characterMap);
 
 /*
  * Requests a character name from the user and deletes the character with that
  * name from characterMap in case it exists.
  */
-void processDeleteCharacter(GameMenu *menu, BST<string, Character*>* characterMap);
+void processDeleteCharacter(GameMenu* menu, BST<string, Character*>* characterMap);
 
 /*
  * Requests a character name from the user and displays its details on screen,
  * in case it exists
  */
-void processSearchCharacter(GameMenu *menu, BST<string, Character*>* characterMap);
+void processSearchCharacter(GameMenu* menu, BST<string, Character*>* characterMap);
 
 /*
  * Displays a list of all the characters' names on the screen
  */
-void processShowCharacters(GameMenu *menu, BST<string, Character*>* characterMap);
+void processShowCharacters(GameMenu* menu, BST<string, Character*>* characterMap);
 
 /*
  * Requests a character name from the user and, in case of it being a valid character,
@@ -248,32 +248,32 @@ bool stringIsNumeric(std::string s);
  * Sets the distances and paths matrixes to their initial states according to the FW Shortest Paths algorithm
  * and the provided element
  */
-void setInitialMatrixes(Graph<GameCell*> *tilesGraph, int distances[64][64], sf::Vector2f paths[64][64], elements element);
+void setInitialMatrixes(Graph<GameCell*>* tilesGraph, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
 /*
  * Floyd-Warshall shortest paths algorithm implementation
  */
-void shortestPathsFW(GameWorld *world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
+void shortestPathsFW(GameWorld* world, int distances[64][64], sf::Vector2f paths[64][64], elements element);
 
 /*
  * Loads a stack with the series of consecutive moves a character must perform to arrive to endingPos from startingPos
  * These consecutive moves are between cells that are immediately connected to each other
  */
-void loadMovementsStack(Stack<sf::Vector2f> *movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
+void loadMovementsStack(Stack<sf::Vector2f>* movStack, sf::Vector2f startingPos, sf::Vector2f endingPos, sf::Vector2f paths[64][64]);
 
 /*
  * Loads distances and paths matrixes for each element
  */
-void loadFWMatrixes(GameWorld *world, int distances[4][64][64], sf::Vector2f paths[4][64][64]);
+void loadFWMatrixes(GameWorld* world, int distances[4][64][64], sf::Vector2f paths[4][64][64]);
 
 /*
  * Draws stats on screen accordingly
  */
-void drawStats(GameWindow *win);
+void drawStats(GameWindow* window);
 
 /*
  * Draws all elements on screen accordingly
  */
-void drawScreen(GameWindow *win);
+void drawScreen(GameWindow* window);
 
 #endif

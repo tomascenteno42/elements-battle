@@ -38,7 +38,7 @@ void loadMapData(GameWorld* world)
     fstream file;
     file.open(MAPSTATS_FILE, ios::in);
 
-	GameCell *cell;
+	GameCell* cell;
 	string color;
 
 	int cellCounter = 0;

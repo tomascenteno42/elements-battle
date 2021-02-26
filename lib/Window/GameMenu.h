@@ -47,7 +47,7 @@ private:
 
 public:
     GameWindow* window;
-    Textbox *textbox;
+    Textbox* textbox;
 
     GameMenu(float xPos, float yPos, float ySize, float xSize, sf::Color color, GameWindow* window);
 

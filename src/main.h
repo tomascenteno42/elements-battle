@@ -58,11 +58,13 @@ using namespace std;
 #include <vector>
 #include <math.h>
 
-#ifdef _WINDOWS
-#include <windows.h>
-#else
-#include <unistd.h>
-#define Sleep(x) usleep((x)*1000)
+#ifdef __linux__
+    #include <unistd.h>
+    #include <chrono>
+    #include <thread>
+    #define Sleep(x) std::this_thread::sleep_for(std::chrono::milliseconds(x));
+#elif _WIN32
+    #include <windows.h>
 #endif
 
 #include <algorithm>

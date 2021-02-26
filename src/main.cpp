@@ -3,7 +3,7 @@
 int main()
 {
 	srand(time(NULL));
-	GameWindow *window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
+	GameWindow* window = new GameWindow(sf::VideoMode(800, 800), "Battle of the Elements");
 	BST<string, Character*>* characterMap = new BST<string, Character*>();
 	loadCharacterData(characterMap);
 

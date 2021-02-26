@@ -51,7 +51,7 @@ void processSearchCharacter(GameMenu* menu, BST<string, Character*>* characterMa
     std::string name;
     menu->setRequest("Search character by name: ");
     name = getUserInput(menu->window);
-    Character *character = 0;
+    Character* character = 0;
     if (characterMap->search(name))
     {
         character = characterMap->getData(name);
